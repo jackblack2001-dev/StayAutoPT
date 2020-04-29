@@ -1,6 +1,6 @@
-<?php
+<?php 
 require_once 'Public/config.php';
-
+//cona e bom ;)
 $Email = $Password = "";
 
 $LBL_ERROR = $Email_ERROR = $Password_ERROR = "";
