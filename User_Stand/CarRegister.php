@@ -4,9 +4,6 @@ include_once(INCLUDE_PATH . '../Public/config.php');
 include_once(INCLUDE_PATH . '../assets/stand_user.php');
 include_once(INCLUDE_PATH . '../assets/role_checker.php');
 
-//TESTE GIT HUB 
-//Agora no PC GRANDE
-
 $License_Plate = $Kms = $Year = $Type_Gear = $Brand = $Model = $Type_Fuel = $Price = $Description = "";
 $License_Plate_ERROR = $Kms_ERROR = $Year_ERROR = $Type_Gear_ERROR = $Brand_ERROR = $Model_ERROR = $Type_Fuel_ERROR = $Price_ERROR = $Description_ERROR = "";
 
