@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'Public/config.php';
 
 $Email = $Password = "";
