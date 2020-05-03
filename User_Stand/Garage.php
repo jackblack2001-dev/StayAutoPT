@@ -106,6 +106,7 @@ if (!is_null($data[0])) {
             <table class="table">
                 <?php 
                 echo ShowCarCars($data,"SELECT * FROM Cars WHERE Stand_id = '$id'",$con);
+                //UwU es gay
                 ?>
             </table>
         </div>
