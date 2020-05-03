@@ -1,6 +1,7 @@
 <?php
 include('../Master.php');
 include_once('../assets/stand_user.php');
+include_once('../assets/carcard.php');
 include_once('../Public/config.php');
 
 $ERROR_No_Data_Stand = false;
@@ -19,6 +20,7 @@ if (!is_null($data[0])) {
         } else $ERROR_No_Data_Car = true;
     }
 } else $ERROR_No_Data_Stand = true;
+
 ?>
 
 <!DOCTYPE html>
@@ -30,12 +32,15 @@ if (!is_null($data[0])) {
 <body>
     <div class="container-fluid" id="Main_div">
         <br>
-        <div style="float: right">
-            <a href="CarRegister.php" class="btn btn-outline-success">Adicionar Carro</a>
+        <div class="row">
+            <div class="col">
+                <h4>Ultimos carros adicionados</h4>
+            </div>
+            <div class="col-sm-2">
+                <a href="CarRegister.php" class="btn btn-outline-success">Adicionar Carro</a>
+            </div>
         </div>
-        <h4>Ultimos carros adicionados</h4>
-        <br>
-
+        <hr>
         <div class="table-responsive">
             <table class="table">
                 <?php
@@ -96,23 +101,31 @@ if (!is_null($data[0])) {
                 <input type="text" placeholder="Procurar" class="form-control">
             </div>
         </div>
+        <hr>
+        <div class="table-responsive">
+            <table class="table">
+                <?php 
+                echo ShowCarCars($data,"SELECT * FROM Cars WHERE Stand_id = '$id'",$con);
+                ?>
+            </table>
+        </div>
     </div>
     <div id="Error_div">
-        UwU
+        <?//UwU?>
     </div>
 </body>
 
 <script>
-    var div1 = document.getElementById("Main_div");
-    var div2 = document.getElementById("Error_div");
-    var aux = <?php echo json_encode($ERROR_No_Data_Stand); ?>;
-    if (aux == true) {
-        div1.style.display = 'none';
-        div2.style.display = 'block';
-    } else {
-        div2.style.display = 'none';
-        div1.style.display = 'block';
-    }
+var div1 = document.getElementById("Main_div");
+var div2 = document.getElementById("Error_div");
+var aux = < ? php echo json_encode($ERROR_No_Data_Stand); ? > ;
+if (aux == true) {
+    div1.style.display = 'none';
+    div2.style.display = 'block';
+} else {
+    div2.style.display = 'none';
+    div1.style.display = 'block';
+}
 </script>
 
 </html>
