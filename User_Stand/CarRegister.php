@@ -12,24 +12,27 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
 } else {
     roleStand($_SESSION['Profile']);
 
-    //verify license plate
-    if(empty(trim($_POST["TXT_LicensePlate"])))
-    $License_Plate_ERROR = "Por favor introduza a matricula";
-    else if (strlen(trim($_POST["TXT_LicensePlate"])) < 4)
-    $License_Plate_ERROR = "Matricula incorreta";
-    else
-    $License_Plate = $_POST["TXT_LicensePlate"];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        
+        //verify license plate
+        if(empty(trim($_POST["TXT_LicensePlate"])))
+        $License_Plate_ERROR = "Por favor introduza a matricula";
+        else if (strlen(trim($_POST["TXT_LicensePlate"])) < 4)
+        $License_Plate_ERROR = "Matricula incorreta";
+        else
+        $License_Plate = $_POST["TXT_LicensePlate"];
 
-    //verify year
-    if(empty(trim($_POST["TXT_Year"])))
-    $Year_ERROR = "Por favor introduza o ano do veiculo";
+        //verify year
+        if(empty(trim($_POST["TXT_Year"])))
+        $Year_ERROR = "Por favor introduza o ano do veiculo";
 
 
-    if (empty($License_Plate_ERROR) && empty($Kms_ERROR) && empty($Year_ERROR) && empty($Type_Gear_ERROR) && empty($Brand_ERROR) && empty($Model_ERROR) && empty($Type_Fuel_ERROR) && empty($Price_ERROR) && empty($Description_ERROR)) {
-        $sql = "INSERT INTO Cars (License_Plate, Stand_Id, Kms, Year, Type_Gear, Brand, Model, Type_Fuel, Price, Description,State,Views,CreatedCar,UpdatedCar) VALUES (?,?,?,?,?,?,?,?,?,?,1,0,NOW(),null)";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param('siiiissids', $License_Plate, $Stand_Id, $Kms, $Year, $Type_Gear, $Brand, $Model, $Type_Fuel, $Price, $Description);
-        $stmt->execute();
+        if (empty($License_Plate_ERROR) && empty($Kms_ERROR) && empty($Year_ERROR) && empty($Type_Gear_ERROR) && empty($Brand_ERROR) && empty($Model_ERROR) && empty($Type_Fuel_ERROR) && empty($Price_ERROR) && empty($Description_ERROR)) {
+            $sql = "INSERT INTO Cars (License_Plate, Stand_Id, Kms, Year, Type_Gear, Brand, Model, Type_Fuel, Price, Description,State,Views,CreatedCar,UpdatedCar) VALUES (?,?,?,?,?,?,?,?,?,?,1,0,NOW(),null)";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param('siiiissids', $License_Plate, $Stand_Id, $Kms, $Year, $Type_Gear, $Brand, $Model, $Type_Fuel, $Price, $Description);
+            $stmt->execute();
+        }
     }
 }
 ?>
@@ -135,7 +138,6 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
 </body>
 
 <script>
-
 function setInputFilter(textbox, inputFilter) {
     ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
         textbox.addEventListener(event, function() {
@@ -154,7 +156,8 @@ function setInputFilter(textbox, inputFilter) {
 }
 
 setInputFilter(document.getElementById("intYear"), function(value) {
-  return /^-?\d*$/.test(value); });
+    return /^-?\d*$/.test(value);
+});
 </script>
 
 </html>
