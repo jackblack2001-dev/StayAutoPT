@@ -11,7 +11,13 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
     header("location: Index.php");
 } else {
     roleStand($_SESSION['Profile']);
-    //TODO: Fazer as verificações
+
+    if(empty(trim($_POST["TXT_LicensePlate"])))
+    $License_Plate_ERROR = "Por favor introduza a matricula";
+    else if (strlen(trim($_POST["TXT_LicensePlate"])) > 4)
+    $License_Plate_ERROR = "Matricula incorreta";
+    else
+    $License_Plate = $_POST["TXT_LicensePlate"];
 
     if (empty($License_Plate_ERROR) && empty($Kms_ERROR) && empty($Year_ERROR) && empty($Type_Gear_ERROR) && empty($Brand_ERROR) && empty($Model_ERROR) && empty($Type_Fuel_ERROR) && empty($Price_ERROR) && empty($Description_ERROR)) {
         $sql = "INSERT INTO Cars (License_Plate, Stand_Id, Kms, Year, Type_Gear, Brand, Model, Type_Fuel, Price, Description,State,Views,CreatedCar,UpdatedCar) VALUES (?,?,?,?,?,?,?,?,?,?,1,0,NOW(),null)";
@@ -46,6 +52,7 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
                                     <span class="input-group-text">Matricula</span>
                                 </div>
                                 <input type="text" class="form-control" name="TXT_LicensePlate">
+                                <small class="form-text text-danger"><?php echo $License_Plate_ERROR?></small>
                             </div>
 
                             <div class="input-group mb-3">
