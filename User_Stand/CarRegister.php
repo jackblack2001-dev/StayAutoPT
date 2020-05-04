@@ -14,18 +14,77 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
-        //verify license plate
-        if(empty(trim($_POST["TXT_LicensePlate"])))
-        $License_Plate_ERROR = "Por favor introduza a matricula";
-        else if (strlen(trim($_POST["TXT_LicensePlate"])) < 4)
-        $License_Plate_ERROR = "Matricula incorreta";
-        else
-        $License_Plate = $_POST["TXT_LicensePlate"];
+       //verify license plate
+       if(empty(trim($_POST["TXT_LicensePlate"])))
+       $License_Plate_ERROR = "Por favor introduza a matricula";
+       else if (strlen(trim($_POST["TXT_LicensePlate"])) < 4)
+       $License_Plate_ERROR = "Matricula incorreta";
+       else
+       $License_Plate = $_POST["TXT_LicensePlate"];
 
-        //verify year
-        if(empty(trim($_POST["TXT_Year"])))
-        $Year_ERROR = "Por favor introduza o ano do veiculo";
+       //verify KMS
+       if(empty(trim($_POST["TXT_Miles"])))
+       $Kms_ERROR = "Por favor introduza os kilometros do veiculo";
+       else if(strlen(trim($_POST["TXT_Miles"] >=0 )))
+       $Kms=$_POST["TXT_Miles"] ;
+   
+       //verify Type_gear
 
+        if($_POST["SEL_GearBox"] <1 && $_POST["SEL_GearBox"]>3)
+        $Type_Gear_ERROR= "Selecione o tipo de Transmição";
+        else 
+           $Type_Gear=$_POST["SEL_GearBox"];
+      
+
+      
+    
+
+       //verify Brand
+       if(strlen(trim($_POST["TXT_Brand"]>=0 && ($_POST["TXT_Brand"]<=50))))
+       $Brand=$_POST["TXT_Brand"];
+       else
+       $Brand_ERROR = "A marca não pode ser maior que 50 caracteres";
+
+
+
+
+      //verify Model
+      
+      if(strlen(trim($_POST["TXT_Model"]>=0 && ($_POST["TXT_Model"] <= 50))))
+        $Model = $_POST["TXT_Model"];
+      else
+      $Model_ERROR = "O modelo não pode ser maior que 50 caracteres"; 
+
+      
+
+      
+     //verify Fuel 
+
+     if (strlen(trim($_POST["SEL_Fuel"]>=0 && $_POST["SEL_Fuel"]<=4)))
+     $Type_Fuel=$_POST["SEL_Fuel"];
+     else
+     $Type_Fuel_ERROR = "Intruduza um combustivel valido";
+
+
+     //verify Price
+     if (empty(trim($_POST["TXT_Price"]>0)))
+     $Price=$_POST["TXT_Price"];
+     else
+      $Price_ERROR="Tem que colocar preço valido";
+
+     //verify description
+     if (empty(trim($_POST["TXT_Description"]>0)))
+     $Description=$_POST["TXT_Description"];
+     else
+     $Description_ERROR="Tem que escrever na descrição ";
+
+       
+       //verify year
+       if(empty(trim($_POST["TXT_Year"])))
+       $Year_ERROR = "Por favor introduza o ano do veiculo";
+       else if(strlen(trim($_POST["TXT_Year"]>=1920 && $_POST["TXT_Year"]<= date ("Y"))))
+       $Year = $_POST["TXT_Year"];
+       else $Year_ERROR = "A data tem que ser maior que 1920 e menor ou igual ".date("Y") ;
 
         if (empty($License_Plate_ERROR) && empty($Kms_ERROR) && empty($Year_ERROR) && empty($Type_Gear_ERROR) && empty($Brand_ERROR) && empty($Model_ERROR) && empty($Type_Fuel_ERROR) && empty($Price_ERROR) && empty($Description_ERROR)) {
             $sql = "INSERT INTO Cars (License_Plate, Stand_Id, Kms, Year, Type_Gear, Brand, Model, Type_Fuel, Price, Description,State,Views,CreatedCar,UpdatedCar) VALUES (?,?,?,?,?,?,?,?,?,?,1,0,NOW(),null)";
