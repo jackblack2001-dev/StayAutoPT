@@ -5,18 +5,88 @@ include_once('../Public/config.php');
 
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
-    $search = "";
-
-    if(trim($_GET['search'])!="")
+    if(isset($_GET['SCCL5']) && $_GET['SCCL5'] == "true")
     {
-        $search = $_GET['search'];
-        ShowCarCarsSearch($search,$con);
+        ShowCarCarsLast5($con);
     }
     else
     {
-        ShowCarCars($con);
+        $search = "";
+
+        if(isset($_GET['search']) && trim($_GET['search'])!="")
+        {
+            $search = $_GET['search'];
+            ShowCarCarsSearch($search,$con);
+        }
+        else
+        {
+            ShowCarCars($con);
+        }   
     }
 } 
+
+function ShowCarCarsLast5($con)
+{
+    $card = "";
+    $data[] = returnStand($_SESSION["Id"], $con);
+
+    if (!is_null($data[0])) {
+        $id = $data[0]['Stand_Id'];
+        $sql = "SELECT * FROM Cars ORDER BY CreatedCar desc limit 5";
+        if ($Result = $con->query($sql)) {
+            if ($Result->num_rows >= 1) {
+                while($row = $Result->fetch_array()){
+                    $cars[] = $row;
+                }
+
+                $fuel = $typegear = "";
+                    foreach ($cars as $row) {
+            
+                        if($row['Type_Fuel'] == 0){
+                            $fuel = "Gasolina";
+                        }else{
+                            $fuel = "Diesel";
+                        }
+            
+                        if($row['Type_Gear'] == 0){
+                            $typegear = "Manual";
+                        }else if($row['Type_Gear'] == 1){
+                            $typegear = "Automático";
+                        }
+                        else{
+                            $typegear = "CVT";
+                        }
+            
+                        $card .=  "<div class='col-sm-4'>
+                        
+                        <div class='card' style='width: 350px'>
+                            <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='".$row['Brand']." ".$row['Model']."' style='width: 100%, heigth= 50%'>
+                            <div class='card-body'>
+                                <h4 class='card-title'>".$row['Brand']." ".$row['Model']." - ".$row['Price']."€</h4>
+                                <hr>
+                                <p class='card-text text-right'>".$row['Year']."</p>
+                                <p class='card-text text-right'>".$fuel." / ".$typegear."</p>
+                                <p class='card-text'>".$row['Kms']." Km</p>
+                                <hr>
+                                #Botao para editar
+                            </div>
+                        </div>
+                        </br>
+                    </div>";
+                    }
+                    echo $card;
+
+            } else                     
+            echo '<div style="border-width:3px;border-style:dashed; color: lightgray">
+                        <br>
+                        <h3 class="text-center">
+                            Sem resultados :\
+                        </h3>
+                        <br>
+                    </div>';
+        }
+    } else $ERROR_No_Data_Stand = true;
+}
 
 function ShowCarCars($con)
 {

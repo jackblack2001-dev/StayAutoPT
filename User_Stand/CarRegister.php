@@ -6,7 +6,6 @@ include_once(INCLUDE_PATH . '../assets/role_checker.php');
 
 $License_Plate = $Kms = $Year = $Type_Gear = $Brand = $Model = $Type_Fuel = $Price = $Description = "";
 $License_Plate_ERROR = $Kms_ERROR = $Year_ERROR = $Type_Gear_ERROR = $Brand_ERROR = $Model_ERROR = $Type_Fuel_ERROR = $Price_ERROR = $Description_ERROR = "";
-$id = $_SESSION["id"];
 
 if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
     header("location: Index.php");
@@ -24,10 +23,10 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
        $License_Plate = $_POST["TXT_LicensePlate"];
 
        //verify KMS
-       if(empty(trim($_POST["TXT_Miles"])))
-       $Kms_ERROR = "Por favor introduza os kilometros do veiculo";
-       else if(strlen(trim($_POST["TXT_Miles"] >=0 )))
-       $Kms=$_POST["TXT_Miles"] ;
+       if($_POST["TXT_Miles"] != "" && (int)trim($_POST["TXT_Miles"]) >= 0)
+       $Kms=$_POST["TXT_Miles"];
+       else
+       $Kms_ERROR = "Por favor introduza os kilometros do veiculo"; 
    
        //verify Type_gear
             if(!isset($_POST["SEL_GearBox"]))
@@ -79,11 +78,13 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
        else $Year_ERROR = "A data tem que ser maior que 1920 e menor ou igual ".date("Y") ;
 
         if (empty($License_Plate_ERROR) && empty($Kms_ERROR) && empty($Year_ERROR) && empty($Type_Gear_ERROR) && empty($Brand_ERROR) && empty($Model_ERROR) && empty($Type_Fuel_ERROR) && empty($Price_ERROR) && empty($Description_ERROR)) {
-            $sql = "INSERT INTO `cars` (`License_Plate`, `Stand_Id`, `Kms`, `Year`, `Type_Gear`, `Brand`, `Model`, `Type_Fuel`, `Price`, `Description`, `State`, `Views`, `CreatedCar`, `UpdatedCar`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '1', '0', CURRENT_TIMESTAMP, NULL)";
+            $data[] = returnStand($_SESSION['Id'],$con);
+            $sql = "INSERT INTO Cars (License_Plate, Stand_Id, Kms, Year, Type_Gear, Brand, Model, Type_Fuel, Price, Description, State, Views, CreatedCar, UpdatedCar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '1', '0', CURRENT_TIMESTAMP, NULL)";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param('siiiissids', $License_Plate, $id, $Kms, $Year, $Type_Gear, $Brand, $Model, $Type_Fuel, $Price, $Description);
+            $stmt->bind_param('siiiissids', $License_Plate, $data[0]['Stand_Id'], $Kms, $Year, $Type_Gear, $Brand, $Model, $Type_Fuel, $Price, $Description);
             $stmt->execute();
-            header("location: Garage.php");
+            if($stmt == true)
+             header("location: Garage.php");
         }
     }
 }
@@ -128,7 +129,7 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Kilometros</span>
                                 </div>
-                                <input type="text" class="form-control" name="TXT_Miles">
+                                <input type="text" class="form-control" name="TXT_Miles" id="intKms">
                                 <small class="form-text text-danger"><?php echo $Kms_ERROR?></small>
                             </div>
 
@@ -215,6 +216,10 @@ function setInputFilter(textbox, inputFilter) {
 }
 
 setInputFilter(document.getElementById("intYear"), function(value) {
+    return /^-?\d*$/.test(value);
+});
+
+setInputFilter(document.getElementById("intKms"), function(value) {
     return /^-?\d*$/.test(value);
 });
 </script>

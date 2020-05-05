@@ -34,7 +34,7 @@ include('../Master.php');
         </div>
         <hr>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" id="TabLast5">
             </table>
         </div>
 
@@ -51,7 +51,6 @@ include('../Master.php');
         <hr>
         <div class="table-responsive">
             <table class="table" id="TabSearch">
-                <?php //echo ShowCarCarsSearch()?>
             </table>
         </div>
     </div>
@@ -63,7 +62,21 @@ include('../Master.php');
 <script>
 
 window.onload = function(){
+    CCSL5();
     CCS("");
+};
+
+function CCSL5() {
+    $.ajax({
+        type: "GET",
+        url: "../assets/carcard.php",
+        data: {
+            SCCL5: true
+        },
+        success: function(response) {
+            $("#TabLast5").html(response);
+        }
+    });
 };
 
 function CCS(str) {
@@ -71,6 +84,7 @@ function CCS(str) {
         type: "GET",
         url: "../assets/carcard.php",
         data: {
+            SCCL5: false,
             search: str
         },
         success: function(response) {
