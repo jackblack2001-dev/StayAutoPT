@@ -1,21 +1,42 @@
 <?php
+session_start();
+include_once('stand_user.php');
+include_once('../Public/config.php');
 
-function ShowCarCars($data,$sql,$con)
+if($_SERVER["REQUEST_METHOD"] == "GET")
 {
+    $search = "";
+
+    if(trim($_GET['search'])!="")
+    {
+        $search = $_GET['search'];
+        ShowCarCarsSearch($search,$con);
+    }
+    else
+    {
+        ShowCarCars($con);
+    }
+} 
+
+function ShowCarCars($con)
+{
+    include_once('../Public/config.php');
+
     $ERROR_No_Data_Car = false;
-    
+    $card = "";
+    $data[] = returnStand($_SESSION["Id"], $con);
+
     if (!is_null($data[0])) {
         $id = $data[0]['Stand_Id'];
+        $sql = "SELECT * FROM Cars WHERE Stand_id = '$id'";
         if ($Result = $con->query($sql)) {
             if ($Result->num_rows >= 1) {
-                if ($row = $Result->fetch_array()) {
+                while($row = $Result->fetch_array()){
                     $cars[] = $row;
                 }
             } else $ERROR_No_Data_Car = true;
         }
     } else $ERROR_No_Data_Stand = true;
-
-
 
     $fuel = $typegear = "";
     if (!$ERROR_No_Data_Car) {
@@ -36,10 +57,10 @@ function ShowCarCars($data,$sql,$con)
                 $typegear = "CVT";
             }
 
-            return "<div class='col-sm-4'>
-            </br>
+            $card .=  "<div class='col-sm-4'>
+            
             <div class='card' style='width: 350px'>
-                <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='Card image' style='width: 100%, heigth= 50%'>
+                <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='".$row['Brand']." ".$row['Model']."' style='width: 100%, heigth= 50%'>
                 <div class='card-body'>
                     <h4 class='card-title'>".$row['Brand']." ".$row['Model']." - ".$row['Price']."€</h4>
                     <p class='card-text text-right'>".$row['Year']."</p>
@@ -52,6 +73,7 @@ function ShowCarCars($data,$sql,$con)
             </br>
         </div>";
         }
+        echo $card;
     } else {
         return '<div style="border-width:3px;border-style:dashed; color: lightgray">
             <br>
@@ -61,6 +83,69 @@ function ShowCarCars($data,$sql,$con)
             <br>
         </div>';
     }
+}
+
+function ShowCarCarsSearch($search,$con)
+{
+    $card = "";
+    $data[] = returnStand($_SESSION["Id"], $con);
+
+    if (!is_null($data[0])) {
+        $id = $data[0]['Stand_Id'];
+        $sql = "SELECT * FROM `cars` WHERE `Stand_Id` = $id 
+        AND `Brand` LIKE '%$search%' OR `Model` LIKE '%$search%'";
+        if ($Result = $con->query($sql)) {
+            if ($Result->num_rows >= 1) {
+                while($row = $Result->fetch_array()){
+                    $cars[] = $row;
+                }
+
+                $fuel = $typegear = "";
+                    foreach ($cars as $row) {
+            
+                        if($row['Type_Fuel'] == 0){
+                            $fuel = "Gasolina";
+                        }else{
+                            $fuel = "Diesel";
+                        }
+            
+                        if($row['Type_Gear'] == 0){
+                            $typegear = "Manual";
+                        }else if($row['Type_Gear'] == 1){
+                            $typegear = "Automático";
+                        }
+                        else{
+                            $typegear = "CVT";
+                        }
+            
+                        $card .=  "<div class='col-sm-4'>
+                        
+                        <div class='card' style='width: 350px'>
+                            <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='".$row['Brand']." ".$row['Model']."' style='width: 100%, heigth= 50%'>
+                            <div class='card-body'>
+                                <h4 class='card-title'>".$row['Brand']." ".$row['Model']." - ".$row['Price']."€</h4>
+                                <p class='card-text text-right'>".$row['Year']."</p>
+                                <p class='card-text text-right'>".$fuel." / ".$typegear."</p>
+                                <p class='card-text'>".$row['Kms']." Km</p>
+                                <p class='card-text'>".$row['Description']."</p>
+                                #Botao para editar
+                            </div>
+                        </div>
+                        </br>
+                    </div>";
+                    }
+                    echo $card;
+
+            } else                     
+            echo '<div style="border-width:3px;border-style:dashed; color: lightgray">
+                        <br>
+                        <h3 class="text-center">
+                            Sem resultados :\
+                        </h3>
+                        <br>
+                    </div>';
+        }
+    } else $ERROR_No_Data_Stand = true;
 }
 
 ?>
