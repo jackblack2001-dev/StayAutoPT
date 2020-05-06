@@ -63,7 +63,7 @@ define("INCLUDE_PATH",__DIR__);
               : '<a class="nav-link dropdown-toggle" data-toggle="dropdown">
             <img src="' . $Path . '" Class="rounded-circle" /></a>
           <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="/User/Perfil.aspx">Perfil</a>
+            <a class="dropdown-item" href="'.ROOT_PATH.'User/Profile.php">Perfil</a>
             <a class="divider"></a>
             <a class="dropdown-item" href="'.ROOT_PATH.'logout.php">Logout</a>
             </div>' ?>

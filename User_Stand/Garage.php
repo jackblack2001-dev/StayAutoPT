@@ -29,12 +29,14 @@ include('../Master.php');
                 <h4>Ultimos carros adicionados</h4>
             </div>
             <div class="col-sm-2">
-                <a href="CarRegister.php" class="btn btn-outline-success">Adicionar Carro</a>
+                <a href="CarRegister.php" class="btn btn-outline-success float-right">Adicionar Carro</a>
             </div>
         </div>
         <hr>
-        <div class="table-responsive">
-            <table class="table" id="TabLast5">
+        <div class="table-responsive" style="margin:auto">
+            <table class="table">
+                <div class="row" id="TabLast5">
+                </div>
             </table>
         </div>
 
@@ -44,13 +46,15 @@ include('../Master.php');
             <div class="col">
                 <h4>Todos os carros</h4>
             </div>
-            <div class="col-sm-2" style="padding-right: 40px">
-                <input type="text" placeholder="Procurar" class="form-control" onkeyup="CCS(this.value)" id="Search">
+            <div class="col-sm-2" style="padding-left: 40px">
+                <input type="text" placeholder="Procurar" class="form-control float-right" onkeyup="CCS(this.value)" id="Search">
             </div>
         </div>
         <hr>
         <div class="table-responsive">
-            <table class="table" id="TabSearch">
+            <table class="table">
+                <div class="row" id="TabSearch">
+                </div>
             </table>
         </div>
     </div>
@@ -60,8 +64,7 @@ include('../Master.php');
 </body>
 
 <script>
-
-window.onload = function(){
+window.onload = function() {
     CCSL5();
     CCS("");
 };

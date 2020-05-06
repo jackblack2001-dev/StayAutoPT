@@ -57,9 +57,8 @@ function ShowCarCarsLast5($con)
                             $typegear = "CVT";
                         }
             
-                        $card .=  "<div class='col-sm-4'>
-                        
-                        <div class='card' style='width: 350px'>
+                        $card .=  "<div class='col-md'>
+                        <div class='card' style='width: 340px'>
                             <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='".$row['Brand']." ".$row['Model']."' style='width: 100%, heigth= 50%'>
                             <div class='card-body'>
                                 <h4 class='card-title'>".$row['Brand']." ".$row['Model']." - ".$row['Price']."€</h4>
@@ -127,9 +126,9 @@ function ShowCarCars($con)
                 $typegear = "CVT";
             }
 
-            $card .=  "<div class='col-sm-4'>
+            $card .=  "<div class='col-md'>
             
-            <div class='card' style='width: 350px'>
+            <div class='card' style='width: 340px'>
                 <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='".$row['Brand']." ".$row['Model']."' style='width: 100%, heigth= 50%'>
                 <div class='card-body'>
                     <h4 class='card-title'>".$row['Brand']." ".$row['Model']." - ".$row['Price']."€</h4>
@@ -188,9 +187,9 @@ function ShowCarCarsSearch($search,$con)
                             $typegear = "CVT";
                         }
             
-                        $card .=  "<div class='col-sm-4'>
+                        $card .=  "<div class='col-md'>
                         
-                        <div class='card' style='width: 350px'>
+                        <div class='card' style='width: 340px'>
                             <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='".$row['Brand']." ".$row['Model']."' style='width: 100%, heigth= 50%'>
                             <div class='card-body'>
                                 <h4 class='card-title'>".$row['Brand']." ".$row['Model']." - ".$row['Price']."€</h4>
