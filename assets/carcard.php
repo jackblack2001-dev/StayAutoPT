@@ -93,6 +93,7 @@ function ShowCarCars($con)
 
     $ERROR_No_Data_Car = false;
     $card = "";
+    $cars = null;
     $data[] = returnStand($_SESSION["Id"], $con);
 
     if (!is_null($data[0])) {

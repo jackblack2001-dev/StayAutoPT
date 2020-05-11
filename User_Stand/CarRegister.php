@@ -98,6 +98,14 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
 </head>
 
 <body>
+
+<style>
+.div_error{
+    padding-top: 0px;
+    padding-bottom: 20px;
+}
+</style>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm"></div>
@@ -122,6 +130,8 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
                                     <span class="input-group-text">Ano</span>
                                 </div>
                                 <input type="text" class="form-control" name="TXT_Year" id="intYear">
+                            </div>
+                            <div class="div_error">
                                 <small class="form-text text-danger"><?php echo $Year_ERROR?></small>
                             </div>
 
