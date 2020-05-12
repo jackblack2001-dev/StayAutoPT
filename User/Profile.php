@@ -1,22 +1,9 @@
 <?php
 include("../Master.php");
+include_once("../assets/user_info.php");
 include_once(INCLUDE_PATH . "../Public/Config.php");
 
-$id = $_SESSION["Id"];
-
-if (isset($id)) {
-    $sql = "SELECT * FROM Users WHERE User_Id = $id";
-    $Result = $con->query($sql);
-    if ($Result->num_rows == 1) {
-        if ($row = $Result->fetch_array()) {
-            $row;
-        }
-    } else {
-        null;
-    }
-} else {
-    null;
-}
+$row = returnUser($_SESSION['Id'],$con);
 
 ?>
 
@@ -34,7 +21,6 @@ if (isset($id)) {
         height: 400px;
         width: 940px;
         padding-top: 20px;
-        filter: saturate(83%);
         position: relative;
     }
 
@@ -45,10 +31,27 @@ if (isset($id)) {
         filter: blur(0px);
     }
 
-    .Div_Profile_Name {
+    .overlay {
+        position: absolute;
+        top: 80px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .3s ease;
+    }
+
+    .div-overlay{
+        margin-top: -100px;
         text-align: center;
         vertical-align: middle;
-        padding-bottom: 0px;
+        position: relative;
+    }
+
+    .div-overlay:hover .overlay{
+        opacity:1;
     }
 
     .Header {
@@ -60,15 +63,27 @@ if (isset($id)) {
     }
     </style>
 
-    <div class="container" style="margin-top: 60px;margin-right: 400px;margin-left: 400px;">
-        <div style="vertical-align: middle;text-align: center;">
-            <img class="text-center Img_Banner" src="../Public/Images/User_Banners/defult_profile_banner.jpg" /></div>
-        <div style="margin-top: -100px;text-align: center;vertical-align: middle;">
-            <img class="rounded-circle Img_Profile" src="../Public/Images/Profile/defult_user.jpg" /></div>
-        <div class="Div_Profile_Name">
-            <h1 class="Header"><?php echo $row["Name"]?></h1>
-            <hr style="width: 500px;" />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+            </div>
+            <div class="col-xl col-md">
+                <img class="text-center Img_Banner" src="../Public/Images/User_Banners/defult_profile_banner.jpg" />
+                <div class="div-overlay">
+                    <img class="rounded-circle Img_Profile" src="../Public/Images/Profile/defult_user.jpg" />
+                    <div class="overlay">
+                        <button>fm,nasdvbcfhjzSvfcbzx</button>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h1 class="Header"><?php echo $row["Name"]?></h1>
+                    <hr style="width: 500px;" />
+                </div>
+            </div>
+            <div class="col-sm">
+            </div>
         </div>
+
     </div>
 </body>
 

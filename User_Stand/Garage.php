@@ -32,7 +32,7 @@ include('../Master.php');
                 <a href="CarRegister.php" class="btn btn-outline-success float-right">Adicionar Carro</a>
             </div>
         </div>
-        <hr>
+        <hr class="mb-4">
         <div class="table-responsive" style="margin:auto">
             <table class="table">
                 <div class="row" id="TabLast5">
@@ -50,7 +50,7 @@ include('../Master.php');
                 <input type="text" placeholder="Procurar" class="form-control float-right" onkeyup="CCS(this.value)" id="Search">
             </div>
         </div>
-        <hr>
+        <hr class="mb-4">
         <div class="table-responsive">
             <table class="table">
                 <div class="row" id="TabSearch">
