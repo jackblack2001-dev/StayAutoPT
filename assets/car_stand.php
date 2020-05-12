@@ -36,17 +36,17 @@ function ThreeMoreRentable($con)
 {
     $data = null;
 
-    $sql= "SELECT Brand, SUM(Price)
-            FROM Cars
-            WHERE State = 2
-            ORDER BY Brand desc LIMIT 5";
+    $sql= "SELECT Brand, SUM(Price) AS Price FROM cars WHERE State = 2 GROUP BY Brand DESC LIMIT 3";
 
     if($Result=$con->query($sql)){
-        if($Result->num_rows >= 1){
+        if($Result->num_rows == 3){
             while($row = $Result->fetch_array()){
                 $data[] = $row;
             }
             return $data;
+        }
+        else{
+            return null;
         }
     }
 }

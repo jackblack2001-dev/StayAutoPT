@@ -9,6 +9,20 @@ $Stand[] = returnStandsViews($con);
 $Cars[] = returnCarsViews($con);
 $Users[] = returnUsersCount($con);
 
+$BMR[] = ThreeMoreRentable($con);
+$B = null;
+$P = null;
+
+if($BMR[0] != null){
+    foreach($BMR as $rows){
+        foreach($rows as $row)
+        {
+            $B[] = $row["Brand"];
+            $P[] = $row["Price"];
+        }
+    }
+}
+
 $UsersC[] = returnUsersCountType(1,$con);
 $UsersE[] = returnUsersCountType(2,$con);
 ?>
@@ -126,7 +140,7 @@ $UsersE[] = returnUsersCountType(2,$con);
             <div class="col-lg-4">
                 <div class="card shadow mb-4">
                     <div class="card-header">
-                        <h6>As 3 Marcas Mais Rentáveis</h6>
+                        <h6>As 3 Marcas Mais Rentáveis (€)</h6>
                     </div>
                     <div class="card-body">
                         <canvas id="threeMoreRentable">
@@ -151,7 +165,6 @@ $UsersE[] = returnUsersCountType(2,$con);
 
 <script src="<?=ROOT_PATH?>bootstrap/js/mdb.js"></script>
 <script>
-
 window.onload = function() {
     ChartTMR();
     ChartUP();
@@ -163,50 +176,22 @@ function ChartTMR() {
         plugins: [ChartDataLabels],
         type: 'pie',
         data: {
-            labels: ["Red", "Green", "Yellow"],
+            labels: ["<?php echo $B[0]?>", "<?php echo $B[1]?>", "<?php echo $B[2]?>"],
             datasets: [{
-                data: [210, 130, 120],
+                data: [<?php echo $P[0]?>, <?php echo $P[1]?>, <?php echo $P[2]?>],
                 backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
                 hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
             }]
         },
         options: {
             responsive: true,
-            legend: {
-                position: 'right',
-                labels: {
-                    padding: 20,
-                    boxWidth: 10
-                }
-            },
-            plugins: {
-                datalabels: {
-                    formatter: (value, ctx) => {
-                        let sum = 0;
-                        let dataArr = ctx.chart.data.datasets[0].data;
-                        dataArr.map(data => {
-                            sum += data;
-                        });
-                        let percentage = (value * 100 / sum).toFixed(2) + "%";
-                        return percentage;
-                    },
-                    color: 'white',
-                    labels: {
-                        title: {
-                            font: {
-                                size: '16'
-                            }
-                        }
-                    }
-                }
-            }
         }
     });
 }
 
 function ChartUP() {
-    var Cli = <?php echo $UsersC[0]["Clientes"]?>;
-    var Emp = <?php echo $UsersE[0]["Empresarios"]?>;
+    var Cli = <?php echo $UsersC[0]["Clientes"] ?> ;
+    var Emp = <?php echo $UsersE[0]["Empresarios"] ?> ;
 
     var ctxF = document.getElementById("UsersPercentage").getContext('2d');
 
@@ -214,7 +199,7 @@ function ChartUP() {
         plugins: [ChartDataLabels],
         type: 'pie',
         data: {
-            labels: ["Clientes","Empresários"],
+            labels: ["Clientes", "Empresários"],
             datasets: [{
                 data: [Cli, Emp],
                 backgroundColor: ["#F7464A", "#46BFBD"],
