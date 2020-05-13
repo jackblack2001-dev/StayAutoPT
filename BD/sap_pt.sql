@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 29-Abr-2020 às 22:53
--- Versão do servidor: 10.4.11-MariaDB
--- versão do PHP: 7.4.2
+-- Generation Time: 12-Maio-2020 às 17:57
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `sap_pt`
+-- Database: `sap_pt`
 --
 
 -- --------------------------------------------------------
@@ -32,17 +32,17 @@ CREATE TABLE `cars` (
   `License_Plate` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `Stand_Id` int(11) NOT NULL,
   `Kms` int(11) NOT NULL,
-  `Year` date NOT NULL,
+  `Year` year(4) NOT NULL,
   `Type_Gear` int(11) NOT NULL,
   `Brand` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Model` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `Type_Fuel` int(11) NOT NULL,
   `Price` double NOT NULL,
   `Description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `State` int(11) NOT NULL DEFAULT 1,
-  `Views` int(11) DEFAULT 0,
-  `CreatedCar` datetime NOT NULL DEFAULT current_timestamp(),
-  `UpdatedCar` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `State` int(11) NOT NULL DEFAULT '1',
+  `Views` int(11) DEFAULT '0',
+  `CreatedCar` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedCar` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -50,7 +50,27 @@ CREATE TABLE `cars` (
 --
 
 INSERT INTO `cars` (`License_Plate`, `Stand_Id`, `Kms`, `Year`, `Type_Gear`, `Brand`, `Model`, `Type_Fuel`, `Price`, `Description`, `State`, `Views`, `CreatedCar`, `UpdatedCar`) VALUES
-('A4-15-FF', 1, 100000, '1999-01-01', 0, 'Ford', 'Focus', 0, 12000, 'É um carro muito bom e confiavel', 1, 0, '2020-03-21 12:26:00', '2020-03-21 12:30:52');
+('66-66-66', 1, 2147483647, 1966, 1, 'carroça', 'velha', 1, 10000000, 'é um carro meuito velho que merece respeito', 1, 1, '2020-05-05 11:11:12', '2020-05-12 15:01:30'),
+('A5-55-GG', 1, 100000, 1999, 0, 'Null', 'Not null', 0, 12000, 'GG master', 1, 0, '2020-03-11 07:36:16', '0000-00-00 00:00:00'),
+('A5-66-GG', 1, 100000, 1999, 0, 'Null', 'sfgh', 0, 12000, 'GG master', 1, 0, '2020-03-21 12:26:00', '2020-03-21 12:30:52'),
+('B4-66-34', 1, 1020110, 2001, 1, 'Opel', 'Corsa', 1, 8000, 'fd sfase fsdfs faes gf', 1, 0, '2020-05-05 10:32:52', '2020-05-05 10:42:57'),
+('GG-86-L5', 1, 1020110, 2010, 2, 'Astron', 'Martin', 1, 999999999, 'Este carro é demasiado caro para o teu bolso', 1, 0, '2020-05-05 10:34:50', '2020-05-05 10:42:24'),
+('GH-76-6K', 1, 0, 2020, 1, 'Ford', 'Focus RXT Defenitive Version Master Id', 1, 999, 'Este modelo e muito fixe', 1, 1, '2020-05-05 10:51:23', '2020-05-12 15:02:08');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `news`
+--
+
+CREATE TABLE `news` (
+  `News_Id` int(11) NOT NULL,
+  `Stand_Id` int(11) NOT NULL,
+  `User_Id` int(11) NOT NULL,
+  `Title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `Text` varchar(5000) COLLATE utf8_unicode_ci NOT NULL,
+  `State` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -66,8 +86,8 @@ CREATE TABLE `stands` (
   `Locality` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Views` int(11) DEFAULT NULL,
-  `CreatedStand` datetime NOT NULL DEFAULT current_timestamp(),
-  `UpdatedStand` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `CreatedStand` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedStand` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -76,6 +96,23 @@ CREATE TABLE `stands` (
 
 INSERT INTO `stands` (`Stand_Id`, `User_Id`, `Phone`, `Adress`, `Locality`, `Name`, `Views`, `CreatedStand`, `UpdatedStand`) VALUES
 (1, 1, '889377722', 'Avenida da belgica 101', 'Viseu', 'Carros&Familia LDA', 0, '0000-00-00 00:00:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `stand_ban`
+--
+
+CREATE TABLE `stand_ban` (
+  `Stand_ban` int(11) NOT NULL,
+  `User_Id` int(11) NOT NULL,
+  `Stand_id` int(11) NOT NULL,
+  `Date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Duration` datetime DEFAULT NULL,
+  `Type_ban` int(11) NOT NULL,
+  `Description` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `State` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -90,8 +127,8 @@ CREATE TABLE `users` (
   `Phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Profile` int(11) NOT NULL,
   `Password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `createdAccount` datetime NOT NULL DEFAULT current_timestamp(),
-  `updateAccount` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `createdAccount` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updateAccount` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -100,50 +137,114 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`User_Id`, `Name`, `Email`, `Phone`, `Profile`, `Password`, `createdAccount`, `updateAccount`) VALUES
 (1, 'David Coelho', 'ddsc2001@gmail.com', '938366677', 2, '$2y$10$rpwpf9UXeqxu/jgo7JB1TexZWwK7rFhAm4esZDojP.vJE9M/asHs6', '0000-00-00 00:00:00', NULL),
-(2, 'admin', 'admin@admin.com', '000000000', 2, '$2y$10$CDhswNyixY8rYpzRpJdqkeXqL0gi5EmB1pKkaJrhwkCj1VKG5Aq26', '2020-03-18 07:51:04', NULL);
+(2, 'admin', 'admin@admin.com', '000000000', 0, '$2y$10$CDhswNyixY8rYpzRpJdqkeXqL0gi5EmB1pKkaJrhwkCj1VKG5Aq26', '2020-03-18 07:51:04', '2020-05-09 11:48:11'),
+(3, 'Teste', 'teste@teste.com', '123', 1, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', '2020-05-09 12:06:38', '2020-05-12 16:38:17');
+
+-- --------------------------------------------------------
 
 --
--- Índices para tabelas despejadas
+-- Estrutura da tabela `users_ban`
+--
+
+CREATE TABLE `users_ban` (
+  `User_ban` int(11) NOT NULL,
+  `User_ban_id` int(11) NOT NULL,
+  `User_id` int(11) NOT NULL,
+  `Date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Description` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `Type_Ban` int(11) NOT NULL,
+  `State` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Índices para tabela `cars`
+-- Indexes for table `cars`
 --
 ALTER TABLE `cars`
   ADD PRIMARY KEY (`License_Plate`),
-  ADD KEY `cars_stands` (`Stand_Id`);
+  ADD KEY `cars_stands` (`Stand_Id`),
+  ADD KEY `Brands` (`Brand`),
+  ADD KEY `Models` (`Model`);
 
 --
--- Índices para tabela `stands`
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`News_Id`),
+  ADD KEY `News_Stand_Id` (`Stand_Id`),
+  ADD KEY `News_User_Id` (`User_Id`);
+
+--
+-- Indexes for table `stands`
 --
 ALTER TABLE `stands`
   ADD PRIMARY KEY (`Stand_Id`),
-  ADD KEY `stands_users` (`User_Id`);
+  ADD KEY `stands_users` (`User_Id`),
+  ADD KEY `Names` (`Name`);
 
 --
--- Índices para tabela `users`
+-- Indexes for table `stand_ban`
+--
+ALTER TABLE `stand_ban`
+  ADD PRIMARY KEY (`Stand_ban`),
+  ADD KEY `Stand_Id` (`Stand_id`),
+  ADD KEY `UI` (`User_Id`);
+
+--
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`User_Id`);
+  ADD PRIMARY KEY (`User_Id`),
+  ADD UNIQUE KEY `Names` (`Name`),
+  ADD KEY `Email` (`Email`);
 
 --
--- AUTO_INCREMENT de tabelas despejadas
+-- Indexes for table `users_ban`
+--
+ALTER TABLE `users_ban`
+  ADD PRIMARY KEY (`User_ban`),
+  ADD KEY `User_ban_Id` (`User_ban_id`),
+  ADD KEY `User_Id` (`User_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de tabela `stands`
+-- AUTO_INCREMENT for table `news`
+--
+ALTER TABLE `news`
+  MODIFY `News_Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stands`
 --
 ALTER TABLE `stands`
-  MODIFY `Stand_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Stand_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de tabela `users`
+-- AUTO_INCREMENT for table `stand_ban`
+--
+ALTER TABLE `stand_ban`
+  MODIFY `Stand_ban` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `User_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `User_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Restrições para despejos de tabelas
+-- AUTO_INCREMENT for table `users_ban`
+--
+ALTER TABLE `users_ban`
+  MODIFY `User_ban` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
 --
 
 --
@@ -153,10 +254,31 @@ ALTER TABLE `cars`
   ADD CONSTRAINT `cars_stands` FOREIGN KEY (`Stand_Id`) REFERENCES `stands` (`Stand_Id`);
 
 --
+-- Limitadores para a tabela `news`
+--
+ALTER TABLE `news`
+  ADD CONSTRAINT `News_Stand_Id` FOREIGN KEY (`Stand_Id`) REFERENCES `stands` (`Stand_Id`),
+  ADD CONSTRAINT `News_User_Id` FOREIGN KEY (`User_Id`) REFERENCES `users` (`User_Id`);
+
+--
 -- Limitadores para a tabela `stands`
 --
 ALTER TABLE `stands`
   ADD CONSTRAINT `stands_users` FOREIGN KEY (`User_Id`) REFERENCES `users` (`User_Id`);
+
+--
+-- Limitadores para a tabela `stand_ban`
+--
+ALTER TABLE `stand_ban`
+  ADD CONSTRAINT `Stand_Id` FOREIGN KEY (`Stand_id`) REFERENCES `stands` (`Stand_Id`),
+  ADD CONSTRAINT `UI` FOREIGN KEY (`User_Id`) REFERENCES `users` (`User_Id`);
+
+--
+-- Limitadores para a tabela `users_ban`
+--
+ALTER TABLE `users_ban`
+  ADD CONSTRAINT `User_Id` FOREIGN KEY (`User_id`) REFERENCES `users` (`User_Id`),
+  ADD CONSTRAINT `User_ban_Id` FOREIGN KEY (`User_ban_id`) REFERENCES `users` (`User_Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

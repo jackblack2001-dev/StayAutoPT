@@ -24,7 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty(trim($_POST["TXT_Phone"]))) {
         $Phone_ERROR = "Insira um Número de Telefone";
-    } else {
+    } else if(strlen(trim($_POST["TXT_Phone"]))>9 || strlen(trim($_POST["TXT_Phone"]))<9){
+        $Phone_ERROR = "Por favor Introduza um Número de Telefone Válido";
+    }else {
         $Phone = trim($_POST["TXT_Phone"]);
     }
 
@@ -103,7 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="password" class="form-control" name="TXT_Password" value="<?php echo $Password ?>">
                         <label class="text-danger"><?php echo $Password_ERROR ?></label><br>
                         Repetir Palavra-passe
-                        <input type="password" class="form-control" name="TXT_REPassword" value="<?php echo $REPassword ?>">
+                        <input type="password" class="form-control" name="TXT_REPassword"
+                            value="<?php echo $REPassword ?>">
                         <label class="text-danger"><?php echo $REPassword_ERROR ?></label><br>
 
                         <button class="btn btn-danger" type="submit">Registar</button>

@@ -1,15 +1,7 @@
 <?php
 include('../Master.php');
-include_once('../assets/stand_user.php');
-include_once('../assets/carcard.php');
-include_once('../Public/config.php');
 
-$ERROR_No_Data_Stand = false;
-$ERROR_No_Data_Car = false;
-
-$data[] = returnStand($_SESSION["Id"], $con);
-
-if (!is_null($data[0])) {
+/* if (!is_null($data[0])) {
     $id = $data[0]['Stand_Id'];
     $sql = "SELECT * FROM Cars WHERE Stand_id = '$id' LIMIT 10";
     if ($Result = $con->query($sql)) {
@@ -19,7 +11,7 @@ if (!is_null($data[0])) {
             }
         } else $ERROR_No_Data_Car = true;
     }
-} else $ERROR_No_Data_Stand = true;
+} else $ERROR_No_Data_Stand = true; */
 
 ?>
 
@@ -37,57 +29,14 @@ if (!is_null($data[0])) {
                 <h4>Ultimos carros adicionados</h4>
             </div>
             <div class="col-sm-2">
-                <a href="CarRegister.php" class="btn btn-outline-success">Adicionar Carro</a>
+                <a href="CarRegister.php" class="btn btn-outline-success float-right">Adicionar Carro</a>
             </div>
         </div>
-        <hr>
-        <div class="table-responsive">
+        <hr class="mb-4">
+        <div class="table-responsive" style="margin:auto">
             <table class="table">
-                <?php
-                $fuel = $typegear = "";
-                if (!$ERROR_No_Data_Car) {
-                    foreach ($cars as $row) {
-
-                        if($row['Type_Fuel'] == 0){
-                            $fuel = "Gasolina";
-                        }else{
-                            $fuel = "Diesel";
-                        }
-
-                        if($row['Type_Gear'] == 0){
-                            $typegear = "Manual";
-                        }else if($row['Type_Gear'] == 1){
-                            $typegear = "Automático";
-                        }
-                        else{
-                            $typegear = "CVT";
-                        }
-
-                        echo "<div class='col-sm-4'>
-                        </br>
-                        <div class='card' style='width: 350px'>
-                            <img class='card-img-top' src='/Public/Images/Fotos/Carros/".''.".jpg' alt='Card image' style='width: 100%, heigth= 50%'>
-                            <div class='card-body'>
-                                <h4 class='card-title'>".$row['Brand']." ".$row['Model']." - ".$row['Price']."€</h4>
-                                <p class='card-text text-right'>".$row['Year']."</p>
-                                <p class='card-text text-right'>".$fuel." / ".$typegear."</p>
-                                <p class='card-text'>".$row['Kms']." Km</p>
-                                <p class='card-text'>".$row['Description']."</p>
-                                #Botao para editar
-                            </div>
-                        </div>
-                        </br>
-                    </div>";
-                    }
-                } else {
-                    echo '<div style="border-width:3px;border-style:dashed; color: lightgray">
-                        <br>
-                        <h3 class="text-center">
-                            Ainda não adicionou nenhum Carro
-                        </h3>
-                        <br>
-                    </div>';
-                } ?>
+                <div class="row" id="TabLast5">
+                </div>
             </table>
         </div>
 
@@ -97,18 +46,15 @@ if (!is_null($data[0])) {
             <div class="col">
                 <h4>Todos os carros</h4>
             </div>
-            <div class="col-sm-2" style="padding-right: 40px">
-                <input type="text" placeholder="Procurar" class="form-control">
+            <div class="col-sm-2" style="padding-left: 40px">
+                <input type="text" placeholder="Procurar" class="form-control float-right" onkeyup="CCS(this.value)" id="Search">
             </div>
         </div>
-        <hr>
+        <hr class="mb-4">
         <div class="table-responsive">
             <table class="table">
-                <?php 
-                echo ShowCarCars($data,"SELECT * FROM Cars WHERE Stand_id = '$id'",$con);
-                //UwU es gay
-                //UwU dorifto
-                ?>
+                <div class="row" id="TabSearch">
+                </div>
             </table>
         </div>
     </div>
@@ -118,16 +64,48 @@ if (!is_null($data[0])) {
 </body>
 
 <script>
-var div1 = document.getElementById("Main_div");
+window.onload = function() {
+    CCSL5();
+    CCS("");
+};
+
+function CCSL5() {
+    $.ajax({
+        type: "GET",
+        url: "../assets/carcard.php",
+        data: {
+            SCCL5: true
+        },
+        success: function(response) {
+            $("#TabLast5").html(response);
+        }
+    });
+};
+
+function CCS(str) {
+    $.ajax({
+        type: "GET",
+        url: "../assets/carcard.php",
+        data: {
+            SCCL5: false,
+            search: str
+        },
+        success: function(response) {
+            $("#TabSearch").html(response);
+        }
+    });
+};
+
+/* var div1 = document.getElementById("Main_div");
 var div2 = document.getElementById("Error_div");
-var aux = < ? php echo json_encode($ERROR_No_Data_Stand); ? > ;
+var aux = php echo json_encode($ERROR_No_Data_Stand);
 if (aux == true) {
     div1.style.display = 'none';
     div2.style.display = 'block';
 } else {
     div2.style.display = 'none';
     div1.style.display = 'block';
-}
+} */
 </script>
 
 </html>
