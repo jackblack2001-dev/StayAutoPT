@@ -34,6 +34,7 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
         $Type_Gear_ERROR= "Selecione o tipo de Transmição";
         else 
            $Type_Gear=$_POST["SEL_GearBox"];
+       
       
 
       
