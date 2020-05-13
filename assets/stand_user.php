@@ -26,7 +26,7 @@ function returnStandsViews($con)
                 return $row;
             }
             else{
-                return $data;
+                return null;
             }
         }
     }

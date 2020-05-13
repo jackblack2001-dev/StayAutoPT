@@ -12,65 +12,56 @@ $Users[] = returnUsersCount($con);
 $BMR[] = ThreeMoreRentable($con);
 $B = null;
 $P = null;
+$E = false;
 
-if($BMR[0] != null){
-    foreach($BMR as $rows){
-        foreach($rows as $row)
-        {
+if ($BMR[0] != null) {
+    foreach ($BMR as $rows) {
+        foreach ($rows as $row) {
             $B[] = $row["Brand"];
             $P[] = $row["Price"];
         }
     }
+} else {
+    $E = true;
+    $B = ["0", "0", "0"];
+    $P = [0, 0, 0];
 }
 
-$UsersC[] = returnUsersCountType(1,$con);
-$UsersE[] = returnUsersCountType(2,$con);
+$UsersC[] = returnUsersCountType(1, $con);
+$UsersE[] = returnUsersCountType(2, $con);
 ?>
 <!DOCTYPE html>
 
 <body>
     <style>
-    .container-fluid {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
+        .border-left-primary {
+            border-left: .25rem solid #4e73df !important;
+        }
 
-    .text-dark {
-        color: #5a5c69 !important;
-    }
+        .border-left-success {
+            border-left: .25rem solid #1cc88a !important;
+        }
 
-    .card {
-        border: 1px #8c8e8cd1;
-    }
+        .border-left-warning {
+            border-left: .25rem solid #f6c23e !important;
+        }
 
-    .border-left-primary {
-        border-left: .25rem solid #4e73df !important;
-    }
+        .border-left-danger {
+            border-left: .25rem solid #e74a3b !important;
+        }
 
-    .border-left-success {
-        border-left: .25rem solid #1cc88a !important;
-    }
+        .aling-items-center {
+            align-items: center !important;
+        }
 
-    .border-left-warning {
-        border-left: .25rem solid #f6c23e !important;
-    }
+        .no-gutters {
+            margin-right: 0;
+            margin-left: 0;
+        }
 
-    .border-left-danger {
-        border-left: .25rem solid #e74a3b !important;
-    }
-
-    .aling-items-center {
-        align-items: center !important;
-    }
-
-    .no-gutters {
-        margin-right: 0;
-        margin-left: 0;
-    }
-
-    .text-xs {
-        font-size: .7rem;
-    }
+        .text-xs {
+            font-size: .7rem;
+        }
     </style>
 
     <div class="container-fluid">
@@ -101,7 +92,7 @@ $UsersE[] = returnUsersCountType(2,$con);
                                     Número Total de Visualizações
                                 </div>
                                 <div class="text-dark font-weight-bold h5 mb-0">
-                                    <?php echo $Stand[0]["Views"] + $Cars[0]["Views"]?>
+                                    <?php echo $Stand[0]["Views"] + $Cars[0]["Views"] ?>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +108,7 @@ $UsersE[] = returnUsersCountType(2,$con);
                                     Número Total de Utilizadores
                                 </div>
                                 <div class="text-dark font-weight-bold h5 mb-0">
-                                    <?php echo $Users[0]["Users"]?>
+                                    <?php echo $Users[0]["Users"] ?>
                                 </div>
                             </div>
                         </div>
@@ -127,10 +118,25 @@ $UsersE[] = returnUsersCountType(2,$con);
         </div>
         <div class="row">
             <div class="col-lg-8 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-7 col-md-8">
+                                <h6>Pesquisa Global</h6>
+                            </div>
+                            <div class="col-sm-5 col-md-4 text-right">
+                                <input placeholder="#Tags, Palavras-chave..." type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="small"></h4>
+                    </div>
+                </div>
+
                 <div class="card shadow">
                     <div class="card-header">
-                        <h6>Estatisticas <img src="<?php echo ROOT_PATH?>Icons/pie-chart.svg"
-                                style="margin-bottom: 5px;width: 20px;height: 20px;"></img></h6>
+                        <h6>Estatisticas <img src="<?php echo ROOT_PATH ?>Icons/pie-chart.svg" style="margin-bottom: 5px;width: 20px;height: 20px;"></img></h6>
                     </div>
                     <div class="card-body">
                         <h4 class="small"></h4>
@@ -140,19 +146,36 @@ $UsersE[] = returnUsersCountType(2,$con);
             <div class="col-lg-4">
                 <div class="card shadow mb-4">
                     <div class="card-header">
-                        <h6>As 3 Marcas Mais Rentáveis (€)</h6>
+                        <div class="row">
+                            <div class="col-sm-10 col-md-10">
+                                <h6>As 3 Marcas Mais Rentáveis (€)</h6>
+                            </div>
+                            <div class="col-sm-2 col-md-2 text-right">
+                                <a type="button" onclick="HR_CBTMR()"><img src="<?php echo ROOT_PATH ?>Icons/arrows-collapse.svg" style="width: 20px; height: 20px" id="IMG_CBTMR"></a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="CBTMR">
                         <canvas id="threeMoreRentable">
                         </canvas>
+                        <div class="text-center rounded" id="TMRError" style="display:none; border-width:3px; border-style:dashed; color: lightslategrey">
+                            Sem dados Suficientes
+                        </div>
                     </div>
                 </div>
 
                 <div class="card shadow mb-4">
                     <div class="card-header">
-                        <h6>Tipo de Utilizadores</h6>
+                        <div class="row">
+                            <div class="col-sm-10 col-md-10">
+                                <h6>Tipo de Utilizadores</h6>
+                            </div>
+                            <div class="col-sm-2 col-md-2 text-right">
+                                <a type="button" onclick="HR_CBUP()"><img src="<?php echo ROOT_PATH ?>Icons/arrows-collapse.svg" style="width: 20px; height: 20px" id="IMG_CBUP"></a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="CBUP">
                         <canvas id="UsersPercentage">
                         </canvas>
                     </div>
@@ -163,82 +186,117 @@ $UsersE[] = returnUsersCountType(2,$con);
     </div>
 </body>
 
-<script src="<?=ROOT_PATH?>bootstrap/js/mdb.js"></script>
+<script src="<?= ROOT_PATH ?>bootstrap/js/mdb.js"></script>
 <script>
-window.onload = function() {
-    ChartTMR();
-    ChartUP();
-};
+    var aux = "<?php echo $E ?>";
 
-function ChartTMR() {
-    var ctxP = document.getElementById("threeMoreRentable").getContext('2d');
-    var myPieChart = new Chart(ctxP, {
-        plugins: [ChartDataLabels],
-        type: 'pie',
-        data: {
-            labels: ["<?php echo $B[0]?>", "<?php echo $B[1]?>", "<?php echo $B[2]?>"],
-            datasets: [{
-                data: [<?php echo $P[0]?>, <?php echo $P[1]?>, <?php echo $P[2]?>],
-                backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
-                hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
-            }]
-        },
-        options: {
-            responsive: true,
+    window.onload = function() {
+        var TMR = document.getElementById("threeMoreRentable");
+        var TMRError = document.getElementById("TMRError");
+
+        if (aux == 1) {
+            TMR.style.display = "none";
+            TMRError.style.display = "block";
+        } else {
+            ChartTMR();
         }
-    });
-}
+        ChartUP();
+    };
 
-function ChartUP() {
-    var Cli = <?php echo $UsersC[0]["Clientes"] ?> ;
-    var Emp = <?php echo $UsersE[0]["Empresarios"] ?> ;
-
-    var ctxF = document.getElementById("UsersPercentage").getContext('2d');
-
-    var myPieChart = new Chart(ctxF, {
-        plugins: [ChartDataLabels],
-        type: 'pie',
-        data: {
-            labels: ["Clientes", "Empresários"],
-            datasets: [{
-                data: [Cli, Emp],
-                backgroundColor: ["#F7464A", "#46BFBD"],
-                hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
-            }]
-        },
-        options: {
-            responsive: true,
-            legend: {
-                position: 'right',
-                labels: {
-                    padding: 20,
-                    boxWidth: 10
-                }
+    function ChartTMR() {
+        var ctxP = document.getElementById("threeMoreRentable").getContext('2d');
+        var myPieChart = new Chart(ctxP, {
+            plugins: [ChartDataLabels],
+            type: 'pie',
+            data: {
+                labels: ["<?php echo $B[0] ?>", "<?php echo $B[1] ?>", "<?php echo $B[2] ?>"],
+                datasets: [{
+                    data: [<?php echo $P[0] ?>, <?php echo $P[1] ?>, <?php echo $P[2] ?>],
+                    backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
+                    hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
+                }]
             },
-            plugins: {
-                datalabels: {
-                    formatter: (value, ctx) => {
-                        let sum = 0;
-                        let dataArr = ctx.chart.data.datasets[0].data;
-                        dataArr.map(data => {
-                            sum += data;
-                        });
-                        let percentage = (value * 100 / sum).toFixed(2) + "%";
-                        return percentage;
-                    },
-                    color: 'white',
+            options: {
+                responsive: true,
+            }
+        });
+
+    }
+
+    function ChartUP() {
+        var Cli = <?php echo $UsersC[0]["Clientes"] ?>;
+        var Emp = <?php echo $UsersE[0]["Empresarios"] ?>;
+
+        var ctxF = document.getElementById("UsersPercentage").getContext('2d');
+
+        var myPieChart = new Chart(ctxF, {
+            plugins: [ChartDataLabels],
+            type: 'pie',
+            data: {
+                labels: ["Clientes", "Empresários"],
+                datasets: [{
+                    data: [Cli, Emp],
+                    backgroundColor: ["#F7464A", "#46BFBD"],
+                    hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'right',
                     labels: {
-                        title: {
-                            font: {
-                                size: '16'
+                        padding: 20,
+                        boxWidth: 10
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                            let sum = 0;
+                            let dataArr = ctx.chart.data.datasets[0].data;
+                            dataArr.map(data => {
+                                sum += data;
+                            });
+                            let percentage = (value * 100 / sum).toFixed(2) + "%";
+                            return percentage;
+                        },
+                        color: 'white',
+                        labels: {
+                            title: {
+                                font: {
+                                    size: '16'
+                                }
                             }
                         }
                     }
                 }
             }
+        });
+    }
+
+    function HR_CBTMR() {
+        var div = document.getElementById("CBTMR");
+        var img = document.getElementById("IMG_CBTMR");
+        if (div.style.display === "none") {
+            $(div).show(500);
+            img.src = "<?php echo ROOT_PATH ?>Icons/arrows-collapse.svg";
+        } else {
+            $(div).hide(500);
+            img.src = "<?php echo ROOT_PATH ?>Icons/arrows-expand.svg";
         }
-    });
-}
+    }
+
+    function HR_CBUP() {
+        var div = document.getElementById("CBUP");
+        var img = document.getElementById("IMG_CBUP");
+        if (div.style.display === "none") {
+            $(div).show(500);
+            img.src = "<?php echo ROOT_PATH ?>Icons/arrows-collapse.svg";
+        } else {
+            $(div).hide(500);
+            img.src = "<?php echo ROOT_PATH ?>Icons/arrows-expand.svg";
+        }
+    }
 </script>
 
 </html>

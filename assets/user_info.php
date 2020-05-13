@@ -33,7 +33,7 @@ function returnUsers($con)
 
 function returnUsersCount($con)
 {
-    $sql = "SELECT COUNT(*) AS Users FROM Users";
+    $sql = "SELECT COUNT(*) AS Users FROM Users WHERE Profile != 0";
 
     if($Result=$con->query($sql)){
         if($Result->num_rows == 1){
@@ -41,7 +41,7 @@ function returnUsersCount($con)
                 return $row;
             }
             else{
-                return $data;
+                return null;
             }
         }
     }
@@ -58,7 +58,7 @@ function returnUsersCountType($type,$con)
                     return $row;
                 }
                 else{
-                    return $data;
+                    return null;
                 }
             }
         }
@@ -73,7 +73,7 @@ function returnUsersCountType($type,$con)
                     return $row;
                 }
                 else{
-                    return $data;
+                    return null;
                 }
             }
         }
