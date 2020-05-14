@@ -1,5 +1,5 @@
 <?php
-
+#region SELECT 
 function returnUser($id, $con)
 {
     if (isset($id)) {
@@ -94,3 +94,11 @@ function returnUsersSearch($con,$search)
             return null;
         }
 }
+#endregion
+
+#region UPDATE
+function UpdatePhone($phone,$id){
+    $sql = "UPDATE Users SET Phone = $phone WHERE User_Id = $id";
+    
+}
+#endregion

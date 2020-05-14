@@ -29,23 +29,11 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
        $Kms_ERROR = "Por favor introduza os kilometros do veiculo"; 
    
        //verify Type_gear
-<<<<<<< HEAD
 
         if($_POST["SEL_GearBox"] <1 && $_POST["SEL_GearBox"]>3)
         $Type_Gear_ERROR= "Selecione o tipo de Transmição";
         else 
-           $Type_Gear=$_POST["SEL_GearBox"];
-       
-      
-
-      
-    
-=======
-            if(!isset($_POST["SEL_GearBox"]))
-            $Type_Gear_ERROR= "Selecione o tipo de Transmição";
-            else 
-            $Type_Gear=$_POST["SEL_GearBox"];
->>>>>>> 2b9b35b537d7e5ceea5f00d80dd5f935afad49af
+           $Type_Gear=$_POST["SEL_GearBox"];  
 
        //verify Brand
        if(strlen(trim($_POST["TXT_Brand"]))==0)
@@ -221,22 +209,6 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
 </body>
 
 <script>
-function setInputFilter(textbox, inputFilter) {
-    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
-        textbox.addEventListener(event, function() {
-            if (inputFilter(this.value)) {
-                this.oldValue = this.value;
-                this.oldSelectionStart = this.selectionStart;
-                this.oldSelectionEnd = this.selectionEnd;
-            } else if (this.hasOwnProperty("oldValue")) {
-                this.value = this.oldValue;
-                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-            } else {
-                this.value = "";
-            }
-        });
-    });
-}
 
 setInputFilter(document.getElementById("intYear"), function(value) {
     return /^-?\d*$/.test(value);

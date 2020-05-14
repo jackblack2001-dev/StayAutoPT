@@ -1,7 +1,7 @@
 <?php
 session_start();
-define("ROOT_PATH", "http://".$_SERVER["HTTP_HOST"]."/StayAuto_PT/"); 
-define("INCLUDE_PATH",__DIR__);
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("INCLUDE_PATH", __DIR__);
 ?>
 <!DOCTYPE html>
 <html lang="pt-PT">
@@ -107,5 +107,24 @@ define("INCLUDE_PATH",__DIR__);
         </div>
     </nav>
 </body>
+
+<script>
+    function setInputFilter(textbox, inputFilter) {
+        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+            textbox.addEventListener(event, function() {
+                if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                } else {
+                    this.value = "";
+                }
+            });
+        });
+    }
+</script>
 
 </html>
