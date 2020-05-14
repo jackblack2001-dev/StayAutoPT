@@ -29,10 +29,23 @@ if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
        $Kms_ERROR = "Por favor introduza os kilometros do veiculo"; 
    
        //verify Type_gear
+<<<<<<< HEAD
+
+        if($_POST["SEL_GearBox"] <1 && $_POST["SEL_GearBox"]>3)
+        $Type_Gear_ERROR= "Selecione o tipo de Transmição";
+        else 
+           $Type_Gear=$_POST["SEL_GearBox"];
+       
+      
+
+      
+    
+=======
             if(!isset($_POST["SEL_GearBox"]))
             $Type_Gear_ERROR= "Selecione o tipo de Transmição";
             else 
             $Type_Gear=$_POST["SEL_GearBox"];
+>>>>>>> 2b9b35b537d7e5ceea5f00d80dd5f935afad49af
 
        //verify Brand
        if(strlen(trim($_POST["TXT_Brand"]))==0)

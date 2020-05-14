@@ -1,7 +1,12 @@
 <?php
 session_start();
+<<<<<<< HEAD
+define("ROOT_PATH", "http://".$_SERVER["HTTP_HOST"]."/StayAutoPT/"); 
+define("INCLUDE_PATH",__DIR__);
+=======
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
+>>>>>>> 2b9b35b537d7e5ceea5f00d80dd5f935afad49af
 ?>
 <!DOCTYPE html>
 <html lang="pt-PT">
