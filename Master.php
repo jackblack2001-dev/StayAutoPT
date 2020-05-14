@@ -66,7 +66,7 @@ define("INCLUDE_PATH", __DIR__);
                             <ul class="dropdown-menu dropdown-menu-left">
                             <a class="dropdown-item" href="' . ROOT_PATH . 'User_Admin/Index_Users.php">Utilizadores</a>
                             <a class="divider"></a>
-                            <a class="dropdown-item" href="' . ROOT_PATH . 'User_Admin/Index_Stands.php">Stands</a>
+                            <a class="dropdown-item text-danger" href="' . ROOT_PATH . 'User_Admin/Index_Ban.php">Denuncias</a>
                             </li>
                         </div>';
                     } else if (isset($_SESSION['Profile']) && $_SESSION['Profile'] == '2') {

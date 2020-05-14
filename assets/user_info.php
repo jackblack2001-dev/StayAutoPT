@@ -17,18 +17,18 @@ function returnUser($id, $con)
     }
 }
 
-function returnUsers($con)
+function returnUsers($con,$id)
 {
-        $sql = "SELECT * FROM Users";
-        $Result = $con->query($sql);
-        if ($Result->num_rows >= 1) {
-            while($row = $Result->fetch_array()) {
-                $Users[] = $row;
-            }
-            return $Users;
-        } else {
-            return null;
+    $sql = "SELECT * FROM Users WHERE User_Id != $id";
+    $Result = $con->query($sql);
+    if ($Result->num_rows >= 1) {
+        while($row = $Result->fetch_array()) {
+            $Users[] = $row;
         }
+        return $Users;
+    } else {
+        return null;
+    }
 }
 
 function returnUsersCount($con)

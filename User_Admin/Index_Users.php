@@ -14,28 +14,47 @@ include_once("../Master.php");
                 <div class="card shadow">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-md-2">
-                                <select class="form-control" name="SEL_Fuel">
-                                    <option value="" disabled selected>Filtrar</option>
-                                    <option value="1">Todos</option>
-                                    <option value="2">Utilizadores</option>
+                            <div class="col-md-2 col-sm-4">
+                                <select class="form-control" id="SEL_Type" onchange="overload('')">
+                                    <option value="3" selected>Todos</option>
+                                    <option value="1">Clientes</option>
                                     <option value="2">Empresários</option>
-                                    <option value="2">Admins</option>
+                                    <option value="0">Admins</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-3">
 
                             </div>
-                            <div class="col-md-4">
-                                <input placeholder="#Nome, #Email, #Telemovel" type="text" class="form-control">
+                            <div class="col-md-4 col-sm-5">
+                                <input placeholder="#Nome, #Email, #Telemovel" type="text" class="form-control" onkeyup="overload(this.value)">
                             </div>
                         </div>
                     </div>
 
-                    <div id="TabUsers">
-                        <div class="card-body" style="border: 1px solid rgba(0, 0, 0, 0.1);">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-3 col-sm-3 text-uppercase font-weight-bold text-xs">
+                                Email
+                            </div>
+                            <div class="col-md-3 col-sm-3 text-uppercase font-weight-bold text-xs">
+                                Nome
+                            </div>
+                            <div class="col-md-1 col-sm-2 text-uppercase font-weight-bold text-xs">
+                                Perfil
+                            </div>
+                            <div class="col-md-2 col-sm-2 text-uppercase font-weight-bold text-xs">
+                                Ultima Atualização
+                            </div>
+                            <div class="col-md-2 col-sm-2 text-center">
+                            </div>
                         </div>
+                        <hr style="border: 1px solid rgba(0, 0, 0, 0.2);">
+
+                        <div id="TabUsers"></div>
                     </div>
+
                 </div>
             </div>
             <div class="col-md-1">
@@ -46,11 +65,16 @@ include_once("../Master.php");
 </body>
 
 <script>
+    $(document).ready(function() {
+        overload("");
+    });
+
     function overload(str) {
         $.ajax({
             type: "GET",
             url: "../assets/usercard.php",
             data: {
+                type: $("#SEL_Type :selected").val(),
                 search: str
             },
             success: function(response) {
