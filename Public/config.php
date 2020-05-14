@@ -12,6 +12,4 @@ if($con == false){
 }
 
 $con->set_charset("utf8");
-
-//dfs
 ?>
