@@ -1,38 +1,62 @@
 <?php
 include("../Master.php");
 include_once("../assets/user_info.php");
-include_once(INCLUDE_PATH . "../Public/Config.php");
+include_once("../Public/Config.php");
 
 $row = null;
-$url_id = "";
+$id = "";
+
+$IsOwner = $IsAdmin = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
 
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $row = returnUser($id, $con);
     } else {
-        $row = returnUser($_SESSION['Id'], $con);
+        $id = $_SESSION['Id'];
+        $row = returnUser($id, $con);
+    }
+
+    if ($id === $_SESSION['Id']) {
+        $IsOwner = true;
+    } else {
+        if ($_SESSION['Profile'] === 0) {
+            $IsAdmin = true;
+        }
     }
 
     $datetime = explode(" ", $row["createdAccount"]);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $phone = "";
-    if (isset($_POST['Email'])) {
-        if (!empty($_POST['Email'])) {
-            $email = $_POST['Email'];
-            //Enviar Mail de confirmação a criatura
+
+    if (isset($_POST['id'])) {
+        $id = $_POST['id'];
+
+        $email = $phone = "";
+        if (isset($_POST['Email'])) {
+            if (!empty($_POST['Email'])) {
+                $email = $_POST['Email'];
+                //Enviar Mail de confirmação a criatura
+            }
         }
-    }
 
-    if(isset($_POST['Phone'])){
-        if(!empty($_POST['Phone'])){
-            $phone = $_POST['Phone'];
+        if (isset($_POST['Phone'])) {
+            if (!empty($_POST['Phone'])) {
+                $phone = $_POST['Phone'];
 
-
+                $error = UpdatePhone($phone, $id, $con);
+                if (!$error) {
+                    //error
+                }
+            }
         }
+    } else {
+        //error
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -99,12 +123,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm">
+                <a class="btn btn-outline-primary mt-4" href="<?phP echo ROOT_PATH ?>User_Admin/Index_Users.php" id="BTN_Back">Voltar</a>
             </div>
             <div class="col-xl col-md">
                 <img class="text-center Img_Banner" src="../Public/Images/User_Banners/defult_profile_banner.jpg" />
                 <div class="div-overlay">
                     <img class="rounded-circle Img_Profile" src="../Public/Images/Profile/defult_user.jpg" />
-                    <div class="overlay">
+                    <div class="overlay" id="overlay">
                         <button>Teste</button>
                     </div>
                 </div>
@@ -173,6 +198,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
             <div class="col-sm">
+                <div class="card shadow mt-4">
+                    <div class="card-body">
+                        depois
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -180,6 +210,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 <script>
+    $(document).ready(function() {
+        var IsOwner = "<?= $IsOwner ?>"
+        var IsAdmin = "<?= $IsAdmin ?>"
+
+        if (IsOwner) {
+            $("#BTN_Back").remove();
+        } else if (IsAdmin) {
+            //barrita do admin
+        }else{
+            $("#BTN_Edit").remove();
+            $("#overlay").remove();
+        }
+    })
+
     setInputFilter(document.getElementById("IP"), function(value) {
         return /^-?\d*$/.test(value);
     })
@@ -210,6 +254,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $("#LIP").text("Número de telemovel incorreto");
                 $("#LIP").show();
                 return false;
+            } else {
+                return true;
             }
         } else {
             return true;
@@ -217,6 +263,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     function Edit() {
+        var id = "<?php echo $id ?>";
+
         var button = document.getElementById("BTN_Edit");
         var inputEmail = document.getElementById("IE");
         var inputPhone = document.getElementById("IP");
@@ -238,8 +286,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 url: "<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>",
                 data: {
                     Email,
-                    Phone
+                    Phone,
+                    id
                 },
+                success: function() {
+                    if (Email != "") {
+                        inputEmail.placeholder = Email;
+                    }
+                    if (Phone != "") {
+                        inputPhone.placeholder = Phone;
+                    }
+                    $(inputEmail).val("");
+                    $(inputPhone).val("");
+                }
             })
         }
     }

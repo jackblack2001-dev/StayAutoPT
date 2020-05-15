@@ -1,4 +1,5 @@
 <?php
+include_once("Master.php");
 
 ?>
 <!DOCTYPE html>
@@ -11,9 +12,6 @@
 </head>
 
 <body>
-
-    <div><?php include("Master.php");?></div>
-
 </body>
 
 </html>

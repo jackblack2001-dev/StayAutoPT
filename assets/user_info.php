@@ -97,8 +97,12 @@ function returnUsersSearch($con,$search)
 #endregion
 
 #region UPDATE
-function UpdatePhone($phone,$id){
+function UpdatePhone($phone,$id,$con){
     $sql = "UPDATE Users SET Phone = $phone WHERE User_Id = $id";
-    
+    if($con->query($sql) != true){
+        return false;
+    }else{
+        return true;
+    }
 }
 #endregion
