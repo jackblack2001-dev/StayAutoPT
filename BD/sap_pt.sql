@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 12-Maio-2020 às 17:57
+-- Generation Time: 18-Maio-2020 às 16:43
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 7.2.12
 
@@ -50,12 +50,12 @@ CREATE TABLE `cars` (
 --
 
 INSERT INTO `cars` (`License_Plate`, `Stand_Id`, `Kms`, `Year`, `Type_Gear`, `Brand`, `Model`, `Type_Fuel`, `Price`, `Description`, `State`, `Views`, `CreatedCar`, `UpdatedCar`) VALUES
-('66-66-66', 1, 2147483647, 1966, 1, 'carroça', 'velha', 1, 10000000, 'é um carro meuito velho que merece respeito', 1, 1, '2020-05-05 11:11:12', '2020-05-12 15:01:30'),
-('A5-55-GG', 1, 100000, 1999, 0, 'Null', 'Not null', 0, 12000, 'GG master', 1, 0, '2020-03-11 07:36:16', '0000-00-00 00:00:00'),
-('A5-66-GG', 1, 100000, 1999, 0, 'Null', 'sfgh', 0, 12000, 'GG master', 1, 0, '2020-03-21 12:26:00', '2020-03-21 12:30:52'),
-('B4-66-34', 1, 1020110, 2001, 1, 'Opel', 'Corsa', 1, 8000, 'fd sfase fsdfs faes gf', 1, 0, '2020-05-05 10:32:52', '2020-05-05 10:42:57'),
-('GG-86-L5', 1, 1020110, 2010, 2, 'Astron', 'Martin', 1, 999999999, 'Este carro é demasiado caro para o teu bolso', 1, 0, '2020-05-05 10:34:50', '2020-05-05 10:42:24'),
-('GH-76-6K', 1, 0, 2020, 1, 'Ford', 'Focus RXT Defenitive Version Master Id', 1, 999, 'Este modelo e muito fixe', 1, 1, '2020-05-05 10:51:23', '2020-05-12 15:02:08');
+('66-66-66', 1, 2147483647, 1966, 1, 'carroça', 'velha', 1, 10000000, 'é um carro meuito velho que merece respeito', 1, 1, '2020-05-05 11:11:12', '2020-05-12 18:34:35'),
+('A5-55-GG', 1, 100000, 1999, 0, 'Null', 'Not null', 0, 12000, 'GG master', 2, 0, '2020-03-11 07:36:16', '2020-05-12 17:51:51'),
+('A5-66-GG', 1, 100000, 1999, 0, 'Null', 'sfgh', 0, 12000, 'GG master', 2, 0, '2020-03-21 12:26:00', '2020-05-12 17:51:46'),
+('B4-66-34', 1, 1020110, 2001, 1, 'Opel', 'Corsa', 1, 8000, 'fd sfase fsdfs faes gf', 2, 0, '2020-05-05 10:32:52', '2020-05-12 18:29:14'),
+('GG-86-L5', 1, 1020110, 2010, 2, 'Astron', 'Martin', 1, 999999999, 'Este carro é demasiado caro para o teu bolso', 1, 0, '2020-05-05 10:34:50', '2020-05-12 18:29:05'),
+('GH-76-6K', 1, 0, 2020, 1, 'Ford', 'Focus RXT Defenitive Version Master Id', 1, 999, 'Este modelo e muito fixe', 2, 1, '2020-05-05 10:51:23', '2020-05-12 18:34:42');
 
 -- --------------------------------------------------------
 
@@ -95,7 +95,8 @@ CREATE TABLE `stands` (
 --
 
 INSERT INTO `stands` (`Stand_Id`, `User_Id`, `Phone`, `Adress`, `Locality`, `Name`, `Views`, `CreatedStand`, `UpdatedStand`) VALUES
-(1, 1, '889377722', 'Avenida da belgica 101', 'Viseu', 'Carros&Familia LDA', 0, '0000-00-00 00:00:00', NULL);
+(1, 1, '889377722', 'Avenida da belgica 101', 'Viseu', 'Carros&Familia LDA', 1, '0000-00-00 00:00:00', '2020-05-18 10:16:18'),
+(2, 5, '889377722', 'Rua das Ruas 101', 'Viseu', 'CarrosCarinhos', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -136,9 +137,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`User_Id`, `Name`, `Email`, `Phone`, `Profile`, `Password`, `createdAccount`, `updateAccount`) VALUES
-(1, 'David Coelho', 'ddsc2001@gmail.com', '938366677', 2, '$2y$10$rpwpf9UXeqxu/jgo7JB1TexZWwK7rFhAm4esZDojP.vJE9M/asHs6', '0000-00-00 00:00:00', NULL),
-(2, 'admin', 'admin@admin.com', '000000000', 0, '$2y$10$CDhswNyixY8rYpzRpJdqkeXqL0gi5EmB1pKkaJrhwkCj1VKG5Aq26', '2020-03-18 07:51:04', '2020-05-09 11:48:11'),
-(3, 'Teste', 'teste@teste.com', '123', 1, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', '2020-05-09 12:06:38', '2020-05-12 16:38:17');
+(1, 'David Coelho', 'ddsc2001@gmail.com', '987865674', 2, '$2y$10$rpwpf9UXeqxu/jgo7JB1TexZWwK7rFhAm4esZDojP.vJE9M/asHs6', '2019-04-10 12:15:24', '2020-05-18 10:25:34'),
+(2, 'admin', 'admin@admin.com', '938366677', 0, '$2y$10$CDhswNyixY8rYpzRpJdqkeXqL0gi5EmB1pKkaJrhwkCj1VKG5Aq26', '2020-03-18 07:51:04', '2020-05-15 11:52:30'),
+(3, 'Teste', 'teste@teste.com', '983564721', 1, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', '2020-05-09 12:06:38', '2020-05-15 11:14:24'),
+(4, 'Armindo Pereira', 'AP1980@gmail.com', '958674321', 1, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', '2020-05-13 13:17:38', '2020-05-10 16:38:17'),
+(5, 'Joes nada', 'joes@nada.pt', '383559557', 2, '$2y$10$fVF3m.LmTtfZU1X2mQIJeOYhJBXBJiZPsnswAlMdJ8yQR/BTxPi16', '2020-05-18 15:16:14', '2020-05-18 15:25:34');
 
 -- --------------------------------------------------------
 
@@ -223,7 +226,7 @@ ALTER TABLE `news`
 -- AUTO_INCREMENT for table `stands`
 --
 ALTER TABLE `stands`
-  MODIFY `Stand_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Stand_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `stand_ban`
@@ -235,7 +238,7 @@ ALTER TABLE `stand_ban`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `User_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `User_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users_ban`

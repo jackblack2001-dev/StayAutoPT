@@ -46,12 +46,10 @@ include("../includes/menu.php");
         </div>
     </div>
     <hr class="mb-4">
-    <div class="table-responsive">
-        <table class="table">
-            <div class="row" id="TabSearch">
-            </div>
-        </table>
+
+    <div class="row" id="TabSearch">
     </div>
+
 </div>
 <div id="Error_div">
     <div class="card shadow" style="width: 340px;">

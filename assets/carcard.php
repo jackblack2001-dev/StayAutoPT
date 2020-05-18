@@ -20,21 +20,21 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-function card($Name,$Price,$Year,$Kms,$Imgpath)
+function card($Name, $Price, $Year, $Kms, $Imgpath)
 {
     return "<div class='card shadow margins mb-4' style='width: 340px;'>
     <div class='card-body no-padding'>
         <div class='col no-padding'>
-            <img src='".ROOT_PATH."Public/Images/Profile/defult_user.jpg' alt='".$Name."' style='width: 100%; height: 340px'>
+            <img src='" . ROOT_PATH . "Public/Images/Profile/defult_user.jpg' alt='" . $Name . "' style='width: 100%; height: 340px'>
             <div class='bottom-right-car shadow-lg' style='background-color: #0a3f82e0;'>
-                <span style='font-size:25px'>".$Price."€</span>
+                <span style='font-size:25px'>" . $Price . "€</span>
             </div>
         </div>
         <div class='col no-padding'>
             <div class='card-title margins'>
-                <h5><small class='font-weight-bold'>".$Name."</small></h5>
-                <p class='card-text'>".$Year."</p>
-                <p class='card-text text-right'>".$Kms."km</p>
+                <h5><small class='font-weight-bold'>" . $Name . "</small></h5>
+                <p class='card-text'>" . $Year . "</p>
+                <p class='card-text text-right'>" . $Kms . "km</p>
             </div>
         </div>
     </div>
@@ -54,40 +54,38 @@ function ShowCarCarsLast5($con)
                 while ($row = $Result->fetch_array()) {
                     $cars[] = $row;
                 }
-                
+
                 $string = "";
                 $Name = "";
                 foreach ($cars as $row) {
                     $string = $row["Brand"] . " " . $row["Model"];
 
-                    if(strlen($string)>15){
-                        $Name = substr($string,0,15) . "...";
-                    }else{
+                    if (strlen($string) > 15) {
+                        $Name = substr($string, 0, 15) . "...";
+                    } else {
                         $Name = $string;
                     }
 
-                    $card .= card($Name,$row["Price"],$row["Year"],$row["Kms"],"");
+                    $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], "");
                 }
                 echo $card;
             } else
                 echo '<div class="col" style="border-width:3px;border-style:dashed; color: lightgray">
                         <br>
                         <h3 class="text-center">
-                            Sem resultados :\
+                            Ainda não inseriu nenhum carro
                         </h3>
                         <br>
                     </div>';
         }
-    } else $ERROR_No_Data_Stand = true;
+    } else return null;
 }
 
 function ShowCarCars($con)
 {
     include_once('../Public/config.php');
 
-    $ERROR_No_Data_Car = false;
     $card = "";
-    $cars = null;
     $data[] = returnStand($_SESSION["Id"], $con);
 
     if (!is_null($data[0])) {
@@ -98,54 +96,32 @@ function ShowCarCars($con)
                 while ($row = $Result->fetch_array()) {
                     $cars[] = $row;
                 }
-            } else $ERROR_No_Data_Car = true;
-        }
-    } else $ERROR_No_Data_Stand = true;
 
-    $fuel = $typegear = "";
-    if (!$ERROR_No_Data_Car) {
-        foreach ($cars as $row) {
+                $string = "";
+                $Name = "";
+                foreach ($cars as $row) {
+                    $string = $row["Brand"] . " " . $row["Model"];
 
-            if ($row['Type_Fuel'] == 0) {
-                $fuel = "Gasolina";
+                    if (strlen($string) > 15) {
+                        $Name = substr($string, 0, 15) . "...";
+                    } else {
+                        $Name = $string;
+                    }
+
+                    $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], "");
+                }
+                echo $card;
             } else {
-                $fuel = "Diesel";
+                return '<div style="border-width:3px;border-style:dashed; color: lightgray">
+                <br>
+                <h3 class="text-center">
+                    Ainda não adicionou nenhum Carro
+                </h3>
+                <br>
+            </div>';
             }
-
-            if ($row['Type_Gear'] == 0) {
-                $typegear = "Manual";
-            } else if ($row['Type_Gear'] == 1) {
-                $typegear = "Automático";
-            } else {
-                $typegear = "CVT";
-            }
-
-            $card .=  "<div class='col-md'>
-            
-            <div class='card' style='width: 340px'>
-                <img class='card-img-top' src='/Public/Images/Fotos/Carros/" . '' . ".jpg' alt='" . $row['Brand'] . " " . $row['Model'] . "' style='width: 100%, heigth= 50%'>
-                <div class='card-body'>
-                    <h4 class='card-title'>" . $row['Brand'] . " " . $row['Model'] . " - " . $row['Price'] . "€</h4>
-                    <p class='card-text text-right'>" . $row['Year'] . "</p>
-                    <p class='card-text text-right'>" . $fuel . " / " . $typegear . "</p>
-                    <p class='card-text'>" . $row['Kms'] . " Km</p>
-                    <p class='card-text'>" . $row['Description'] . "</p>
-                    #Botao para editar
-                </div>
-            </div>
-            </br>
-        </div>";
         }
-        echo $card;
-    } else {
-        return '<div style="border-width:3px;border-style:dashed; color: lightgray">
-            <br>
-            <h3 class="text-center">
-                Ainda não adicionou nenhum Carro
-            </h3>
-            <br>
-        </div>';
-    }
+    } else return null;
 }
 
 function ShowCarCarsSearch($search, $con)
