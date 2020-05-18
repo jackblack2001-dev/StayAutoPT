@@ -1,6 +1,8 @@
-<?php 
-require_once 'Public/config.php';
-
+<?php
+session_start();
+require_once('Public/config.php');
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("INCLUDE_PATH", __DIR__);
 $Email = $Password = "";
 
 $LBL_ERROR = $Email_ERROR = $Password_ERROR = "";
@@ -46,55 +48,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+include("includes/header.php");
+include("includes/menu.php");
 ?>
-<!DOCTYPE html>
-
-<head>
-    <title>Fazer Login</title>
-</head>
-
-<?php include('Master.php'); ?>
-
-<body>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h3 class="display-4 text-center">Login</h3>
-        </div>
-    </div>
-
+<div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="container-fluid">
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="form-group has-error">
-                            <label for="Email">Email</label>
-                            <input type="email" class="form-control" name="TXT_Email" value="<?php echo $Email ?>">
-                            <small class="form-text text-danger"><?php echo $Email_ERROR ?></small>
+        <h3 class="display-4 text-center">Login</h3>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="container-fluid">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="form-group has-error">
+                        <label for="Email">Email</label>
+                        <input type="email" class="form-control" name="TXT_Email" value="<?php echo $Email ?>">
+                        <small class="form-text text-danger"><?php echo $Email_ERROR ?></small>
+                    </div>
+                    <div>
+                        <label>Palavra-passe</label>
+                        <input type="password" class="form-control" name="TXT_Password">
+                        <small class="form-text text-danger"><?php echo $Password_ERROR ?></small>
+                    </div>
+                    <small class="form-text text-danger"><?php echo $LBL_ERROR ?></small>
+                    <div class="row">
+                        <div class="col">
+                            <a href="Register.php">ainda não possui conta?</a>
                         </div>
-                        <div>
-                            <label>Palavra-passe</label>
-                            <input type="password" class="form-control" name="TXT_Password">
-                            <small class="form-text text-danger"><?php echo $Password_ERROR ?></small>
+                        <div class="col-sm-2" style="padding-right: 85px">
+                            <button class="btn btn-info" type="submit">Entrar</button>
                         </div>
-                        <small class="form-text text-danger"><?php echo $LBL_ERROR ?></small>
-                        <div class="row">
-                            <div class="col">
-                                <a href="Register.php">ainda não possui conta?</a>
-                            </div>
-                            <div class="col-sm-2" style="padding-right: 85px">
-                                <button class="btn btn-info" type="submit">Entrar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <span class="border-left"></span>
-            <div class="col">
-                <div style="border: black"></div>
+                    </div>
+                </form>
             </div>
         </div>
+        <span class="border-left"></span>
+        <div class="col">
+            <div style="border: black"></div>
+        </div>
     </div>
-</body>
+</div>
 
-</html>
+<?php include("includes/footer.php") ?>

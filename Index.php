@@ -1,17 +1,9 @@
 <?php
-include_once("Master.php");
-
+session_start();
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("INCLUDE_PATH", __DIR__);
+include("includes/header.php");
+include("includes/menu.php");
 ?>
-<!DOCTYPE html>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>StayAuto Portugal</title>
-</head>
-
-<body>
-</body>
-
-</html>
+<?php include("includes/footer.php")?>
