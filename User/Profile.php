@@ -1,5 +1,7 @@
 <?php
-include("../Master.php");
+session_start();
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("INCLUDE_PATH", __DIR__);
 include_once("../assets/user_info.php");
 include_once("../Public/Config.php");
 
@@ -18,10 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $row = returnUser($id, $con);
     }
 
-    if ($id === $_SESSION['Id']) {
+    if ($id == $_SESSION['Id']) {
         $IsOwner = true;
     } else {
-        if ($_SESSION['Profile'] === 0) {
+        if ($_SESSION['Profile'] == 0) {
             $IsAdmin = true;
         }
     }
@@ -57,85 +59,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+include("../includes/header.php");
+include("../includes/menu.php");
 ?>
-
-<!DOCTYPE html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
-</head>
-
-<body>
-    <style>
-        .Img_Banner {
-            height: 400px;
-            width: 940px;
-            padding-top: 20px;
-            position: relative;
-        }
-
-        .Img_Profile {
-            width: 180px;
-            height: 180px;
-            margin-left: 0px;
-            filter: blur(0px);
-        }
-
-        .overlay {
-            position: absolute;
-            top: 80px;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            width: 100%;
-            opacity: 0;
-            transition: .3s ease;
-        }
-
-        .div-overlay {
-            margin-top: -100px;
-            text-align: center;
-            vertical-align: middle;
-            position: relative;
-        }
-
-        .div-overlay:hover .overlay {
-            opacity: 1;
-        }
-
-        .Header {
-            padding-top: 17px;
-            font-size: 35px;
-            font-family: 'Open Sans', sans-serif;
-            opacity: 1;
-            filter: blur(0px) brightness(100%) contrast(100%) grayscale(0%) hue-rotate(0deg) invert(0%);
-        }
-
-        .card {
-            margin-right: 2.5rem !important;
-            margin-left: 2.5rem !important;
-        }
-    </style>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm">
-                <a class="btn btn-outline-primary mt-4" href="<?phP echo ROOT_PATH ?>User_Admin/Index_Users.php" id="BTN_Back">Voltar</a>
+            <div class="col-md-3">
+                <a class="btn btn-outline-primary mt-4" href="<?phP echo ROOT_PATH ?>User_Admin/Index_Users.php" id="BTN_Back" style="display:none;">Voltar</a>
             </div>
-            <div class="col-xl col-md">
-                <img class="text-center Img_Banner" src="../Public/Images/User_Banners/defult_profile_banner.jpg" />
+            <div class="col-md-6">
+                <img class="text-center Img_Banner shadow mt-4" src="../Public/Images/User_Banners/defult_profile_banner.jpg" />
                 <div class="div-overlay">
-                    <img class="rounded-circle Img_Profile" src="../Public/Images/Profile/defult_user.jpg" />
+                    <img class="rounded-circle Img_Profile shadow-lg" src="../Public/Images/Profile/defult_user.jpg" />
                     <div class="overlay" id="overlay">
                         <button>Teste</button>
                     </div>
                 </div>
                 <div class="text-center mb-5">
                     <h1 class="Header"><?php echo $row["Name"] ?></h1>
-                    <hr style="width: 500px;" />
+                    <hr style="width: 100%;" />
                 </div>
 
                 <div class="card shadow mb-4">
@@ -178,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="col-md-10 col-sm-10">
                                 <h5>Outras Informações</h5>
                             </div>
-                            <div class="col-md-2 col-sm-10 text-right">
+                            <div class="col-md-2 col-sm-2 text-right">
                                 <a type="button" onclick="MoreInfo()"><img src="<?php echo ROOT_PATH ?>Icons/arrows-Expand.svg" style="width: 20px; height: 20px" id="IMG_CBMI"></a>
                             </div>
                         </div>
@@ -197,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-            <div class="col-sm">
+            <div class="col-md-3">
                 <div class="card shadow mt-4">
                     <div class="card-body">
                         depois
@@ -207,7 +150,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
     </div>
-</body>
+
+    <?php include("../Includes/footer.php")?>
 
 <script>
     $(document).ready(function() {
@@ -217,8 +161,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (IsOwner) {
             $("#BTN_Back").remove();
         } else if (IsAdmin) {
+            $("#BTN_Back").show();
             //barrita do admin
         }else{
+            $("#BTN_Back").show();
             $("#BTN_Edit").remove();
             $("#overlay").remove();
         }
@@ -314,5 +260,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $("#LIP").hide();
     }
 </script>
-
-</html>

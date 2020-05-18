@@ -13,13 +13,11 @@ define("INCLUDE_PATH", __DIR__);
     <title>StayAuto Portugal</title>
 
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>bootstrap/css/fontawesome.min.css">
-    <script src="<?= ROOT_PATH ?>bootstrap/js/jquery.min.js"></script>
-    <script src="<?= ROOT_PATH ?>bootstrap/js/bootstrap.js"></script>
-</head>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap/css/fontawesome.min.css">
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
 
-<body>
     <style>
         .card {
             border: 1px #8c8e8cd1;
@@ -43,9 +41,46 @@ define("INCLUDE_PATH", __DIR__);
         .nav-link {
             padding: 0 0 0;
         }
-    </style>
 
-    <nav class="navbar navbar-expand-md navbar-light" style="background-color:darkorange">
+        .gradient-color {
+            background-color: darkorange;
+            background-image: linear-gradient(180deg, darkorange, #c54444);
+        }
+
+        .border-left-primary {
+            border-left: .25rem solid #4e73df !important;
+        }
+
+        .border-left-success {
+            border-left: .25rem solid #1cc88a !important;
+        }
+
+        .border-left-warning {
+            border-left: .25rem solid #f6c23e !important;
+        }
+
+        .border-left-danger {
+            border-left: .25rem solid #e74a3b !important;
+        }
+
+        .text-xs {
+            font-size: .7rem;
+        }
+
+        .aling-items-center {
+            align-items: center !important;
+        }
+
+        .no-gutters {
+            margin-right: 0;
+            margin-left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-md navbar-light gradient-color">
         <a class="navbar-brand" href="<?= ROOT_PATH ?>index.php">StayAuto Portugal</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -90,18 +125,17 @@ define("INCLUDE_PATH", __DIR__);
                     <a class="nav-link">|</a>
                 </li>
                 <div class="nav-item dropdown">
-                    <li>
-                        <?php $Path = ROOT_PATH . 'Public/Images/Profile/' . 'defult_user.jpg'; ?>
-                        <?php echo (!isset($_SESSION['Id']) || empty($_SESSION['Id']))
-                            ? '<a href="Login.php" class="nav-link" type="button" class="btn btn-primary"><img src="icons/person.svg" width="20px" height="20px"> Conta</a>'
-                            : '<a class="nav-link dropdown-toggle" data-toggle="dropdown">
-            <img src="' . $Path . '" Class="rounded-circle text-center"/></a>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="' . ROOT_PATH . 'User/Profile.php">Perfil</a>
-            <a class="divider"></a>
-            <a class="dropdown-item" href="' . ROOT_PATH . 'logout.php">Logout</a>
-            </ul>' ?>
-                    </li>
+                    <?php
+                    if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
+                        echo '<a href="Login.php" class="nav-link" type="button" class="btn btn-primary"><img src="' . ROOT_PATH . 'icons/person.svg" width="20px" height="20px">Conta</a>';
+                    } else {
+                        echo '<a class="nav-link dropdown-toggle" data-toggle="dropdown"><img src="' . ROOT_PATH . 'Public/Images/Profile/defult_user.jpg" Class="rounded-circle text-center"/></a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="' . ROOT_PATH . 'User/Profile.php">Perfil</a>
+                            <a class="dropdown-item" href="' . ROOT_PATH . 'logout.php">Logout</a>
+                        </ul>';
+                    }
+                    ?>
                 </div>
             </ul>
         </div>

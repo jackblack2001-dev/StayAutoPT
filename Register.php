@@ -1,6 +1,9 @@
 <?php
+session_start();
 //TODO: Alterar inserção na db para com Prepare (ver standregister)
-require_once 'Public/config.php';
+require_once('Public/config.php');
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("INCLUDE_PATH", __DIR__);
 
 $Mail = $Name = $Phone = $Password = $REPassword = "";
 
@@ -68,19 +71,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-
+include("includes/header.php");
+include("includes/menu.php");
 ?>
-<!DOCTYPE html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Registar</title>
-</head>
-
-<body>
-    <div><?php include("Master.php"); ?></div>
     <div class="container">
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -116,6 +109,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
-</body>
 
-</html>
+    <?php include("includes/footer.php")?>

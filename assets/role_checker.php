@@ -20,8 +20,9 @@ function roleUser($profile)
 
 function roleAdmin($profile)
 {
-    if (empty($profile) || $profile != '0') {
-        header('Location:' . ROOT_PATH . 'Index.php');
+    if ($profile != '0') {
+        header('Location: ../Index.php');
+        exit;
     } else {
         return null;
     }
