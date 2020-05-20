@@ -70,7 +70,6 @@ include("../includes/menu.php");
         </div>
     </div>
 </div>
-</div>
 
 <?php include("../Includes/footer.php") ?>
 

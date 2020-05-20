@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 18-Maio-2020 às 16:43
+-- Generation Time: 21-Maio-2020 às 01:01
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 7.2.12
 
@@ -86,6 +86,7 @@ CREATE TABLE `stands` (
   `Locality` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Views` int(11) DEFAULT NULL,
+  `ItemsOrder` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'card_nc',
   `CreatedStand` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UpdatedStand` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -94,9 +95,9 @@ CREATE TABLE `stands` (
 -- Extraindo dados da tabela `stands`
 --
 
-INSERT INTO `stands` (`Stand_Id`, `User_Id`, `Phone`, `Adress`, `Locality`, `Name`, `Views`, `CreatedStand`, `UpdatedStand`) VALUES
-(1, 1, '889377722', 'Avenida da belgica 101', 'Viseu', 'Carros&Familia LDA', 1, '0000-00-00 00:00:00', '2020-05-18 10:16:18'),
-(2, 5, '889377722', 'Rua das Ruas 101', 'Viseu', 'CarrosCarinhos', 0, '0000-00-00 00:00:00', NULL);
+INSERT INTO `stands` (`Stand_Id`, `User_Id`, `Phone`, `Adress`, `Locality`, `Name`, `Views`, `ItemsOrder`, `CreatedStand`, `UpdatedStand`) VALUES
+(1, 1, '889377722', 'Avenida da belgica 101', 'Viseu', 'Carros&Familia LDA', 1, 'card_n:card_c', '0000-00-00 00:00:00', '2020-05-20 16:20:54'),
+(2, 5, '889377722', 'Rua das Ruas 101', 'Viseu', 'CarrosCarinhos', 0, 'card_nc', '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -137,7 +138,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`User_Id`, `Name`, `Email`, `Phone`, `Profile`, `Password`, `createdAccount`, `updateAccount`) VALUES
-(1, 'David Coelho', 'ddsc2001@gmail.com', '987865674', 2, '$2y$10$rpwpf9UXeqxu/jgo7JB1TexZWwK7rFhAm4esZDojP.vJE9M/asHs6', '2019-04-10 12:15:24', '2020-05-18 10:25:34'),
+(1, 'David Coelho', 'ddsc2001@gmail.com', '123456789', 2, '$2y$10$rpwpf9UXeqxu/jgo7JB1TexZWwK7rFhAm4esZDojP.vJE9M/asHs6', '2019-04-10 12:15:24', '2020-05-20 11:45:58'),
 (2, 'admin', 'admin@admin.com', '938366677', 0, '$2y$10$CDhswNyixY8rYpzRpJdqkeXqL0gi5EmB1pKkaJrhwkCj1VKG5Aq26', '2020-03-18 07:51:04', '2020-05-15 11:52:30'),
 (3, 'Teste', 'teste@teste.com', '983564721', 1, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', '2020-05-09 12:06:38', '2020-05-15 11:14:24'),
 (4, 'Armindo Pereira', 'AP1980@gmail.com', '958674321', 1, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', '2020-05-13 13:17:38', '2020-05-10 16:38:17'),

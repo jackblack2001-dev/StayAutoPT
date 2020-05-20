@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StayAuto Portugal</title>
     <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>bootstrap/css/fontawesome.min.css">
+    <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>font-awesome/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
     <style>
         .card {
-            border: 1px #8c8e8cd1;
+            border: 1px groove #8c8e8c38;
         }
 
         .container-fluid {
@@ -84,12 +85,24 @@
             position: absolute;
             bottom: -15px;
             right: 30px;
-            background-color: black;
+            background-color: #0a3f82e0;
             color: white;
             padding-left: 10px;
             padding-right: 10px;
         }
 
+        .top-left-most-view-car {
+            position: absolute;
+            bottom: 400px;
+            right: 155px;
+            background-color: #d39e00;
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+
+        /* Profile */
         .Img_Banner {
             height: 400px;
             width: 100%;
@@ -99,11 +112,9 @@
         .Img_Profile {
             width: 180px;
             height: 180px;
-            margin-left: 0px;
-            filter: blur(0px);
         }
 
-        .overlay {
+        .overlay-profile {
             position: absolute;
             top: 80px;
             bottom: 0;
@@ -115,16 +126,100 @@
             transition: .3s ease;
         }
 
-        .div-overlay {
+        .div-overlay-profile {
             margin-top: -100px;
+            text-align: center;
+            vertical-align: left;
+            position: relative;
+        }
+
+        .div-overlay-profile:hover .overlay-profile {
+            opacity: 1;
+        }
+
+        /* Stand Dasboard */
+        .overlay-sd {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            transition: .3s ease;
+
+            border-width: 5px;
+            border-style: dashed;
+            color: #35353561;
+        }
+
+        .div-overlay-sd {
             text-align: center;
             vertical-align: middle;
             position: relative;
         }
 
-        .div-overlay:hover .overlay {
+        .div-overlay-sd:hover .overlay-sd {
             opacity: 1;
         }
+
+        .sd-most-view-car {
+            margin-left: 200px !important;
+        }
+
+        @media (max-width:760px) {
+            .sd-most-view-car {
+                margin-left: 0px !important;
+                width: 100% !important;
+            }
+        }
+
+        /* Stand Profile */
+
+        .overlay-stand-profile-banner {
+            position: absolute;
+            bottom: 0px;
+            opacity: 0;
+            height: 100%;
+            width: 100%;
+            transition: .3s ease;
+
+            border-width: 5px;
+            border-style: dashed;
+            color: #35353561;
+        }
+
+        .div-overlay-stand-profile-banner {
+            position: relative;
+        }
+
+        .div-overlay-stand-profile-banner:hover .overlay-stand-profile-banner {
+            opacity: 1;
+        }
+
+        .overlay-stand-profile-badge {
+            position: absolute;
+            bottom: 0px;
+            opacity: 0;
+            transition: .3s ease;
+
+            border-width: 5px;
+            border-style: dashed;
+            color: #35353561;
+        }
+
+        .div-overlay-stand-profile-badge {
+            bottom: 130px;
+            left: 30px;
+            margin-right: 930px;
+            position: relative;
+        }
+
+        .div-overlay-stand-profile-badge:hover .overlay-stand-profile-badge {
+            opacity: 1;
+        }
+
+        /* // */
 
         .Header {
             padding-top: 17px;
@@ -139,13 +234,24 @@
             padding-bottom: 20px;
         }
 
-        .no-padding{
-            padding: 0;
+        .no-padding {
+            padding: 0px 0px 0px !important;
         }
 
-        .margins{
+        .margins {
             margin-left: 10px;
             margin-right: 10px;
+        }
+
+        .message-badge {
+            position: relative;
+            right: 15px;
+            bottom: 9px;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 500px;
         }
     </style>
 </head>

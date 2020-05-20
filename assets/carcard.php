@@ -20,13 +20,31 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+function error($aux)
+{
+    $message = "";
+    if($aux==0){
+        $message = "Ainda não inseriu nenhum carro";
+    }else{
+        $message = "Sem resultados :/";
+    }
+
+    return '<div class="col" style="border-width:3px;border-style:dashed; color: lightgray">
+<br>
+<h3 class="text-center">
+    '.$message.'
+</h3>
+<br>
+</div>';
+}
+
 function card($Name, $Price, $Year, $Kms, $Imgpath)
 {
     return "<div class='card shadow margins mb-4' style='width: 340px;'>
     <div class='card-body no-padding'>
         <div class='col no-padding'>
             <img src='" . ROOT_PATH . "Public/Images/Profile/defult_user.jpg' alt='" . $Name . "' style='width: 100%; height: 340px'>
-            <div class='bottom-right-car shadow-lg' style='background-color: #0a3f82e0;'>
+            <div class='bottom-right-car shadow-lg'>
                 <span style='font-size:25px'>" . $Price . "€</span>
             </div>
         </div>
@@ -70,13 +88,7 @@ function ShowCarCarsLast5($con)
                 }
                 echo $card;
             } else
-                echo '<div class="col" style="border-width:3px;border-style:dashed; color: lightgray">
-                        <br>
-                        <h3 class="text-center">
-                            Ainda não inseriu nenhum carro
-                        </h3>
-                        <br>
-                    </div>';
+                echo error(0);
         }
     } else return null;
 }
@@ -112,13 +124,7 @@ function ShowCarCars($con)
                 }
                 echo $card;
             } else {
-                return '<div style="border-width:3px;border-style:dashed; color: lightgray">
-                <br>
-                <h3 class="text-center">
-                    Ainda não adicionou nenhum Carro
-                </h3>
-                <br>
-            </div>';
+                return error(0);
             }
         }
     } else return null;
@@ -139,48 +145,22 @@ function ShowCarCarsSearch($search, $con)
                     $cars[] = $row;
                 }
 
-                $fuel = $typegear = "";
+                $string = "";
+                $Name = "";
                 foreach ($cars as $row) {
+                    $string = $row["Brand"] . " " . $row["Model"];
 
-                    if ($row['Type_Fuel'] == 0) {
-                        $fuel = "Gasolina";
+                    if (strlen($string) > 15) {
+                        $Name = substr($string, 0, 15) . "...";
                     } else {
-                        $fuel = "Diesel";
+                        $Name = $string;
                     }
 
-                    if ($row['Type_Gear'] == 0) {
-                        $typegear = "Manual";
-                    } else if ($row['Type_Gear'] == 1) {
-                        $typegear = "Automático";
-                    } else {
-                        $typegear = "CVT";
-                    }
-
-                    $card .=  "<div class='col-md'>
-                        
-                        <div class='card' style='width: 340px'>
-                            <img class='card-img-top' src='/Public/Images/Fotos/Carros/" . '' . ".jpg' alt='" . $row['Brand'] . " " . $row['Model'] . "' style='width: 100%, heigth= 50%'>
-                            <div class='card-body'>
-                                <h4 class='card-title'>" . $row['Brand'] . " " . $row['Model'] . " - " . $row['Price'] . "€</h4>
-                                <p class='card-text text-right'>" . $row['Year'] . "</p>
-                                <p class='card-text text-right'>" . $fuel . " / " . $typegear . "</p>
-                                <p class='card-text'>" . $row['Kms'] . " Km</p>
-                                <p class='card-text'>" . $row['Description'] . "</p>
-                                #Botao para editar
-                            </div>
-                        </div>
-                        </br>
-                    </div>";
+                    $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], "");
                 }
                 echo $card;
             } else
-                echo '<div style="border-width:3px;border-style:dashed; color: lightgray">
-                        <br>
-                        <h3 class="text-center">
-                            Sem resultados :\
-                        </h3>
-                        <br>
-                    </div>';
+                echo error(1);
         }
-    } else $ERROR_No_Data_Stand = true;
+    } else return null;
 }

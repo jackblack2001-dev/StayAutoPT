@@ -22,7 +22,7 @@ if ($Data == null) {
     throw new Exception("Empty no data");
 }
 
-function Row($email, $name, $profile, $updateaccount,$id)
+function Row($email, $name, $profile, $updateaccount, $id)
 {
     return '<div class="row">
     <div class="col-md-1">
@@ -40,7 +40,7 @@ function Row($email, $name, $profile, $updateaccount,$id)
         ' . $updateaccount . '
     </div>
     <div class="col-md-2 col-sm-2 text-center">
-        <a href="../User/Profile.php?id='.$id.'" class="btn btn-outline-info">Perfil</a>
+        <a href="../User/Profile.php?id=' . $id . '" class="btn btn-outline-info">Perfil</a>
     </div>
 </div>
 <hr style="border: 1px solid rgba(0, 0, 0, 0.1);">';

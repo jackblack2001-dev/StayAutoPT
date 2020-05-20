@@ -70,9 +70,9 @@ include("../includes/menu.php");
             </div>
             <div class="col-md-6">
                 <img class="text-center Img_Banner shadow mt-4" src="../Public/Images/User_Banners/defult_profile_banner.jpg" />
-                <div class="div-overlay">
+                <div class="div-overlay-profile">
                     <img class="rounded-circle Img_Profile shadow-lg" src="../Public/Images/Profile/defult_user.jpg" />
-                    <div class="overlay" id="overlay">
+                    <div class="overlay-profile" id="overlay">
                         <button>Teste</button>
                     </div>
                 </div>

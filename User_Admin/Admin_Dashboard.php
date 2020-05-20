@@ -114,7 +114,7 @@ include("../includes/menu.php");
 
             <div class="card shadow">
                 <div class="card-header">
-                    <h6>Estatisticas <img src="<?php echo ROOT_PATH ?>Icons/pie-chart.svg" style="margin-bottom: 5px;width: 20px;height: 20px;"></img></h6>
+                    <h6>Estatisticas <i class="fa fa-pie-chart" style="margin-bottom: 5px;width: 20px;height: 20px;"></i></h6>
                 </div>
                 <div class="card-body">
                     <h4 class="small"></h4>

@@ -1,6 +1,6 @@
 function setInputFilter(textbox, inputFilter) {
-    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
-        textbox.addEventListener(event, function() {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+        textbox.addEventListener(event, function () {
             if (inputFilter(this.value)) {
                 this.oldValue = this.value;
                 this.oldSelectionStart = this.selectionStart;
@@ -12,5 +12,16 @@ function setInputFilter(textbox, inputFilter) {
                 this.value = "";
             }
         });
+    });
+}
+
+function ImgHover(img, url1, url2) {
+    $(img).on({
+        "mouseover": function () {
+            this.src = url1;
+        },
+        "mouseout": function () {
+            this.src = url2;
+        }
     });
 }

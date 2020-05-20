@@ -25,7 +25,14 @@ include("../includes/menu.php");
         <div class="col-md-2 col-sm-1">
         </div>
         <div class="col-md-8 col-sm-10 mt-4">
-            <img src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="<?php echo $data[0]['Name'] ?>" id="photo" class="shadow-lg">
+            <div class="div-overlay-sd">
+                <img src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="<?php echo $data[0]['Name'] ?>" id="photo" class="shadow-lg">
+                <div class="overlay-sd" id="overlay">
+                    <h3 class="text-center">
+                        <div style="margin-top:140px">Pagina do Stand</div>
+                    </h3>
+                </div>
+            </div>
             <div class="bottom-right-stand mr-4">
                 <h4><?php echo $data[0]["Name"] ?></h4>
             </div>
@@ -45,7 +52,7 @@ include("../includes/menu.php");
                                 Número Total de Visualizações
                             </div>
                             <div class="text-dark font-weight-bold h5 mb-0">
-                                <?php echo $data[0]["Views"]?>
+                                <?php echo $data[0]["Views"] ?>
                             </div>
                         </div>
                         <div class="col-auto text-gray">
@@ -90,25 +97,25 @@ include("../includes/menu.php");
             </div>
         </div>
         <div class="col-md">
-            <div class="card shadow">
-                <div class="card-header">
-                    <h6>O carro mais visto</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="" style="width: 100%; height: 100%;">
+            <div class="card shadow sd-most-view-car" style="width: 340px">
+                <div class="card-body no-padding">
+                    <div class="col no-padding">
+                        <img src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="exemplo" style="width: 100%; height: 340px">
+                        <div class="bottom-right-car shadow-lg">
+                            <span style="font-size:25px">150.000€</span>
                         </div>
-                        <div class="col-md-6">
-                            <div class="row card-title">
-                                <h4>Marca + Modelo</h4>
-                            </div>
-                            <div class="row">
-                                100<img class="ml-1" src="<?= ROOT_PATH ?>icons/eye.svg">
-                            </div>
+                    </div>
+                    <div class="col no-padding">
+                        <div class="card-title margins">
+                            <h5><small class="font-weight-bold">Ford GT 1995...</small></h5>
+                            <p class="card-text">1995</p>
+                            <p class="card-text text-right">100.000.000km</p>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="top-left-most-view-car rounded-left rounded-right shadow-lg">
+                <span class="font-weight-bold" style="font-size:25px">O Mais Visto<i class="fa fa-trophy"></i></span>
             </div>
         </div>
     </div>
@@ -132,6 +139,10 @@ include("../includes/menu.php");
 <?php include("../includes/footer.php"); ?>
 
 <script>
+    $("#overlay").click(function() {
+        window.location = "<?php echo ROOT_PATH?>User_Stand/Stand_Profile.php";
+    })
+
     function Statistics() {
         var div = document.getElementById("CBS");
         var img = document.getElementById("IMG_CBS");
@@ -144,11 +155,4 @@ include("../includes/menu.php");
             img.src = "<?php echo ROOT_PATH ?>Icons/arrows-expand.svg";
         }
     }
-
-    /*     function HideDiv() {
-            var div = document.getElementById("Main_div");
-            if (<?php $Sflag ?> == false) {
-                div.hidden = true;
-            }
-        } */
 </script>
