@@ -8,11 +8,7 @@ include('../assets/stand_user.php');
 include('../assets/user_info.php');
 include('../assets/role_checker.php');
 
-if (isset($_SESSION['Profile'])) {
-    roleAdmin($_SESSION['Profile']);
-} else {
-    roleAdmin(null);
-}
+roleAdmin();
 
 $Stand[] = returnStandsViews($con);
 $Cars[] = returnCarsViews($con);

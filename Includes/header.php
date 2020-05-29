@@ -7,7 +7,6 @@
     <title>StayAuto Portugal</title>
     <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>font-awesome/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
     <style>
         .card {
             border: 1px groove #8c8e8c38;
@@ -114,26 +113,46 @@
             height: 180px;
         }
 
-        .overlay-profile {
+        .overlay-profile-banner {
             position: absolute;
-            top: 80px;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0px;
+            opacity: 0;
             height: 100%;
             width: 100%;
-            opacity: 0;
             transition: .3s ease;
+
+            border-width: 5px;
+            border-style: dashed;
+            color: #909090;
         }
 
-        .div-overlay-profile {
-            margin-top: -100px;
-            text-align: center;
-            vertical-align: left;
+        .div-overlay-profile-banner {
             position: relative;
         }
 
-        .div-overlay-profile:hover .overlay-profile {
+        .div-overlay-profile-banner:hover .overlay-profile-banner {
+            opacity: 1;
+        }
+
+        .overlay-profile-badge {
+            position: absolute;
+            bottom: 0px;
+            opacity: 0;
+            transition: .3s ease;
+
+            border-width: 5px;
+            border-style: dashed;
+            color: #909090;
+        }
+
+        .div-overlay-profile-badge {
+            margin-top: -100px;
+            left: 358px;
+            margin-right: 716px;
+            position: relative;
+        }
+
+        .div-overlay-profile-badge:hover .overlay-profile-badge {
             opacity: 1;
         }
 
@@ -150,7 +169,7 @@
 
             border-width: 5px;
             border-style: dashed;
-            color: #35353561;
+            color: #909090;
         }
 
         .div-overlay-sd {
@@ -186,7 +205,7 @@
 
             border-width: 5px;
             border-style: dashed;
-            color: #35353561;
+            color: #909090;
         }
 
         .div-overlay-stand-profile-banner {
@@ -205,7 +224,7 @@
 
             border-width: 5px;
             border-style: dashed;
-            color: #35353561;
+            color: #909090;
         }
 
         .div-overlay-stand-profile-badge {

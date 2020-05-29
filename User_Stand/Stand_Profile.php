@@ -2,24 +2,39 @@
 session_start();
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
-include_once('../Public/config.php');
-include_once('../assets/stand_user.php');
-include_once('../assets/role_checker.php');
+include('../Public/config.php');
+include('../assets/stand_user.php');
+include('../assets/role_checker.php');
+include("../assets/user_info.php");
 
-if (isset($_SESSION['Profile'])) {
-    roleStand($_SESSION['Profile']);
+roleStand();
+
+$imgbanner = $imgbadge = "";
+
+$who = "stand";
+$data = returnStand($_SESSION['Id'], $con);
+$id = "";
+
+if ($data === null) {
+    header("location: StandRegister.php");
 } else {
-    header("location: index.php");
-}
+    $id = $data["Stand_Id"];
+    if ($data["Banner"] != null) {
+        $imgbanner = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner"];
+    } else {
+        $imgbanner = "../Public/Images/Stand_Banners/default_stand_banner.jpg";
+    }
 
-$data[] = returnStand($_SESSION['Id'], $con);
-if ($data[0] === null) {
-    //Triger para uma função js??
+    if ($data["Badge"] != null) {
+        $imgbadge = "../Public/Images/Stand_Badge/" . $data["Stand_Id"] . "/" . $data["Badge"];
+    } else {
+        $imgbadge = "../Public/Images/Stand_Badge/";
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["Order"])) {
-        UpdateStandItemsOrder($_POST["Order"], $data[0]["Stand_Id"], $con);
+        UpdateStandItemsOrder($_POST["Order"], $data["Stand_Id"], $con);
     }
 }
 
@@ -29,16 +44,18 @@ include("../includes/menu.php");
 
 <div class="container">
     <div class="div-overlay-stand-profile-banner mt-4">
-        <img class="text-center Img_Banner shadow" src="../Public/Images/User_Banners/defult_profile_banner.jpg" />
-        <div></div>
-        <div class="overlay-stand-profile-banner" id="ovelay-banner">
+        <img class="text-center Img_Banner shadow" src="<?php echo $imgbanner ?>" />
+        <div>
+            <!-- Title of stand -->
+        </div>
+        <div class="overlay-stand-profile-banner" id="overlay-banner">
             <h3 class="text-center">
                 <i class="fa fa-image fa-4x" style="position: relative; top: 130px;"></i>
             </h3>
         </div>
     </div>
     <div class="div-overlay-stand-profile-badge">
-        <img class="rounded-circle Img_Profile shadow-lg" src="../Public/Images/Profile/defult_user.jpg" />
+        <img class="rounded-circle Img_Profile shadow-lg" src="<?php echo $imgbadge ?>" />
         <div class="overlay-stand-profile-badge rounded-circle Img_Profile" id="overlay-badge">
             <h3 class="text-center">
                 <i class="fa fa-image fa-2x" style="position: relative; top: 60px;"></i>
@@ -71,9 +88,19 @@ include("../includes/menu.php");
     </div>
 </div>
 
+<?php include("../Includes/modal_uploadphoto.php"); ?>
+
 <?php include("../includes/footer.php"); ?>
 
 <script>
+    $("#overlay-banner").click(function() {
+        $("#ModalUpdateBanner").modal();
+    })
+
+    $("#overlay-badge").click(function() {
+        $("#ModalUpdateBadge").modal();
+    })
+
     function cards(request) {
         if (request == "n") {
             return '<div class="card shadow mb-4" id="card_n">' +
@@ -145,7 +172,7 @@ include("../includes/menu.php");
     }
 
     $(document).ready(function() {
-        var Items = "<?php echo $data[0]["ItemsOrder"] ?>";
+        var Items = "<?php echo $data["ItemsOrder"] ?>";
         var items = Items.split(":");
 
         $(items).each(function() {

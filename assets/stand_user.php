@@ -68,20 +68,23 @@ function UpdateStandItemsOrder($array, $id, $con)
         return true;
     }
 }
+
+function UpdateStandBanner($bannername,$id,$con){
+    $sql = "UPDATE Stands SET Banner = '$bannername' WHERE Stand_Id = $id";
+    if ($con->query($sql) != true) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function UpdateStandBadge($badgename,$id,$con){
+    $sql = "UPDATE Stands SET Badge = '$badgename' WHERE Stand_Id = $id";
+    if ($con->query($sql) != true) {
+        return false;
+    } else {
+        return true;
+    }
+}
 #endregion
 
-
-// $Sflag = true;
-// $id = $_SESSION['Id'];
-// $Result = "";
-
-// if (isset($id)) {
-//     $sql = "SELECT * FROM Stands WHERE User_Id = '$id'";
-//     if ($Result = $con->query($sql)) {
-//         if ($Result->num_rows == 1) {
-//             if ($row = $Result->fetch_array()) {
-
-//             }
-//         } else $Sflag = false;
-//     }
-// }

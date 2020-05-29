@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once('Public/config.php');
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);

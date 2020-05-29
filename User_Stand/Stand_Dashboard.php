@@ -2,17 +2,24 @@
 session_start();
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
-include_once('../Public/config.php');
-include_once('../assets/stand_user.php');
-include_once('../assets/role_checker.php');
+include('../Public/config.php');
+include('../assets/stand_user.php');
+include('../assets/role_checker.php');
+include("../assets/user_info.php");
 
-if (isset($_SESSION['Profile'])) {
-    roleStand($_SESSION['Profile']);
-}
+roleStand();
+
+$imgurl = "";
 
 $data[] = returnStand($_SESSION['Id'], $con);
 if ($data[0] === null) {
-    //Triger para uma função js??
+    header("location: StandRegister.php");
+} else {
+    if ($data[0]["Banner"] != null) {
+        $imgurl = "../Public/Images/Stand_Banners/" . $data[0]["Stand_Id"] . "/" . $data[0]["Banner"];
+    } else {
+        $imgurl = "../Public/Images/Stand_Banners/";
+    }
 }
 
 include("../includes/header.php");
@@ -24,9 +31,9 @@ include("../includes/menu.php");
     <div class="row">
         <div class="col-md-2 col-sm-1">
         </div>
-        <div class="col-md-8 col-sm-10 mt-4">
+        <div class="col-md-8 col-sm-10 mt-4" style="padding-left: 62px; padding-right: 62px;">
             <div class="div-overlay-sd">
-                <img src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="<?php echo $data[0]['Name'] ?>" id="photo" class="shadow-lg">
+                <img src="<?php echo $imgurl ?>" alt="<?php echo $data[0]['Name'] ?>" id="photo" class="shadow-lg">
                 <div class="overlay-sd" id="overlay">
                     <h3 class="text-center">
                         <div style="margin-top:140px">Pagina do Stand</div>
@@ -140,7 +147,7 @@ include("../includes/menu.php");
 
 <script>
     $("#overlay").click(function() {
-        window.location = "<?php echo ROOT_PATH?>User_Stand/Stand_Profile.php";
+        window.location = "<?php echo ROOT_PATH ?>User_Stand/Stand_Profile.php";
     })
 
     function Statistics() {

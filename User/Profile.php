@@ -2,10 +2,16 @@
 session_start();
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
-include_once("../assets/user_info.php");
-include_once("../Public/Config.php");
+include("../assets/user_info.php");
+include("../Public/Config.php");
+include("../assets/role_checker.php");
 
-$row = null;
+roleUser();
+
+$imgbanner = $imgbadge = "";
+
+$data = null;
+$who = "user";
 $id = "";
 
 $IsOwner = $IsAdmin = false;
@@ -14,10 +20,34 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
-        $row = returnUser($id, $con);
+        $data = returnUser($id, $con);
+
+        if ($data["Banner"] != null) {
+            $imgbanner = "../Public/Images/User_Banners/" . $data["User_Id"] . "/" . $data["Banner"];
+        } else {
+            $imgbanner = "../Public/Images/User_Banners/defult_user_banner.jpg";
+        }
+
+        if ($data["Badge"] != null) {
+            $imgbadge = "../Public/Images/User_Badge/" . $data["User_Id"] . "/" . $data["Badge"];
+        } else {
+            $imgbadge = "../Public/Images/User_Badge/default_user_badge.jpg";
+        }
     } else {
         $id = $_SESSION['Id'];
-        $row = returnUser($id, $con);
+        $data = returnUser($id, $con);
+
+        if ($data["Banner"] != null) {
+            $imgbanner = "../Public/Images/User_Banners/" . $data["User_Id"] . "/" . $data["Banner"];
+        } else {
+            $imgbanner = "../Public/Images/User_Banners/defult_user_banner.jpg";
+        }
+
+        if ($data["Badge"] != null) {
+            $imgbadge = "../Public/Images/User_Badge/" . $data["User_Id"] . "/" . $data["Badge"];
+        } else {
+            $imgbadge = "../Public/Images/User_Badge/default_user_badge.jpg";
+        }
     }
 
     if ($id == $_SESSION['Id']) {
@@ -28,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
 
-    $datetime = explode(" ", $row["createdAccount"]);
+    $datetime = explode(" ", $data["createdAccount"]);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -63,97 +93,115 @@ include("../includes/header.php");
 include("../includes/menu.php");
 ?>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                <a class="btn btn-outline-primary mt-4" href="<?phP echo ROOT_PATH ?>User_Admin/Index_Users.php" id="BTN_Back" style="display:none;">Voltar</a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <a class="btn btn-outline-primary mt-4" href="<?phP echo ROOT_PATH ?>User_Admin/Index_Users.php" id="BTN_Back" style="display:none;">Voltar</a>
+        </div>
+        <div class="col-md-6">
+            <div class="div-overlay-profile-banner mt-4">
+                <img class="text-center Img_Banner shadow" src="<?php echo $imgbanner ?>" />
+                <div class="overlay-profile-banner" id="overlay-banner">
+                    <h3 class="text-center">
+                        <i class="fa fa-image fa-4x" style="position: relative; top: 130px;"></i>
+                    </h3>
+                </div>
             </div>
-            <div class="col-md-6">
-                <img class="text-center Img_Banner shadow mt-4" src="../Public/Images/User_Banners/defult_profile_banner.jpg" />
-                <div class="div-overlay-profile">
-                    <img class="rounded-circle Img_Profile shadow-lg" src="../Public/Images/Profile/defult_user.jpg" />
-                    <div class="overlay-profile" id="overlay">
-                        <button>Teste</button>
-                    </div>
+            <div class="div-overlay-profile-badge">
+                <img class="rounded-circle Img_Profile shadow-lg" src="<?php echo $imgbadge ?>" />
+                <div class="overlay-profile-badge rounded-circle Img_Profile" id="overlay-badge">
+                    <h3 class="text-center">
+                        <i class="fa fa-image fa-2x" style="position: relative; top: 60px;"></i>
+                    </h3>
                 </div>
-                <div class="text-center mb-5">
-                    <h1 class="Header"><?php echo $row["Name"] ?></h1>
-                    <hr style="width: 100%;" />
-                </div>
+            </div>
+            <div class="text-center mb-5">
+                <h1 class="Header"><?php echo $data["Name"] ?></h1>
+                <hr style="width: 100%;" />
+            </div>
 
-                <div class="card shadow mb-4">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-8 col-sm-7">
-                                <h5>Informações Pessoais</h5>
-                            </div>
-                            <div class="col-md-3 col-sm-3">
-                                <button class="btn btn-outline-danger float-right" id="BTN_Cancel" onclick="Cancel()" style="display: none">Cancelar</button>
-                            </div>
-                            <div class="col-md-1 col-sm-2">
-                                <button class="btn btn-outline-secondary float-right" id="BTN_Edit" onclick="Edit()">Editar</button>
-                            </div>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-7">
+                            <h5>Informações Pessoais</h5>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md col-sm">
-                                <div class="form-group">
-                                    <label for="email"><strong>Email</strong></label>
-                                    <input class="form-control" type="email" placeholder="<?php echo $row["Email"] ?>" name="email" disabled id="IE">
-                                    <label for="IE" class="small text-danger" id="LIE" style="display:none"></label>
-                                </div>
-                            </div>
-                            <div class="col-md col-sm">
-                                <div class="form-group">
-                                    <label for="phone"><strong>Telemóvel</strong></label>
-                                    <input class="form-control" type="text" placeholder="<?php echo $row["Phone"] ?>" name="phone" disabled id="IP">
-                                    <label for="IP" class="small text-danger" id="LIP" style="display:none"></label>
-                                </div>
-                            </div>
+                        <div class="col-md-3 col-sm-3">
+                            <button class="btn btn-outline-danger float-right" id="BTN_Cancel" onclick="Cancel()" style="display: none">Cancelar</button>
+                        </div>
+                        <div class="col-md-1 col-sm-2">
+                            <button class="btn btn-outline-secondary float-right" id="BTN_Edit" onclick="Edit()">Editar</button>
                         </div>
                     </div>
                 </div>
-
-                <div class="card shadow mb-4">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-10 col-sm-10">
-                                <h5>Outras Informações</h5>
-                            </div>
-                            <div class="col-md-2 col-sm-2 text-right">
-                                <a type="button" onclick="MoreInfo()"><img src="<?php echo ROOT_PATH ?>Icons/arrows-Expand.svg" style="width: 20px; height: 20px" id="IMG_CBMI"></a>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md col-sm">
+                            <div class="form-group">
+                                <label for="email"><strong>Email</strong></label>
+                                <input class="form-control" type="email" placeholder="<?php echo $data["Email"] ?>" name="email" disabled id="IE">
+                                <label for="IE" class="small text-danger" id="LIE" style="display:none"></label>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body" id="CBMI" style="display:none">
-                        <div class="row">
-                            <div class="col-md col-sm">
-                                <div class="form-group">
-                                    <label for="CA"><strong>Conta Criada Em:</strong></label>
-                                    <input class="form-control" type="text" placeholder="<?php echo $datetime[0] ?>" name="CA" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md col-sm">
+                        <div class="col-md col-sm">
+                            <div class="form-group">
+                                <label for="phone"><strong>Telemóvel</strong></label>
+                                <input class="form-control" type="text" placeholder="<?php echo $data["Phone"] ?>" name="phone" disabled id="IP">
+                                <label for="IP" class="small text-danger" id="LIP" style="display:none"></label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card shadow mt-4">
-                    <div class="card-body">
-                        depois
+
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-10 col-sm-10">
+                            <h5>Outras Informações</h5>
+                        </div>
+                        <div class="col-md-2 col-sm-2 text-right">
+                            <a type="button" onclick="MoreInfo()"><img src="<?php echo ROOT_PATH ?>Icons/arrows-Expand.svg" style="width: 20px; height: 20px" id="IMG_CBMI"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" id="CBMI" style="display:none">
+                    <div class="row">
+                        <div class="col-md col-sm">
+                            <div class="form-group">
+                                <label for="CA"><strong>Conta Criada Em:</strong></label>
+                                <input class="form-control" type="text" placeholder="<?php echo $datetime[0] ?>" name="CA" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md col-sm">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div class="col-md-3">
+            <div class="card shadow mt-4">
+                <div class="card-body">
+                    depois
+                </div>
+            </div>
+        </div>
     </div>
 
-    <?php include("../Includes/footer.php")?>
+</div>
+
+<?php include("../Includes/modal_uploadphoto.php") ?>
+<?php include("../Includes/footer.php") ?>
 
 <script>
+    $("#overlay-banner").click(function() {
+        $("#ModalUpdateBanner").modal();
+    })
+
+    $("#overlay-badge").click(function() {
+        $("#ModalUpdateBadge").modal();
+    })
+
     $(document).ready(function() {
         var IsOwner = "<?= $IsOwner ?>"
         var IsAdmin = "<?= $IsAdmin ?>"
@@ -163,10 +211,12 @@ include("../includes/menu.php");
         } else if (IsAdmin) {
             $("#BTN_Back").show();
             //barrita do admin
-        }else{
+        } else {
             $("#BTN_Back").show();
             $("#BTN_Edit").remove();
             $("#overlay").remove();
+            $("#overlay-banner").remove();
+            $("#overlay-badge").remove();
         }
     })
 

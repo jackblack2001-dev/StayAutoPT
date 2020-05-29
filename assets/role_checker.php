@@ -1,29 +1,30 @@
 <?php
 
-function roleStand($profile)
+function roleStand()
 {
-    if (empty($profile) || $profile != '2') {
-        header('Location:' . ROOT_PATH . 'Index.php');
+    if (isset($_SESSION['Id'])) {
+        if (!isset($_SESSION['Profile']) || $_SESSION['Profile'] != "2") {
+            header('Location:' . ROOT_PATH . 'Index.php');
+        }
     } else {
-        return null;
+        header('Location:' . ROOT_PATH . 'Index.php');
     }
 }
 
-function roleUser($profile)
+function roleUser()
 {
-    if (empty($profile) || $profile != '1') {
+    if (!isset($_SESSION['Id']) && !isset($_SESSION['Profile'])) {
         header('Location:' . ROOT_PATH . 'Index.php');
-    } else {
-        return null;
     }
 }
 
-function roleAdmin($profile)
+function roleAdmin()
 {
-    if ($profile != '0') {
-        header('Location: ../Index.php');
-        exit;
+    if (isset($_SESSION['Id'])) {
+        if (!isset($_SESSION['Profile']) || $_SESSION['Profile'] != "0") {
+            header('Location:' . ROOT_PATH . 'Index.php');
+        }
     } else {
-        return null;
+        header('Location:' . ROOT_PATH . 'Index.php');
     }
 }

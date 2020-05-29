@@ -17,12 +17,12 @@ function returnUser($id, $con)
     }
 }
 
-function returnUsers($con,$id)
+function returnUsers($con, $id)
 {
     $sql = "SELECT * FROM Users WHERE User_Id != $id";
     $Result = $con->query($sql);
     if ($Result->num_rows >= 1) {
-        while($row = $Result->fetch_array()) {
+        while ($row = $Result->fetch_array()) {
             $Users[] = $row;
         }
         return $Users;
@@ -35,44 +35,41 @@ function returnUsersCount($con)
 {
     $sql = "SELECT COUNT(*) AS Users FROM Users WHERE Profile != 0";
 
-    if($Result=$con->query($sql)){
-        if($Result->num_rows == 1){
-            if($row = $Result->fetch_array()){
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
                 return $row;
-            }
-            else{
+            } else {
                 return null;
             }
         }
     }
 }
 
-function returnUsersCountType($type,$con)
+function returnUsersCountType($type, $con)
 {
-    if($type == 1){
+    if ($type == 1) {
         $sql = "SELECT COUNT(*) AS Clientes FROM Users WHERE Profile = 1";
 
-        if($Result=$con->query($sql)){
-            if($Result->num_rows == 1){
-                if($row = $Result->fetch_array()){
+        if ($Result = $con->query($sql)) {
+            if ($Result->num_rows == 1) {
+                if ($row = $Result->fetch_array()) {
                     return $row;
-                }
-                else{
+                } else {
                     return null;
                 }
             }
         }
     }
 
-    if($type == 2){
+    if ($type == 2) {
         $sql = "SELECT COUNT(*) AS Empresarios FROM Users WHERE Profile = 2";
 
-        if($Result=$con->query($sql)){
-            if($Result->num_rows == 1){
-                if($row = $Result->fetch_array()){
+        if ($Result = $con->query($sql)) {
+            if ($Result->num_rows == 1) {
+                if ($row = $Result->fetch_array()) {
                     return $row;
-                }
-                else{
+                } else {
                     return null;
                 }
             }
@@ -80,28 +77,49 @@ function returnUsersCountType($type,$con)
     }
 }
 
-function returnUsersSearch($con,$search)
+function returnUsersSearch($con, $search)
 {
-        $sql = "SELECT * FROM Users 
+    $sql = "SELECT * FROM Users 
         WHERE Name = $search OR Email = $search";
-        $Result = $con->query($sql);
-        if ($Result->num_rows >= 1) {
-            while($row = $Result->fetch_array()) {
-                $Users[] = $row;
-            }
-            return $Users;
-        } else {
-            return null;
+    $Result = $con->query($sql);
+    if ($Result->num_rows >= 1) {
+        while ($row = $Result->fetch_array()) {
+            $Users[] = $row;
         }
+        return $Users;
+    } else {
+        return null;
+    }
 }
 #endregion
 
 #region UPDATE
-function UpdatePhone($phone,$id,$con){
+function UpdatePhone($phone, $id, $con)
+{
     $sql = "UPDATE Users SET Phone = $phone WHERE User_Id = $id";
-    if($con->query($sql) != true){
+    if ($con->query($sql) != true) {
         return false;
-    }else{
+    } else {
+        return true;
+    }
+}
+
+function UpdateUserBanner($bannername, $id, $con)
+{
+    $sql = "UPDATE Users SET Banner = '$bannername' WHERE User_Id = $id";
+    if ($con->query($sql) != true) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function UpdateUserBadge($badgename, $id, $con)
+{
+    $sql = "UPDATE Users SET Badge = '$badgename' WHERE User_Id = $id";
+    if ($con->query($sql) != true) {
+        return false;
+    } else {
         return true;
     }
 }

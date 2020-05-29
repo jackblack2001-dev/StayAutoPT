@@ -1,6 +1,13 @@
 <?php
-$url1 = ROOT_PATH . 'icons/star.svg';
-$url2 = ROOT_PATH . 'icons/star-fill.svg';
+if(isset($_SESSION['Id'])){
+    $row = returnUser($_SESSION['Id'],$con);
+    if ($row['Badge'] != null) {
+        $badge = ROOT_PATH . "Public/Images/User_Badge/" . $row["User_Id"] . "/" . $row["Badge"];
+    } else {
+        $badge = ROOT_PATH . "Public/Images/User_Badge/default_user_badge.jpg";
+    }
+}
+
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light gradient-color">
@@ -42,7 +49,7 @@ $url2 = ROOT_PATH . 'icons/star-fill.svg';
         </ul>
         <ul class="navbar-nav ml-auto">
             <?php
-            if(isset($_SESSION['Id']) || !empty($_SESSION['Id'])){
+            if (isset($_SESSION['Id']) || !empty($_SESSION['Id'])) {
                 echo '<li class="nav-item">
                         <a class="nav-link no-padding" type="button">
                             <i class="fa fa-envelope-o fa-lg"></i>
@@ -60,9 +67,10 @@ $url2 = ROOT_PATH . 'icons/star-fill.svg';
             if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
                 echo '<a href="Login.php" class="nav-link" type="button" class="btn btn-primary"><i class="fa fa-sign-in"></i>Login</a>';
             } else {
+
                 echo '<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="' . ROOT_PATH . 'Public/Images/Profile/defult_user.jpg" Class="rounded-circle text-center"/>
+                    <img src="' . $badge . '" Class="rounded-circle text-center"/>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="' . ROOT_PATH . 'User/Profile.php">Perfil</a>

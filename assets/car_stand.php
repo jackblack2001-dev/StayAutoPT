@@ -50,3 +50,17 @@ function ThreeMoreRentable($con)
         }
     }
 }
+
+#region Car Photos
+function InsertPhotos($con,$id,$name){
+    $sql = "INSERT INTO Cars_Images (License_Plate, Name) VALUES(?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('ss', $id,$name);
+    $stmt->execute();
+    if ($stmt == true) {
+        return true;
+    }else{
+        return false;
+    }
+}
+#endregion

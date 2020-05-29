@@ -2,20 +2,18 @@
 session_start();
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
-include_once("../assets/user_info.php");
-include_once("../Public/Config.php");
+include("../Public/Config.php");
+include("../assets/role_checker.php");
+include("../assets/stand_user.php");
+include("../assets/user_info.php");
 
-/* if (!is_null($data[0])) {
-    $id = $data[0]['Stand_Id'];
-    $sql = "SELECT * FROM Cars WHERE Stand_id = '$id' LIMIT 10";
-    if ($Result = $con->query($sql)) {
-        if ($Result->num_rows >= 1) {
-            if ($row = $Result->fetch_array()) {
-                $cars[] = $row;
-            }
-        } else $ERROR_No_Data_Car = true;
-    }
-} else $ERROR_No_Data_Stand = true; */
+roleStand();
+
+$data[] = returnStand($_SESSION['Id'], $con);
+
+if ($data[0] === null) {
+    header("location: StandRegister.php");
+}
 
 include("../includes/header.php");
 include("../includes/menu.php");
@@ -105,15 +103,4 @@ include("../includes/menu.php");
             }
         });
     };
-
-    /* var div1 = document.getElementById("Main_div");
-    var div2 = document.getElementById("Error_div");
-    var aux = php echo json_encode($ERROR_No_Data_Stand);
-    if (aux == true) {
-        div1.style.display = 'none';
-        div2.style.display = 'block';
-    } else {
-        div2.style.display = 'none';
-        div1.style.display = 'block';
-    } */
 </script>
