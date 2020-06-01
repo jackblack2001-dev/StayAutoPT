@@ -72,6 +72,13 @@ if (isset($_POST['who']) || isset($_POST['type']) || isset($_POST['id'])) {
                 if ($id != $_SESSION['Id'] && $_SESSION['Profile'] == "0") {
                     header("location: ../User/Profile.php?id=" . $id . "&error=" . $error);
                 } else header("location: ../User/Profile.php?error=" . $error);
+            } else if ($who == "car"){
+                echo '<div class="alert alert-danger mt-2" role="alert">
+                            A Fotografia que submeteu esta Corrumpida!
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>';
             }
         }
     } else {

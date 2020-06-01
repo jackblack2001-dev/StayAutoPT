@@ -7,6 +7,7 @@
     <title>StayAuto Portugal</title>
     <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>font-awesome/css/font-awesome.min.css">
+    <link rel="text/javascript" src="bootstrap/js/googlemap.js">
     <style>
         .card {
             border: 1px groove #8c8e8c38;
@@ -92,12 +93,24 @@
 
         .top-left-most-view-car {
             position: absolute;
-            bottom: 400px;
-            right: 155px;
+            bottom: 360px;
+            right: 180px;
             background-color: #d39e00;
             color: white;
             padding-left: 10px;
             padding-right: 10px;
+
+        }
+
+        .top-right-stand-name {
+            position: absolute;
+            bottom: 350px;
+            right: -20px;
+            background-color: #0404049c;
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+
         }
 
 
@@ -271,6 +284,11 @@
         .carousel-item img {
             width: 100%;
             height: 500px;
+        }
+
+        .google-map{
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>

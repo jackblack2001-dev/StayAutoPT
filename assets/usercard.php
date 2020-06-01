@@ -18,10 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $Data = returnUsers($con, $_SESSION['Id']);
 
-if ($Data == null) {
-    throw new Exception("Empty no data");
-}
-
 function Row($email, $name, $profile, $updateaccount, $id)
 {
     return '<div class="row">

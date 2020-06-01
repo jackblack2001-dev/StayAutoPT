@@ -9,10 +9,8 @@ include('../assets/stand_user.php');
 include('../assets/role_checker.php');
 include('../assets/car_stand.php');
 
-$License_Plate = $Kms = $Year = $Type_Gear = $Brand = $Model = $Type_Fuel = $Price = $Description = "";
-$License_Plate_ERROR = $Kms_ERROR = $Year_ERROR = $Type_Gear_ERROR = $Brand_ERROR = $Model_ERROR = $Type_Fuel_ERROR = $Price_ERROR = $Description_ERROR = "";
-
-$ERROR = false;
+$License_Plate = $Kms = $Year = $Type_Gear = $Brand = $Model = $Type_Fuel = $Price = $Description = $files = "";
+$License_Plate_ERROR = $Kms_ERROR = $Year_ERROR = $Type_Gear_ERROR = $Brand_ERROR = $Model_ERROR = $Type_Fuel_ERROR = $Price_ERROR = $Description_ERROR = $File_ERROR = "";
 
 roleStand();
 
@@ -35,13 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     //verify Type_gear
-
-    if (isset($_POST["SEL_GearBox"])) {
-        if ($_POST["SEL_GearBox"] < 1 && $_POST["SEL_GearBox"] > 3) {
-            $Type_Gear_ERROR = "Selecione o tipo de Transmição";
-        } else {
-            $Type_Gear = $_POST["SEL_GearBox"];
-        }
+    if (!isset($_POST["SEL_GearBox"])) {
+        $Type_Gear_ERROR = "Selecione o tipo de Transmição";
+    } else {
+        $Type_Gear = $_POST["SEL_GearBox"];
     }
 
     //verify Brand
@@ -92,16 +87,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $Year_ERROR = "A data tem que ser maior que 1920 e menor ou igual " . date("Y");
     }
 
-    if (empty($License_Plate_ERROR) && empty($Kms_ERROR) && empty($Year_ERROR) && empty($Type_Gear_ERROR) && empty($Brand_ERROR) && empty($Model_ERROR) && empty($Type_Fuel_ERROR) && empty($Price_ERROR) && empty($Description_ERROR)) {
+    //images
+    $files = scandir('../User_Stand/tmp/' . $_SESSION['Id'], 1);
+    array_splice($files, -2);
+    if ($files) {
+        $filecount = count($files);
+        if ($filecount < 5) {
+            $File_ERROR = "Deve inserir no mínimo 5 fotografias";
+        }
+    } else {
+        $File_ERROR = "Tem que incluir fotografias do carro";
+    }
+
+    if (empty($License_Plate_ERROR) && empty($Kms_ERROR) && empty($Year_ERROR) && empty($Type_Gear_ERROR) && empty($Brand_ERROR) && empty($Model_ERROR) && empty($Type_Fuel_ERROR) && empty($Price_ERROR) && empty($Description_ERROR) && empty($File_ERROR)) {
         $data[] = returnStand($_SESSION['Id'], $con);
         $sql = "INSERT INTO Cars (License_Plate, Stand_Id, Kms, Year, Type_Gear, Brand, Model, Type_Fuel, Price, Description, State, Views, CreatedCar, UpdatedCar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '1', '0', CURRENT_TIMESTAMP, NULL)";
         $stmt = $con->prepare($sql);
         $stmt->bind_param('siiiissids', $License_Plate, $data[0]['Stand_Id'], $Kms, $Year, $Type_Gear, $Brand, $Model, $Type_Fuel, $Price, $Description);
         $stmt->execute();
         if ($stmt == true) {
-
-            $files = scandir('../User_Stand/tmp/' . $_SESSION['Id'], 1);
-            array_splice($files, -2);
             foreach ($files as $file) {
                 $fileTempName = 'tmp/' . $_SESSION['Id'] . '/' . $file;
                 $fileDestination = "../Public/Images/Car_Photos/" . $License_Plate;
@@ -143,7 +147,7 @@ include("../includes/menu.php");
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Matricula</span>
                             </div>
-                            <input type="text" class="form-control" name="TXT_LicensePlate" id="TXT_LicensePlate">
+                            <input type="text" class="form-control" name="TXT_LicensePlate" id="TXT_LicensePlate" value="<?= $License_Plate ?>">
                             <small class="form-text text-danger"><?php echo $License_Plate_ERROR ?></small>
                         </div>
 
@@ -151,9 +155,7 @@ include("../includes/menu.php");
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Ano</span>
                             </div>
-                            <input type="text" class="form-control" name="TXT_Year" id="intYear">
-                        </div>
-                        <div class="div_error">
+                            <input type="text" class="form-control" name="TXT_Year" id="intYear" value="<?= $Year ?>">
                             <small class="form-text text-danger"><?php echo $Year_ERROR ?></small>
                         </div>
 
@@ -161,7 +163,7 @@ include("../includes/menu.php");
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Kilometros</span>
                             </div>
-                            <input type="text" class="form-control" name="TXT_Miles" id="intKms">
+                            <input type="text" class="form-control" name="TXT_Miles" id="intKms" value="<?= $Kms ?>">
                             <small class="form-text text-danger"><?php echo $Kms_ERROR ?></small>
                         </div>
 
@@ -189,7 +191,7 @@ include("../includes/menu.php");
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Marca</span>
                             </div>
-                            <input type="text" class="form-control" name="TXT_Brand">
+                            <input type="text" class="form-control" name="TXT_Brand" value="<?= $Brand ?>">
                             <small class="form-text text-danger"><?php echo $Brand_ERROR ?></small>
                         </div>
 
@@ -197,7 +199,7 @@ include("../includes/menu.php");
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Modelo</span>
                             </div>
-                            <input type="text" class="form-control" name="TXT_Model">
+                            <input type="text" class="form-control" name="TXT_Model" value="<?= $Model ?>">
                             <small class="form-text text-danger"><?php echo $Model_ERROR ?></small>
                         </div>
 
@@ -205,7 +207,7 @@ include("../includes/menu.php");
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Preço</span>
                             </div>
-                            <input type="number" min="1" step="any" class="form-control" name="TXT_Price">
+                            <input type="number" min="1" step="any" class="form-control" name="TXT_Price" value="<?= $Price ?>">
                             <small class="form-text text-danger"><?php echo $Price_ERROR ?></small>
                         </div>
                     </div>
@@ -215,14 +217,17 @@ include("../includes/menu.php");
                     <div class="input-group-prepend">
                         <span class="input-group-text">Descrição</span>
                     </div>
-                    <textarea name="TXT_Description" class="form-control" rows="5"></textarea>
+                    <textarea name="TXT_Description" class="form-control" rows="5"><?= $Description ?></textarea>
                     <small class="form-text text-danger"><?php echo $Description_ERROR ?></small>
                 </div>
 
                 <input type="file" name="carphotos" id="photos" accept="image/*">
-                <small class="form-text text-danger"></small>
+                <small class="form-text text-danger"><?php echo $File_ERROR ?></small>
 
                 <div class="row mt-4 mb-4 ml-2" id="thumbnails">
+                </div>
+
+                <div class="row mt-4 mb-4 ml-2" id="thumbnails_error">
                 </div>
 
                 <button class="btn btn-outline-success mb-4" type="submit" id="BTN_Submit">Registar Carro</button>
@@ -257,7 +262,12 @@ include("../includes/menu.php");
             processData: false,
             contentType: false,
             success: function(photos) {
-                $("#thumbnails").append(photos);
+                $("#photos").val("");
+                if (photos.includes("alert")) {
+                    $("#thumbnails_error").append(photos);
+                } else {
+                    $("#thumbnails").append(photos);
+                }
             }
         });
     }

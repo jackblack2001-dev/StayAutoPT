@@ -2,8 +2,9 @@
 session_start();
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
-include_once('stand_user.php');
-include_once('../Public/config.php');
+include('stand_user.php');
+include('car_stand.php');
+include('../Public/config.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['SCCL5']) && $_GET['SCCL5'] == "true") {
@@ -23,27 +24,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 function error($aux)
 {
     $message = "";
-    if($aux==0){
+    if ($aux == 0) {
         $message = "Ainda não inseriu nenhum carro";
-    }else{
+    } else {
         $message = "Sem resultados :/";
     }
 
-    return '<div class="col" style="border-width:3px;border-style:dashed; color: lightgray">
+    echo '<div class="col" style="border-width:3px;border-style:dashed; color: lightgray">
 <br>
 <h3 class="text-center">
-    '.$message.'
+    ' . $message . '
 </h3>
 <br>
 </div>';
 }
 
-function card($Name, $Price, $Year, $Kms, $Imgpath)
+function card($Name, $Price, $Year, $Kms, $Imgpath, $id)
 {
     return "<div class='card shadow margins mb-4' style='width: 340px;'>
+    <a href=" . ROOT_PATH . 'User_Stand/Car_Profile.php?id=' . urlencode(base64_encode($id)) . ">
     <div class='card-body no-padding'>
         <div class='col no-padding'>
-            <img src='" . ROOT_PATH . "Public/Images/Profile/defult_user.jpg' alt='" . $Name . "' style='width: 100%; height: 340px'>
+            <img src='" . ROOT_PATH . "Public/Images/Car_Photos/" . $Imgpath . "' alt='" . $Name . "' style='width: 100%; height: 340px'>
             <div class='bottom-right-car shadow-lg'>
                 <span style='font-size:25px'>" . $Price . "€</span>
             </div>
@@ -56,41 +58,43 @@ function card($Name, $Price, $Year, $Kms, $Imgpath)
             </div>
         </div>
     </div>
+    </a>
 </div>";
 }
 
 function ShowCarCarsLast5($con)
 {
     $card = "";
-    $data[] = returnStand($_SESSION["Id"], $con);
+    $data = returnStand($_SESSION["Id"], $con);
 
-    if (!is_null($data[0])) {
-        $id = $data[0]['Stand_Id'];
-        $sql = "SELECT * FROM Cars WHERE Stand_Id = $id ORDER BY CreatedCar desc limit 5";
-        if ($Result = $con->query($sql)) {
-            if ($Result->num_rows >= 1) {
-                while ($row = $Result->fetch_array()) {
-                    $cars[] = $row;
-                }
+    $cars = returnCarsLast5($data['Stand_Id'], $con);
 
-                $string = "";
-                $Name = "";
-                foreach ($cars as $row) {
-                    $string = $row["Brand"] . " " . $row["Model"];
+    $string = "";
+    $Name = "";
+    foreach ($cars as $row) {
+        $string = $row["Brand"] . " " . $row["Model"];
 
-                    if (strlen($string) > 15) {
-                        $Name = substr($string, 0, 15) . "...";
-                    } else {
-                        $Name = $string;
-                    }
-
-                    $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], "");
-                }
-                echo $card;
-            } else
-                echo error(0);
+        if (strlen($string) > 15) {
+            $Name = substr($string, 0, 15) . "...";
+        } else {
+            $Name = $string;
         }
-    } else return null;
+
+        if ($row["Card_Image"] == null) {
+            $name = FirtPhotoInserted($row["License_Plate"], $con);
+
+            if ($name == false) {
+                $imgname = "no_image_car.png";
+            } else {
+                $imgname = $row["License_Plate"] . "/" . $name;
+            }
+        } else {
+            $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
+        }
+
+        $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
+    }
+    echo $card;
 }
 
 function ShowCarCars($con)
@@ -98,69 +102,77 @@ function ShowCarCars($con)
     include_once('../Public/config.php');
 
     $card = "";
-    $data[] = returnStand($_SESSION["Id"], $con);
+    $data = returnStand($_SESSION["Id"], $con);
 
-    if (!is_null($data[0])) {
-        $id = $data[0]['Stand_Id'];
-        $sql = "SELECT * FROM Cars WHERE Stand_id = '$id'";
-        if ($Result = $con->query($sql)) {
-            if ($Result->num_rows >= 1) {
-                while ($row = $Result->fetch_array()) {
-                    $cars[] = $row;
-                }
+    $cars = returnCars($data["Stand_Id"], $con);
 
-                $string = "";
-                $Name = "";
-                foreach ($cars as $row) {
-                    $string = $row["Brand"] . " " . $row["Model"];
+    if ($cars == 0) {
+        error(0);
+    } else {
+        $string = "";
+        $Name = "";
+        foreach ($cars as $row) {
+            $string = $row["Brand"] . " " . $row["Model"];
 
-                    if (strlen($string) > 15) {
-                        $Name = substr($string, 0, 15) . "...";
-                    } else {
-                        $Name = $string;
-                    }
-
-                    $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], "");
-                }
-                echo $card;
+            if (strlen($string) > 15) {
+                $Name = substr($string, 0, 15) . "...";
             } else {
-                return error(0);
+                $Name = $string;
             }
+
+            if ($row["Card_Image"] == null) {
+                $name = FirtPhotoInserted($row["License_Plate"], $con);
+    
+                if ($name == false) {
+                    $imgname = "no_image_car.png";
+                } else {
+                    $imgname = $row["License_Plate"] . "/" . $name;
+                }
+            } else {
+                $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
+            }
+    
+            $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
         }
-    } else return null;
+        echo $card;
+    }
 }
 
 function ShowCarCarsSearch($search, $con)
 {
     $card = "";
-    $data[] = returnStand($_SESSION["Id"], $con);
+    $data = returnStand($_SESSION["Id"], $con);
 
-    if (!is_null($data[0])) {
-        $id = $data[0]['Stand_Id'];
-        $sql = "SELECT * FROM `cars` WHERE `Stand_Id` = $id 
-        AND `Brand` LIKE '%$search%' OR `Model` LIKE '%$search%'";
-        if ($Result = $con->query($sql)) {
-            if ($Result->num_rows >= 1) {
-                while ($row = $Result->fetch_array()) {
-                    $cars[] = $row;
+    $cars = returnCarsSearch($data["Stand_Id"], $search, $con);
+
+    if ($cars == 1) {
+        error(1);
+    } else {
+        $string = "";
+        $Name = "";
+        foreach ($cars as $row) {
+            $string = $row["Brand"] . " " . $row["Model"];
+
+            if (strlen($string) > 15) {
+                $Name = substr($string, 0, 15) . "...";
+            } else {
+                $Name = $string;
+            }
+
+            if ($row["Card_Image"] == null) {
+                $name = FirtPhotoInserted($row["License_Plate"], $con);
+    
+                if ($name == false) {
+                    $imgname = "no_image_car.png";
+                } else {
+                    $imgname = $row["License_Plate"] . "/" . $name;
                 }
-
-                $string = "";
-                $Name = "";
-                foreach ($cars as $row) {
-                    $string = $row["Brand"] . " " . $row["Model"];
-
-                    if (strlen($string) > 15) {
-                        $Name = substr($string, 0, 15) . "...";
-                    } else {
-                        $Name = $string;
-                    }
-
-                    $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], "");
-                }
-                echo $card;
-            } else
-                echo error(1);
+            } else {
+                $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
+            }
+    
+            $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
         }
-    } else return null;
+        echo $card;
+    }
 }

@@ -45,13 +45,13 @@ include("../includes/menu.php");
 <div class="container">
     <div class="div-overlay-stand-profile-banner mt-4">
         <img class="text-center Img_Banner shadow" src="<?php echo $imgbanner ?>" />
-        <div>
-            <!-- Title of stand -->
-        </div>
         <div class="overlay-stand-profile-banner" id="overlay-banner">
             <h3 class="text-center">
                 <i class="fa fa-image fa-4x" style="position: relative; top: 130px;"></i>
             </h3>
+        </div>
+        <div class="top-right-stand-name rounded-left rounded-right shadow-lg">
+            <span class="font-weight-bold" style="font-size:25px"><?= $data["Name"] ?></span>
         </div>
     </div>
     <div class="div-overlay-stand-profile-badge">
@@ -63,7 +63,47 @@ include("../includes/menu.php");
         </div>
     </div>
     <div class="container">
-        <div class="card shadow-lg mt-lg-n5 mb-4" id="">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-lg mt-lg-n5 mb-5">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h4>Informações</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-secondary float-right" id="BTN_Edit_Stand" onclick="EditStand()">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <dl>
+                            <dt>
+                                <h5>Localidade</h5>
+                            </dt>
+                            <dd>
+                                <h4><small><?= $data["Locality"] ?></small></h4>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                <h5>Contacto</h5>
+                            </dt>
+                            <dd>
+                                <h4><small><?= $data["Phone"] ?></small></h4>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 mb-5 mt-n5">
+                <div class="google-map" id="map">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-lg mb-4" id="Edit_Exbitions">
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-10">
@@ -93,6 +133,13 @@ include("../includes/menu.php");
 <?php include("../includes/footer.php"); ?>
 
 <script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: new google.maps.LatLng(-33.863276, 151.207977),
+            zoom: 12
+        });
+    }
+
     $("#overlay-banner").click(function() {
         $("#ModalUpdateBanner").modal();
     })

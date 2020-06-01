@@ -49,25 +49,6 @@ include("../includes/menu.php");
     </div>
 
 </div>
-<div id="Error_div">
-    <div class="card shadow" style="width: 340px;">
-        <div class="card-body no-padding">
-            <div class="col no-padding">
-                <img src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="exemplo" style="width: 100%; height: 340px">
-                <div class="bottom-right-car shadow-lg" style="background-color: #0a3f82e0;">
-                    <span style="font-size:25px">150.000€</span>
-                </div>
-            </div>
-            <div class="col no-padding">
-                <div class="card-title margins">
-                    <h5><small class="font-weight-bold">Ford GT 1995...</small></h5>
-                    <p class="card-text">1995</p>
-                    <p class="card-text text-right">100.000.000km</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php include("../Includes/footer.php") ?>
 

@@ -6,20 +6,39 @@ include('../Public/config.php');
 include('../assets/stand_user.php');
 include('../assets/role_checker.php');
 include("../assets/user_info.php");
+include("../assets/car_stand.php");
 
 roleStand();
 
 $imgurl = "";
 
-$data[] = returnStand($_SESSION['Id'], $con);
-if ($data[0] === null) {
+$data = returnStand($_SESSION['Id'], $con);
+if ($data === null) {
     header("location: StandRegister.php");
 } else {
-    if ($data[0]["Banner"] != null) {
-        $imgurl = "../Public/Images/Stand_Banners/" . $data[0]["Stand_Id"] . "/" . $data[0]["Banner"];
+    if ($data["Banner"] != null) {
+        $imgurl = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner"];
     } else {
         $imgurl = "../Public/Images/Stand_Banners/";
     }
+}
+
+$car = returnMostViewed($data["Stand_Id"], $con);
+if ($car["Card_Image"] == null) {
+    $name = FirtPhotoInserted($car["License_Plate"], $con);
+
+    if ($name == false) {
+        $imgname = "Public/Images/Car_Photos/no_image_car.png";
+    } else {
+        $imgname = "Public/Images/Car_Photos/".$car["License_Plate"] . "/" . $name;
+    }
+} else {
+    $imgname = "Public/Images/Car_Photos/".$car["License_Plate"] . "/" . $car["Card_Image"];
+}
+$Name = $car["Brand"] . " " . $car["Model"];
+
+if (strlen($Name) > 15) {
+    substr($Name, 0, 15) . "...";
 }
 
 include("../includes/header.php");
@@ -33,7 +52,7 @@ include("../includes/menu.php");
         </div>
         <div class="col-md-8 col-sm-10 mt-4" style="padding-left: 62px; padding-right: 62px;">
             <div class="div-overlay-sd">
-                <img src="<?php echo $imgurl ?>" alt="<?php echo $data[0]['Name'] ?>" id="photo" class="shadow-lg">
+                <img src="<?php echo $imgurl ?>" alt="<?php echo $data['Name'] ?>" id="photo" class="shadow-lg">
                 <div class="overlay-sd" id="overlay">
                     <h3 class="text-center">
                         <div style="margin-top:140px">Pagina do Stand</div>
@@ -41,7 +60,7 @@ include("../includes/menu.php");
                 </div>
             </div>
             <div class="bottom-right-stand mr-4">
-                <h4><?php echo $data[0]["Name"] ?></h4>
+                <h4><?php echo $data["Name"] ?></h4>
             </div>
         </div>
         <div class="col-md-2 col-sm-1">
@@ -59,11 +78,11 @@ include("../includes/menu.php");
                                 Número Total de Visualizações
                             </div>
                             <div class="text-dark font-weight-bold h5 mb-0">
-                                <?php echo $data[0]["Views"] ?>
+                                <?php echo $data["Views"] ?>
                             </div>
                         </div>
                         <div class="col-auto text-gray">
-                            <img src="<?= ROOT_PATH ?>icons/eye.svg" style="width: 35px; height: 35px;">
+                            <i class="fa fa-eye fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -80,7 +99,7 @@ include("../includes/menu.php");
                             </div>
                         </div>
                         <div class="col-auto text-gray">
-                            <img src="<?= ROOT_PATH ?>icons/euro.svg" style="width: 35px; height: 35px;">
+                            <i class="fa fa-euro fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -97,7 +116,7 @@ include("../includes/menu.php");
                             </div>
                         </div>
                         <div class="col-auto text-gray">
-                            <img src="<?= ROOT_PATH ?>icons/envelope.svg" style="width: 35px; height: 35px;">
+                            <i class="fa fa-envelope fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -107,16 +126,15 @@ include("../includes/menu.php");
             <div class="card shadow sd-most-view-car" style="width: 340px">
                 <div class="card-body no-padding">
                     <div class="col no-padding">
-                        <img src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="exemplo" style="width: 100%; height: 340px">
+                        <img src="<?php echo ROOT_PATH . $imgname ?>" alt="exemplo" style="width: 100%; height: 340px">
                         <div class="bottom-right-car shadow-lg">
-                            <span style="font-size:25px">150.000€</span>
+                            <span style="font-size:25px"><?= $car["MV"] ?> <i class="fa fa-eye"></i></span>
                         </div>
                     </div>
                     <div class="col no-padding">
                         <div class="card-title margins">
-                            <h5><small class="font-weight-bold">Ford GT 1995...</small></h5>
-                            <p class="card-text">1995</p>
-                            <p class="card-text text-right">100.000.000km</p>
+                            <h5><small class="font-weight-bold"><?= $Name ?></small></h5>
+                            <p class="card-text"><?= $car["Year"] ?></p>
                         </div>
                     </div>
                 </div>
