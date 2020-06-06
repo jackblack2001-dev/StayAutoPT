@@ -7,8 +7,8 @@ include('car_stand.php');
 include('../Public/config.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['SCCL5']) && $_GET['SCCL5'] == "true") {
-        ShowCarCarsLast5($con);
+    if (isset($_GET['SCCLX']) && $_GET['SCCLX'] == "true" && isset($_GET['rows'])) {
+        ShowCarCarsLastX($_GET['rows'], $con);
     } else {
         $search = "";
 
@@ -62,12 +62,16 @@ function card($Name, $Price, $Year, $Kms, $Imgpath, $id)
 </div>";
 }
 
-function ShowCarCarsLast5($con)
+function ShowCarCarsLastX($numrows, $con)
 {
     $card = "";
     $data = returnStand($_SESSION["Id"], $con);
 
-    $cars = returnCarsLast5($data['Stand_Id'], $con);
+    if(isset($_GET['up']) && $_GET['up'] == true){
+        UpdateStandNumCarN($data["Stand_Id"],$numrows,$con);
+    }
+
+    $cars = returnCarsLastX($data['Stand_Id'], $numrows, $con);
 
     $string = "";
     $Name = "";
@@ -122,7 +126,7 @@ function ShowCarCars($con)
 
             if ($row["Card_Image"] == null) {
                 $name = FirtPhotoInserted($row["License_Plate"], $con);
-    
+
                 if ($name == false) {
                     $imgname = "no_image_car.png";
                 } else {
@@ -131,7 +135,7 @@ function ShowCarCars($con)
             } else {
                 $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
             }
-    
+
             $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
         }
         echo $card;
@@ -161,7 +165,7 @@ function ShowCarCarsSearch($search, $con)
 
             if ($row["Card_Image"] == null) {
                 $name = FirtPhotoInserted($row["License_Plate"], $con);
-    
+
                 if ($name == false) {
                     $imgname = "no_image_car.png";
                 } else {
@@ -170,7 +174,7 @@ function ShowCarCarsSearch($search, $con)
             } else {
                 $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
             }
-    
+
             $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
         }
         echo $card;

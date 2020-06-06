@@ -13,7 +13,6 @@ $imgbanner = $imgbadge = "";
 
 $who = "stand";
 $data = returnStand($_SESSION['Id'], $con);
-$id = "";
 
 if ($data === null) {
     header("location: StandRegister.php");
@@ -30,11 +29,19 @@ if ($data === null) {
     } else {
         $imgbadge = "../Public/Images/Stand_Badge/";
     }
+
+    $news = returnNews($data["Stand_Id"], $con);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["Order"])) {
         UpdateStandItemsOrder($_POST["Order"], $data["Stand_Id"], $con);
+    }
+
+    if (isset($_POST["name"]) && isset($_POST["adress"]) && isset($_POST["phone"]) /* && isset($_POST["locality"]) */) {
+        $id = $data["Stand_Id"];
+        UpdateStand($id, $_POST["name"], $_POST["adress"], $_POST["phone"], $con);
+        header("Refresh:0");
     }
 }
 
@@ -72,7 +79,7 @@ include("../includes/menu.php");
                                 <h4>Informações</h4>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-outline-secondary float-right" id="BTN_Edit_Stand" onclick="EditStand()">Editar</button>
+                                <button class="btn btn-outline-secondary float-right" id="BTN_Edit_Stand" data-toggle="modal" data-target="#ModalUpdateStand">Editar</button>
                             </div>
                         </div>
                     </div>
@@ -96,9 +103,11 @@ include("../includes/menu.php");
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 mb-5 mt-n5">
+            <div class="div-google-map col-md-8 mb-5 mt-n5">
                 <div class="google-map" id="map">
-
+                </div>
+                <div class="top-left-stand-map-placeholder rounded-right shadow-lg">
+                    <span class="font-weight-bold" style="font-size:25px">Onde pode nos encontrar</span>
                 </div>
             </div>
         </div>
@@ -129,14 +138,87 @@ include("../includes/menu.php");
 </div>
 
 <?php include("../Includes/modal_uploadphoto.php"); ?>
+<?php include("../Includes/modal_newnews.php"); ?>
+<?php include("../Includes/modal_updatestanddata.php") ?>
 
 <?php include("../includes/footer.php"); ?>
 
 <script>
+    $(document).ready(function() {
+        geocode();
+    })
+
+    function geocode() {
+        var location = '<?= $data["Adress"] ?>';
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: location,
+                    key: 'AIzaSyABimp-LZ3oqqXlRN3aKPHqyKO_g-cwKMs'
+                }
+            })
+            .then(function(response) {
+                //console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
+    }
+
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-            center: new google.maps.LatLng(-33.863276, 151.207977),
+            center: new google.maps.LatLng(40.660811, -7.907742),
             zoom: 12
+        });
+    }
+
+    function CCSLX(div, rows, up) {
+        $.ajax({
+            type: "GET",
+            url: "../assets/carcard.php",
+            data: {
+                SCCLX: true,
+                rows,
+                up
+            },
+            success: function(response) {
+                $("#" + div + "").html(response);
+            }
+        });
+    };
+
+    function UpdateNews(id_news) {
+        var id_stand = "<?= $data["Stand_Id"] ?>";
+        $.ajax({
+            type: "GET",
+            url: "../assets/stand_news.php",
+            data: {
+                id_stand,
+                id_news,
+                aux: true
+            },
+            success: function(response) {
+                var obj = JSON.parse(response);
+
+                $('#UTitle').val(obj.Title);
+                $('#Id').val(id_news);
+                CKEDITOR.instances["UText"].setData(obj.Text);
+                $('#ModalUpdateNews').modal('show');
+            }
+        });
+    }
+
+    function GetNews(id_news) {
+        var id_stand = "<?= $data["Stand_Id"] ?>";
+        $.ajax({
+            type: "GET",
+            url: "../assets/stand_news.php",
+            data: {
+                id_stand,
+                id_news
+            },
+            success: function(response) {
+                $("#card_news").html(response);
+            }
         });
     }
 
@@ -157,11 +239,24 @@ include("../includes/menu.php");
                 '<h5>Notícias do Stand</h5>' +
                 '</div>' +
                 '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(news)"><i class="fa fa-trash-o" onhover(swapico(this))><i></a>' +
+                '<a class="float-right" type="button" onclick="Remove(news)"><i class="fa fa-trash-o"></i></a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="card-body">' +
+                '<div class="row mb-4">' +
+                '<div class="col-md-6">' +
+                '<div class="btn-group" role="group">' +
+                '<button type="button" class="btn btn-outline-secondary" id="BTN_Last" onclick="GetNews(0)">Ultima Notícia</button>' +
+                '<button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#ModalSelectNews">Selecionar Notícia</button>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-6">' +
+                '<button type="button" class="btn btn-outline-success float-right" data-toggle="modal" data-target="#ModalCreateNews">Adicionar Notícia</button>' +
+                '</div>' +
+                '</div>' +
+                '<div class="row" id="card_news">' +
+                '</div>' +
                 '</div>' +
                 '</div>';
         }
@@ -174,11 +269,20 @@ include("../includes/menu.php");
                 '<h5>Em Destaque</h5>' +
                 '</div>' +
                 '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(featured)"><i class="fa fa-trash-o" id="ir"><i></a>' +
+                '<a class="float-right" type="button" onclick="Remove(featured)"><i class="fa fa-trash-o" id="ir"></i></a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="card-body">' +
+                '<div class="row mb-4">' +
+                '<div class="col-md-6">' +
+                '<div class="btn-group" role="group">' +
+                '<button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#ModalSelectNews">Selecionar Carros</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="div_nc" id="c_cars">' +
+                '</div>' +
                 '</div>' +
                 '</div>';
         }
@@ -191,11 +295,32 @@ include("../includes/menu.php");
                 '<h5>Novidades</h5>' +
                 '</div>' +
                 '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(new_car)"><i class="fa fa-trash-o" id="ir"><i></a>' +
+                '<a class="float-right" type="button" onclick="Remove(new_car)"><i class="fa fa-trash-o" id="ir"></i></a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="card-body">' +
+                '<div class="row mb-4">' +
+                '<div class="col-md-3">' +
+                '<div class="form-group">' +
+                '<label for="ncar"><strong>Nº de Carros a Mostrar</strong></label>' +
+                '<select class="form-control" onchange="UpdateNC(this)" name="ncar" id="ncar">' +
+                '<option value="1" id="news">1</option>' +
+                '<option value="2" id="featured">2</option>' +
+                '<option value="3" id="new_car">3</option>' +
+                '<option value="4" id="premiers">4</option>' +
+                '<option value="5" id="premiers">5</option>' +
+                '<option value="6" id="premiers">6</option>' +
+                '<option value="7" id="premiers">7</option>' +
+                '<option value="8" id="premiers">8</option>' +
+                '<option value="9" id="premiers">9</option>' +
+                '<option value="10" id="premiers">10</option>' +
+                '</select>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="div_nc" id="new_cars">' +
+                '</div>' +
                 '</div>' +
                 '</div>';
         }
@@ -208,7 +333,7 @@ include("../includes/menu.php");
                 '<h5>Brevemente</h5>' +
                 '</div>' +
                 '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(premiers)"><i class="fa fa-trash-o" id="ir"><i></a>' +
+                '<a class="float-right" type="button" onclick="Remove(premiers)"><i class="fa fa-trash-o" id="ir"></i></a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -225,6 +350,7 @@ include("../includes/menu.php");
         $(items).each(function() {
             if (this == "card_n") {
                 $("#items").append(cards("n"));
+                GetNews(<?= $data["Id_News"] ?>)
                 $("#news").hide();
             }
 
@@ -235,6 +361,8 @@ include("../includes/menu.php");
 
             if (this == "card_nc") {
                 $("#items").append(cards("nc"));
+                $("#ncar").val("<?=$data["NumCarN"]?>")
+                CCSLX("new_cars", <?= $data["NumCarN"] ?>,false);
                 $("#new_car").hide();
             }
 
@@ -244,20 +372,29 @@ include("../includes/menu.php");
             }
 
         })
+
+        if ($("#card_n").length != 0 && $("#card_c").length != 0 && $("#card_nc").length != 0 && $("#card_p").length != 0) {
+            $("#default").text("Não há mais nada para Exibir!");
+        }
     })
 
-    function swapico(i) {
-        $(i).hover(
-            function() {
-                $(this).toggleClass("fa-trash fa-trash-o");
-            });
-
+    function UpdateNC(sel){
+        CCSLX("new_cars",$(sel).val(),true);
     }
+
+    $(document).ready(function() {
+        $("#news_search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#table_news tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
 
     function Save() {
         var $array = [];
         $('div.card').each(function() {
-            if ($(this).attr('id') != "") {
+            if ($(this).attr('id') != "" && $(this).attr('id') != "Edit_Exbitions") {
                 var id = $(this).attr('id');
                 $array.push(id);
             }
@@ -283,6 +420,8 @@ include("../includes/menu.php");
                 $("#items").append(cards("n"));
                 $("#news").hide();
                 $("#default").prop("selected", true);
+                $("#BTN_Last").focus();
+                GetNews(<?= $data["Id_News"] ?>);
             }
         }
 
@@ -299,6 +438,7 @@ include("../includes/menu.php");
                 $("#items").append(cards("nc"));
                 $("#new_car").hide();
                 $("#default").prop("selected", true);
+                CCSLX("new_cars", <?= $data["NumCarN"] ?>, false);
             }
         }
 

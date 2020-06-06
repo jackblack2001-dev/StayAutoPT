@@ -39,10 +39,10 @@ function returnMoreViewedCar($id, $con)
             WHERE Stand_Id = $id";
 }
 
-function returnCarsLast5($id, $con)
+function returnCarsLastX($id,$numrows, $con)
 {
     if (!is_null($id)) {
-        $sql = "SELECT * FROM Cars WHERE Stand_Id = $id ORDER BY CreatedCar desc limit 5";
+        $sql = "SELECT * FROM Cars WHERE Stand_Id = $id ORDER BY CreatedCar desc limit $numrows";
         if ($Result = $con->query($sql)) {
             if ($Result->num_rows >= 1) {
                 while ($row = $Result->fetch_array()) {

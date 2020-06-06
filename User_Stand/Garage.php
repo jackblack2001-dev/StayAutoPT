@@ -30,7 +30,7 @@ include("../includes/menu.php");
         </div>
     </div>
     <hr class="mb-4">
-    <div class="row" id="TabLast5" style="vertical-align: middle">
+    <div class="div_5" id="TabLast5" style="vertical-align: middle">
     </div>
 
     <br>
@@ -53,17 +53,18 @@ include("../includes/menu.php");
 <?php include("../Includes/footer.php") ?>
 
 <script>
-    window.onload = function() {
+    $(document).ready(function() {
         CCSL5();
         CCS("");
-    };
+    })
 
     function CCSL5() {
         $.ajax({
             type: "GET",
             url: "../assets/carcard.php",
             data: {
-                SCCL5: true
+                SCCLX: true,
+                rows: 5
             },
             success: function(response) {
                 $("#TabLast5").html(response);
@@ -76,7 +77,7 @@ include("../includes/menu.php");
             type: "GET",
             url: "../assets/carcard.php",
             data: {
-                SCCL5: false,
+                SCCLX: false,
                 search: str
             },
             success: function(response) {

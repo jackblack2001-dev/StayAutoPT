@@ -140,14 +140,12 @@ include("../includes/menu.php");
                             <div class="form-group">
                                 <label for="email"><strong>Email</strong></label>
                                 <input class="form-control" type="email" placeholder="<?php echo $data["Email"] ?>" name="email" disabled id="IE">
-                                <label for="IE" class="small text-danger" id="LIE" style="display:none"></label>
                             </div>
                         </div>
                         <div class="col-md col-sm">
                             <div class="form-group">
                                 <label for="phone"><strong>Telemóvel</strong></label>
-                                <input class="form-control" type="text" placeholder="<?php echo $data["Phone"] ?>" name="phone" disabled id="IP">
-                                <label for="IP" class="small text-danger" id="LIP" style="display:none"></label>
+                                <input class="form-control" type="tel" placeholder="<?php echo $data["Phone"] ?>" name="phone" disabled id="IP">
                             </div>
                         </div>
                     </div>
