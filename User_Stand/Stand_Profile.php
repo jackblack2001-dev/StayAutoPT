@@ -18,14 +18,15 @@ if ($data === null) {
     header("location: StandRegister.php");
 } else {
     $id = $data["Stand_Id"];
-    if ($data["Banner"] != null) {
-        $imgbanner = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner"];
+
+    if ($data["Banner_Name"] != null) {
+        $imgbanner = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner_Name"];
     } else {
         $imgbanner = "../Public/Images/Stand_Banners/default_stand_banner.jpg";
     }
 
-    if ($data["Badge"] != null) {
-        $imgbadge = "../Public/Images/Stand_Badge/" . $data["Stand_Id"] . "/" . $data["Badge"];
+    if ($data["Badge_Name"] != null) {
+        $imgbadge = "../Public/Images/Stand_Badge/" . $data["Stand_Id"] . "/" . $data["Badge_Name"];
     } else {
         $imgbadge = "../Public/Images/Stand_Badge/";
     }
@@ -45,8 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-include("../includes/header.php");
-include("../includes/menu.php");
+include("../layout/header.php");
+include("../layout/menu.php");
 ?>
 
 <div class="container">
@@ -141,7 +142,7 @@ include("../includes/menu.php");
 <?php include("../Includes/modal_newnews.php"); ?>
 <?php include("../Includes/modal_updatestanddata.php") ?>
 
-<?php include("../includes/footer.php"); ?>
+<?php include("../layout/footer.php"); ?>
 
 <script>
     $(document).ready(function() {

@@ -30,7 +30,7 @@ function error($aux)
         $message = "Sem resultados :/";
     }
 
-    echo '<div class="col" style="border-width:3px;border-style:dashed; color: lightgray">
+    echo '<div class="col mb-4" style="border-width:3px;border-style:dashed; color: lightgray">
 <br>
 <h3 class="text-center">
     ' . $message . '
@@ -67,36 +67,40 @@ function ShowCarCarsLastX($numrows, $con)
     $card = "";
     $data = returnStand($_SESSION["Id"], $con);
 
-    if(isset($_GET['up']) && $_GET['up'] == true){
-        UpdateStandNumCarN($data["Stand_Id"],$numrows,$con);
+    if (isset($_GET['up']) && $_GET['up'] == true) {
+        UpdateStandNumCarN($data["Stand_Id"], $numrows, $con);
     }
 
     $cars = returnCarsLastX($data['Stand_Id'], $numrows, $con);
 
     $string = "";
     $Name = "";
-    foreach ($cars as $row) {
-        $string = $row["Brand"] . " " . $row["Model"];
+    if ($cars!=null) {
+        foreach ($cars as $row) {
+            $string = $row["Brand"] . " " . $row["Model"];
 
-        if (strlen($string) > 15) {
-            $Name = substr($string, 0, 15) . "...";
-        } else {
-            $Name = $string;
-        }
-
-        if ($row["Card_Image"] == null) {
-            $name = FirtPhotoInserted($row["License_Plate"], $con);
-
-            if ($name == false) {
-                $imgname = "no_image_car.png";
+            if (strlen($string) > 15) {
+                $Name = substr($string, 0, 15) . "...";
             } else {
-                $imgname = $row["License_Plate"] . "/" . $name;
+                $Name = $string;
             }
-        } else {
-            $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
-        }
 
-        $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
+            if ($row["Card_Image"] == null) {
+                $name = FirtPhotoInserted($row["License_Plate"], $con);
+
+                if ($name == false) {
+                    $imgname = "no_image_car.png";
+                } else {
+                    $imgname = $row["License_Plate"] . "/" . $name;
+                }
+            } else {
+                $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
+            }
+
+            $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
+        }
+    }else{
+        $card = error(0);
     }
     echo $card;
 }

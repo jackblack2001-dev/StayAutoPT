@@ -16,33 +16,43 @@ $data = returnStand($_SESSION['Id'], $con);
 if ($data === null) {
     header("location: StandRegister.php");
 } else {
-    if ($data["Banner"] != null) {
-        $imgurl = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner"];
+    if ($data["Banner_Name"] != null) {
+        $imgurl = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner_Name"];
     } else {
-        $imgurl = "../Public/Images/Stand_Banners/";
+        $imgurl = "../Public/Images/Stand_Banners/default_stand_banner.jpg";
     }
 }
 
 $car = returnMostViewed($data["Stand_Id"], $con);
-if ($car["Card_Image"] == null) {
-    $name = FirtPhotoInserted($car["License_Plate"], $con);
+$imgname = "";
 
-    if ($name == false) {
-        $imgname = "Public/Images/Car_Photos/no_image_car.png";
-    } else {
-        $imgname = "Public/Images/Car_Photos/".$car["License_Plate"] . "/" . $name;
-    }
+$havecar = true;
+if ($car == null) {
+    $havecar = false;
 } else {
-    $imgname = "Public/Images/Car_Photos/".$car["License_Plate"] . "/" . $car["Card_Image"];
-}
-$Name = $car["Brand"] . " " . $car["Model"];
+    if ($car["Card_Image"] == null) {
+        $name = FirtPhotoInserted($car["License_Plate"], $con);
 
-if (strlen($Name) > 15) {
-    substr($Name, 0, 15) . "...";
+        if ($name == false) {
+            $imgname = "Public/Images/Car_Photos/no_image_car.png";
+        } else {
+            $imgname = "Public/Images/Car_Photos/" . $car["License_Plate"] . "/" . $name;
+        }
+    } else {
+        $imgname = "Public/Images/Car_Photos/" . $car["License_Plate"] . "/" . $car["Card_Image"];
+    }
+    $string = $car["Brand"] . " " . $car["Model"];
+
+    if (strlen($string) > 15) {
+        $Name = substr($string, 0, 15) . "...";
+    }else{
+        $Name = $string;
+    }
 }
 
-include("../includes/header.php");
-include("../includes/menu.php");
+
+include("../layout/header.php");
+include("../layout/menu.php");
 ?>
 
 
@@ -52,7 +62,7 @@ include("../includes/menu.php");
         </div>
         <div class="col-md-8 col-sm-10 mt-4" style="padding-left: 62px; padding-right: 62px;">
             <div class="div-overlay-sd">
-                <img src="<?php echo $imgurl ?>" alt="<?php echo $data['Name'] ?>" id="photo" class="shadow-lg">
+                <img src="<?php echo $imgurl ?>" alt="<?php echo $data["Name"] ?>" id="photo" class="shadow-lg">
                 <div class="overlay-sd" id="overlay">
                     <h3 class="text-center">
                         <div style="margin-top:140px">Pagina do Stand</div>
@@ -122,8 +132,8 @@ include("../includes/menu.php");
                 </div>
             </div>
         </div>
-        <div class="col-md">
-            <div class="card shadow sd-most-view-car" style="width: 340px">
+        <div class="col-md" id="col_card">
+            <div class="card shadow sd-most-view-car" style="width: 340px" id="card_MVC">
                 <div class="card-body no-padding">
                     <div class="col no-padding">
                         <img src="<?php echo ROOT_PATH . $imgname ?>" alt="exemplo" style="width: 100%; height: 340px">
@@ -139,7 +149,7 @@ include("../includes/menu.php");
                     </div>
                 </div>
             </div>
-            <div class="top-left-most-view-car rounded-left rounded-right shadow-lg">
+            <div class="top-left-most-view-car rounded-left rounded-right shadow-lg" id="card_badge">
                 <span class="font-weight-bold" style="font-size:25px">O Mais Visto<i class="fa fa-trophy"></i></span>
             </div>
         </div>
@@ -161,11 +171,35 @@ include("../includes/menu.php");
     </div>
 </div>
 
-<?php include("../includes/footer.php"); ?>
+<?php include("../layout/footer.php"); ?>
 
 <script>
     $("#overlay").click(function() {
         window.location = "<?php echo ROOT_PATH ?>User_Stand/Stand_Profile.php";
+    })
+
+    function cardINC() {
+        return '<div class="card shadow sd-most-view-car" style="width: 340px" id="card_MVC">' +
+            '<div class="card-body no-padding">' +
+            '<div class="col no-padding">' +
+            '<div class="card-title margins">' +
+            '<h5><small class="font-weight-bold">Ainda não possui nenhum carro!</small></h5>' +
+            '<a href="CarRegister.php"><button class="btn btn-outline-success">Adicionar Carro</button></a>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+    }
+
+    $(document).ready(function() {
+        var data = "<?= $havecar ?>";
+
+        if (data == false) {
+            var card = cardINC();
+            $("#card_MVC").remove();
+            $("#card_badge").remove();
+            $("#col_card").append(card);
+        }
     })
 
     function Statistics() {

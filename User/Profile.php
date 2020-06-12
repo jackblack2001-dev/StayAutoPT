@@ -89,8 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-include("../includes/header.php");
-include("../includes/menu.php");
+include("../layout/header.php");
+include("../layout/menu.php");
 ?>
 
 <div class="container-fluid">
@@ -189,7 +189,7 @@ include("../includes/menu.php");
 </div>
 
 <?php include("../Includes/modal_uploadphoto.php") ?>
-<?php include("../Includes/footer.php") ?>
+<?php include("../layout/footer.php") ?>
 
 <script>
     $("#overlay-banner").click(function() {

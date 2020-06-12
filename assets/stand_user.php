@@ -4,7 +4,9 @@ function returnAllStands($con)
 {
     $data = null;
 
-    $sql = "SELECT * FROM Stands";
+    $sql = "SELECT S.Name AS Stand_Name, SI.Name AS Image_Name FROM Stands S
+            INNER JOIN Stands_Images SI
+            ON SI.Stand_Id = S.Stand_Id";
 
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
@@ -37,8 +39,14 @@ function returnStand($id, $con)
         $sql = "SELECT * FROM Stands S 
         INNER JOIN Config_Stands C
         ON
-        C.Stand_Id = S.Stand_Id 
-        WHERE User_Id = '$id'";
+        C.Stand_Id = S.Stand_Id
+        INNER JOIN Stands_Badges SB
+        ON
+        SB.Stand_Id = S.Stand_Id
+        INNER JOIN Stands_Banners SBN
+        ON
+        SBN.Stand_Id = S.Stand_Id
+        WHERE User_Id = '$id' AND SB.State = 1 AND SBN.State = 1";
         $Result = $con->query($sql);
         if ($Result->num_rows == 1) {
             if ($row = $Result->fetch_array()) {
@@ -102,6 +110,36 @@ function returnNew($idnews, $idstand, $con)
         }
     }
 }
+
+function returnStandsRandom5($con)
+{
+    $sql = "SELECT User_Id, Banner, Name FROM Stands WHERE Banner != '' ORDER BY Rand() LIMIT 5";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] = $row;
+            }
+
+            return $data;
+        } else {
+            return null;
+        }
+    }
+}
+
+function returnlastid($con)
+{
+    $sql = "SELECT MAX(Stand_Id) AS id FROM Stands ORDER BY id LIMIT 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                return $row;
+            } else {
+                return null;
+            }
+        }
+    }
+}
 #endregion
 #region Updates
 
@@ -153,16 +191,6 @@ function UpdateStandNumCarN($id, $numrows, $con)
     }
 }
 
-function UpdateStandBanner($bannername, $id, $con)
-{
-    $sql = "UPDATE Stands SET Banner = '$bannername' WHERE Stand_Id = $id";
-    if ($con->query($sql) != true) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 function UpdateStandBadge($badgename, $id, $con)
 {
     $sql = "UPDATE Stands SET Badge = '$badgename' WHERE Stand_Id = $id";
@@ -194,6 +222,34 @@ function UpdateNew($id, $title, $text, $con)
 }
 #endregion
 #region Insert
+function InsertStandConfig($id, $con)
+{
+    $sql = "INSERT INTO Config_Stands(Stand_Id) VALUE(?)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    if ($stmt == true) {
+        return true;
+    } else {
+        //500 ERROR => header("Location: .../500.html")
+        return false;
+    }
+}
+
+function InsertStand($Phone, $Adress, $Locality, $Name, $con)
+{
+    $sql = "INSERT INTO Stands(User_Id,Phone,Adress,Locality,Name,Views) VALUES(?,?,?,?,?,0)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('issss', $_SESSION['Id'], $Phone, $Adress, $Locality, $Name);
+    $stmt->execute();
+    if ($stmt == true) {
+        return true;
+    } else {
+        //500 ERROR => header("Location: .../500.html")
+        return false;
+    }
+}
+
 function InsertNews($standid, $userid, $title, $text, $con)
 {
     $sql = "INSERT INTO News(Stand_Id,User_Id,Title,Text,State) Values(?,?,?,?,1)";
@@ -201,3 +257,65 @@ function InsertNews($standid, $userid, $title, $text, $con)
     $stmt->bind_param('iiss', $standid, $userid, $title, $text);
     $stmt->execute();
 }
+#endregion
+#region Photos
+function InsertBanner($con, $id, $name)
+{
+    storePreviousBanner($id,$con);
+
+    $sql = "INSERT INTO Stands_Banners (Stand_Id, Banner_Name) VALUES(?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('is', $id, $name);
+    $stmt->execute();
+    if ($stmt == true) {
+        return true;
+    } else {
+        //500 ERROR => header("Location: .../500.html")
+        return false;
+    }
+}
+
+function InsertBadge($con, $id, $name)
+{
+    storePreviousBadge($id,$con);
+
+    $sql = "INSERT INTO Stands_Badges (Stand_Id, Badge_Name) VALUES(?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('is', $id, $name);
+    $stmt->execute();
+    if ($stmt == true) {
+        return true;
+    } else {
+        //500 ERROR => header("Location: .../500.html")
+        return false;
+    }
+}
+
+function storePreviousBadge($id,$con)
+{
+    $sql = "SELECT Id_Badge FROM Stands_Badges WHERE Stand_Id = $id ORDER BY CreatedBadge DESC LIMIT 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                $bid = $row["Id_Badge"];
+                $sql = "UPDATE Stands_Badges SET State = 0 WHERE Id_Badge = $bid";
+                $con->query($sql);
+            }
+        }
+    }
+}
+
+function storePreviousBanner($id,$con)
+{
+    $sql = "SELECT Id_Banner FROM Stands_Banners WHERE Stand_Id = $id ORDER BY CreatedBanner DESC LIMIT 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                $bid = $row["Id_Banner"];
+                $sql = "UPDATE Stands_Banners SET State = 0 WHERE Id_Banner = $bid";
+                $con->query($sql);
+            }
+        }
+    }
+}
+#endregion

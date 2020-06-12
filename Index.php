@@ -4,8 +4,12 @@ define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
 include("Public/config.php");
 include("assets/user_info.php");
-include("includes/header.php");
-include("includes/menu.php");
+include("assets/stand_user.php");
+
+$stands = returnStandsRandom5($con);
+
+include("layout/header.php");
+include("layout/menu.php");
 ?>
 
 <div class="container-fluid">
@@ -13,42 +17,54 @@ include("includes/menu.php");
         <div class="col-md-2">
         </div>
         <div class="col-md-8">
-            <div class="carousel slide mt-4" data-ride="carousel" id="CS">
-                <ol class="carousel-indicators">
-                    <li data-target="#CS" data-slide-to="0" class="active"></li>
-                    <li data-target="#CS" data-slide-to="1"></li>
-                    <li data-target="#CS" data-slide-to="2"></li>
-                    <li data-target="#CS" data-slide-to="3"></li>
-                    <li data-target="#CS" data-slide-to="4"></li>
-                    <li data-target="#CS" data-slide-to="5"></li>
-                </ol>
+            <div class="carousel slide shadow-lg mt-4" data-ride="carousel" id="CS">
+
+                <!-- indacators -->
+                <ul class="carousel-indicators">
+                    <?php
+                    if ($stands != null) {
+                        for ($i = 0; $i < count($stands); $i++) {
+                            echo '<li data-target="#CS" data-slide-to="' . $i . '" class="active"></li>';
+                        }
+                    }
+                    ?>
+                </ul>
+
+                <!-- The SlideShow -->
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img class="d-block w-100" src="<?php echo ROOT_PATH . 'Public/Images/Profile/defult_user.jpg' ?>" alt="">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="" alt="">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="" alt="">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="" alt="">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="" alt="">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="" alt="">
-                    </div>
+                    <?php
+                    if ($stands != null) {
+                        $aux = 1;
+                        $ini;
+                        foreach ($stands as $stand) {
+                            if ($aux == 1) {
+                                $ini = "carousel-item active";
+                                imgs($stand["Banner"], $stand["User_Id"], $stand["Name"],$ini);
+                            } else {
+                                $ini = "carousel-item";
+                                imgs($stand["Banner"], $stand["User_Id"], $stand["Name"],$ini);
+                            }
+                            $aux++;
+                        }
+                    }
+
+                    function imgs($img, $id, $title,$ini)
+                    {
+                        echo '<div class="'.$ini.'">
+                                    <img src="Public/Images/Stand_Banners/' . $id . '/' . $img . '" alt="' . $title . '">
+                                    <div class="carousel-caption">
+                                        <h3>' . $title . '</h3>
+                                    </div>
+                                </div>';
+                    }
+                    ?>
+
                 </div>
-                <a class="carousel-control-prev" href="#CS" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
+                <a class="carousel-control-prev" href="#carouselcarimg" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
                 </a>
-                <a class="carousel-control-next" href="#CS" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
+                <a class="carousel-control-next" href="#carouselcarimg" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
                 </a>
             </div>
         </div>
@@ -57,4 +73,4 @@ include("includes/menu.php");
     </div>
 </div>
 
-<?php include("includes/footer.php") ?>
+<?php include("layout/footer.php") ?>

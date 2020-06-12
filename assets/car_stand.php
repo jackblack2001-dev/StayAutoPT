@@ -1,5 +1,6 @@
 <?php
 
+#region SELECT
 function returnAllCars($con)
 {
     $data = null;
@@ -39,52 +40,58 @@ function returnMoreViewedCar($id, $con)
             WHERE Stand_Id = $id";
 }
 
-function returnCarsLastX($id,$numrows, $con)
+function returnCarsLastX($id, $numrows, $con)
 {
-    if (!is_null($id)) {
-        $sql = "SELECT * FROM Cars WHERE Stand_Id = $id ORDER BY CreatedCar desc limit $numrows";
-        if ($Result = $con->query($sql)) {
-            if ($Result->num_rows >= 1) {
-                while ($row = $Result->fetch_array()) {
-                    $cars[] = $row;
-                }
+    $sql = "SELECT * FROM Cars WHERE Stand_Id = $id ORDER BY CreatedCar desc limit $numrows";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $cars[] = $row;
+            }
 
-                return $cars;
-            } else return false;
+            return $cars;
         } else return false;
     } else return false;
 }
 
+function returnCar($id, $con)
+{
+    $sql = "SELECT * FROM Cars WHERE License_Plate = '$id'";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            while ($row = $Result->fetch_array()) {
+                return $row;
+            }
+        }
+    }
+}
+
 function returnCars($id, $con)
 {
-    if (!is_null($id)) {
-        $sql = "SELECT * FROM Cars WHERE Stand_id = '$id' AND State = 1";
-        if ($Result = $con->query($sql)) {
-            if ($Result->num_rows >= 1) {
-                while ($row = $Result->fetch_array()) {
-                    $cars[] = $row;
-                }
+    $sql = "SELECT * FROM Cars WHERE Stand_id = '$id' AND State = 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $cars[] = $row;
+            }
 
-                return $cars;
-            } else return 0;
-        } else return false;
+            return $cars;
+        } else return 0;
     } else return false;
 }
 
 function returnCarsSearch($id, $search, $con)
 {
-    if (!is_null($id)) {
-        $sql = "SELECT * FROM `cars` WHERE `Stand_Id` = $id 
+    $sql = "SELECT * FROM `cars` WHERE `Stand_Id` = $id 
         AND `Brand` LIKE '%$search%' OR `Model` LIKE '%$search%'";
-        if ($Result = $con->query($sql)) {
-            if ($Result->num_rows >= 1) {
-                while ($row = $Result->fetch_array()) {
-                    $cars[] = $row;
-                }
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $cars[] = $row;
+            }
 
-                return $cars;
-            } else return 1;
-        } else return false;
+            return $cars;
+        } else return 1;
     } else return false;
 }
 
@@ -106,19 +113,94 @@ function ThreeMoreRentable($con)
     }
 }
 
-function returnMostViewed($id,$con)
+function returnMostViewed($id, $con)
 {
     $sql = "SELECT License_Plate, Brand, Model, Year, Card_Image , MAX(Views) AS MV FROM Cars WHERE Stand_Id = $id AND State = 1 GROUP BY License_Plate ORDER BY MV DESC LIMIT 1";
-    if($Result = $con->query($sql)){
-        if($Result->num_rows == 1){
-            if($row = $Result->fetch_array()){
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
                 return $row;
             }
         }
     }
 }
+#endregion
+
+#region UPDATE
+function UpdateCar($id, $brand, $model, $kms, $year, $type_fuel, $type_gear, $description, $price, $con)
+{
+    if ($brand != "") {
+        $sql = "UPDATE Cars SET Brand = '$brand' WHERE License_Plate = '$id'";
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+
+    if ($model != "") {
+        $sql = "UPDATE Cars SET Model = '$model' WHERE License_Plate = '$id'";
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+
+    if($kms != ""){
+        $sql = "UPDATE Cars SET Kms = '$kms' WHERE License_Plate = '$id'";
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+
+    if($year != ""){
+        $sql = "UPDATE Cars SET Year = '$year' WHERE License_Plate = '$id'";
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+
+    if($type_fuel != ""){
+        $sql = "UPDATE Cars SET Type_Fuel = '$type_fuel'WHERE License_Plate = '$id'";
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+
+    if($type_gear != ""){
+        $sql = "UPDATE Cars SET Type_Gear = '$type_gear' WHERE License_Plate = '$id'";
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+
+    if($description != ""){
+        $sql = "UPDATE Cars SET Description = '$description' WHERE License_Plate = '$id'";    
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+
+    if($price != ""){
+        $sql = "UPDATE Cars SET Price = '$price' WHERE License_Plate = '$id'";    
+        if ($con->query($sql) != true) {
+            return false;
+        }
+    }
+}
+#endregion
 
 #region Car Photos
+function returnAllCarPhotos($id, $con)
+{
+    $sql = "SELECT * FROM Cars_Images WHERE License_Plate = '$id' AND State = '1'";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+    }
+}
+
 function FirtPhotoInserted($id, $con)
 {
     $sql = "SELECT MIN(License_Plate), Name FROM cars_images WHERE License_Plate = '$id' AND State = '1'";

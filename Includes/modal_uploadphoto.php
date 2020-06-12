@@ -34,7 +34,7 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Submeter Nova Foto</h4>
+                    <h4 class="modal-title">Submeter Nova Foto de Perfil</h4>
                 </div>
                 <div class="modal-body">
                     <input type="file" name="file">

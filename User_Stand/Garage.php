@@ -15,8 +15,8 @@ if ($data[0] === null) {
     header("location: StandRegister.php");
 }
 
-include("../includes/header.php");
-include("../includes/menu.php");
+include("../layout/header.php");
+include("../layout/menu.php");
 ?>
 
 <div class="container-fluid" id="Main_div">
@@ -50,7 +50,7 @@ include("../includes/menu.php");
 
 </div>
 
-<?php include("../Includes/footer.php") ?>
+<?php include("../layout/footer.php") ?>
 
 <script>
     $(document).ready(function() {

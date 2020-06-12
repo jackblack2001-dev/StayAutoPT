@@ -48,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-include("includes/header.php");
-include("includes/menu.php");
+include("layout/header.php");
+include("layout/menu.php");
 ?>
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
@@ -91,4 +91,4 @@ include("includes/menu.php");
     </div>
 </div>
 
-<?php include("includes/footer.php") ?>
+<?php include("layout/footer.php") ?>

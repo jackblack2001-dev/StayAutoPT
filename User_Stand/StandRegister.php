@@ -2,13 +2,16 @@
 session_start();
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
-include_once('../Public/config.php');
-include_once('../assets/stand_user.php');
-include_once('../assets/role_checker.php');
+include('../assets/remove_cache.php');
+include('../Public/config.php');
+include('../assets/stand_user.php');
+include('../assets/role_checker.php');
+include("../assets/user_info.php");
+
 roleStand();
 
 $Name = $Phone = $Adress = $Locality = $Banner = "";
-$Name_ERROR = $Phone_ERROR = $Adress_ERROR = $Locality_ERROR = $Banner_ERROR = "";
+$Name_ERROR = $Phone_ERROR = $Adress_ERROR = $Locality_ERROR = $Banner_ERROR = $Banner_ERROR = $Badge_ERROR = "";
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['TXT_Name'])) {
@@ -35,26 +38,64 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $Locality = $_POST['TXT_Locality'];
     }
 
-    if (empty($Name_ERROR) && empty($Phone_ERROR) && empty($Adress_ERROR) && empty($Locality_ERROR)) {
-
-        $sql = "INSERT INTO Stands(User_Id,Phone,Adress,Locality,Name,Views) VALUES(?,?,?,?,?,0)";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param('issss', $_SESSION['Id'], $Phone, $Adress, $Locality, $Name);
-        $stmt->execute();
-
-        //header("location: Stand_Dashboard.php");
+    //banner
+    $banner = scandir('../User_Stand/tmp/' . $_SESSION['Id'], 1 . '/banner');
+    array_splice($banner, -2);
+    if (!$banner) {
+        $banner_ERROR = "Tem que incluir um Banner";
     }
 
-    //Verificação da foto do Stand
-    /*if (empty($_POST['TXT_Name'])) {
-                    $Name_ERROR = "Deve indicar o Titulo/Nome do seu Stand";
-                } else {
-                    $Name = $_POST['TXT_Name'];
-                } */
+    //badge
+    $badge = scandir('../User_Stand/tmp/' . $_SESSION['Id'], 1 . '/badge');
+    array_splice($badge, -2);
+    if (!$badge) {
+        $badge_ERROR = "Tem que incluir um Badge";
+    }
+
+    if (empty($Name_ERROR) && empty($Phone_ERROR) && empty($Adress_ERROR) && empty($Locality_ERROR) && empty($banner_ERROR) && empty($badge_ERROR)) {
+
+
+        if (InsertStand($Phone, $Adress, $Locality, $Name, $con) == true) {
+
+            $data = returnlastid($con);
+
+            if (InsertStandConfig($data["id"], $con) == true) {
+                $bannerTempName = 'tmp/' . $_SESSION['Id'] . '/banner/' . $banner[0];
+                $bannerDestination = "../Public/Images/Stand_Banner/" . $data["id"];
+
+                $badgeTempName = 'tmp/' . $_SESSION['Id'] . '/badge/' . $badge[0];
+                $badgeDestination = "../Public/Images/Stand_Badge/" . $data["id"];
+
+                InsertBadge($con, $data["id"], $banner[0]);
+
+                InsertBadge($con, $data["id"], $badge[0]);
+
+                if (!is_dir($bannerDestination)) {
+                    mkdir($bannerDestination);
+                }
+
+                if (!is_dir($badgeDestination)) {
+                    mkdir($badgeDestination);
+                }
+
+                $bannerDestination .= "/" . $banner[0];
+                rename($bannerTempName, $bannerDestination);
+
+                $badgeDestination .= "/" . $badge[0];
+                rename($badgeTempName, $badgeDestination);
+
+                header("location: Stand_Dashboard.php");
+            }
+        }
+    } else {
+        remove_tmp_US();
+    }
+} else {
+    remove_tmp_US();
 }
 
-include("../includes/header.php");
-include("../includes/menu.php");
+include("../layout/header.php");
+include("../layout/menu.php");
 ?>
 
 <div class="container">
@@ -86,14 +127,101 @@ include("../includes/menu.php");
             </div>
             <br>
 
-            <label>Foto de Capa <sup class="text-danger">*</sup></label><br>
-            <input type="file" class="" name="FILE_Banner"><br /><br />
-            <small class="text-danger"><?php echo $Banner_ERROR ?></small>
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="mb-4">
+                        <label>Foto de Perfil <sup class="text-danger">*</sup></label><br>
+                        <input type="file" class="form-control-file" id="bagde">
+                        <small class="text-danger"><?php echo $Badge_ERROR ?></small>
+                    </div>
 
-            <br />
+                    <div class="row mt-4 mb-4 ml-2" id="thumbnails_badge">
+                    </div>
+
+                    <div class="row mt-4 mb-4 ml-2" id="thumbnails_badge_error">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-4">
+                        <label>Foto de Banner<sup class="text-danger">*</sup></label><br>
+                        <input type="file" class="form-control-file" id="banner">
+                        <small class="text-danger"><?php echo $Banner_ERROR ?></small>
+                    </div>
+
+                    <div class="row mt-4 mb-4 ml-2" id="thumbnails_banner">
+                    </div>
+
+                    <div class="row mt-4 mb-4 ml-2" id="thumbnails_banner_error">
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-success">Registar Stand</button>
         </form>
     </div>
 </div>
 
-<?php include("../includes/footer.php"); ?>
+<?php include("../layout/footer.php"); ?>
+<script>
+    $("#banner").change(function() {
+        photo = new FormData();
+        if ($(this).prop('files').length > 0) {
+            for (var i = 0; i < $(this).prop('files').length; i++) {
+                photo.append("file", $(this).prop('files')[i]);
+            }
+
+            photo.append("who", "stand");
+            photo.append("type", "thumbnail_banner");
+            photo.append("id", <?= $_SESSION['Id'] ?>);
+
+            $.ajax({
+                url: "../assets/photosubmit_standregister.php",
+                type: "POST",
+                data: photo,
+                processData: false,
+                contentType: false,
+                success: function(photos) {
+                    $("#banner").val("");
+                    if (photos.includes("alert")) {
+                        $("#thumbnails_banner_error").append(photos);
+                    } else {
+                        <?php remove_tmp_US(); ?>
+                        $("#thumbnails_banner").empty();
+                        $("#thumbnails_banner").append(photos);
+                    }
+                }
+            });
+        }
+    });
+
+    $("#bagde").change(function() {
+        photo = new FormData();
+        if ($(this).prop('files').length > 0) {
+            for (var i = 0; i < $(this).prop('files').length; i++) {
+                photo.append("file", $(this).prop('files')[i]);
+            }
+
+            photo.append("who", "stand");
+            photo.append("type", "thumbnail_badge");
+            photo.append("id", <?= $_SESSION['Id'] ?>);
+
+            $.ajax({
+                url: "../assets/photosubmit_standregister.php",
+                type: "POST",
+                data: photo,
+                processData: false,
+                contentType: false,
+                success: function(photos) {
+                    $("#banner").val("");
+                    if (photos.includes("alert")) {
+                        $("#thumbnails_badge_error").append(photos);
+                    } else {
+                        <?php remove_tmp_US(); ?>
+                        $("#thumbnails_badge").empty();
+                        $("#thumbnails_badge").append(photos);
+                    }
+                }
+            });
+        }
+    });
+</script>

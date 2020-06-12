@@ -129,8 +129,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     remove_tmp_US();
 }
 
-include("../includes/header.php");
-include("../includes/menu.php");
+include("../layout/header.php");
+include("../layout/menu.php");
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -213,11 +213,12 @@ include("../includes/menu.php");
                     </div>
                 </div>
 
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Descrição</span>
-                    </div>
+                <div class="mb-4">
+                    <span class="input-group-text">Descrição</span>
                     <textarea name="TXT_Description" class="form-control" rows="5"><?= $Description ?></textarea>
+                    <script>
+                        CKEDITOR.replace('TXT_Description');
+                    </script>
                     <small class="form-text text-danger"><?php echo $Description_ERROR ?></small>
                 </div>
 
@@ -237,7 +238,7 @@ include("../includes/menu.php");
     </div>
 </div>
 
-<?php include("../includes/footer.php") ?>
+<?php include("../layout/footer.php") ?>
 
 <script>
     $("#photos").change(function() {

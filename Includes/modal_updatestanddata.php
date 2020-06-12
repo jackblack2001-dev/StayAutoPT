@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="phone"><strong>Localidade</strong></label>
+                        <label for="locality"><strong>Localidade</strong></label>
                         <select class="form-control" onchange="Showitems(this)" name="Locality">
                             <option value="" disabled selected id="default">Escolha a Localidade</option>
                         </select>
