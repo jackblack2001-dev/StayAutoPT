@@ -206,7 +206,7 @@ include("layout/menu.php");
                 ?>
             </div>
         </div>
-        <div class="col-md-2">olas
+        <div class="col-md-2">olaassdf
         </div>
     </div>
 </div>
