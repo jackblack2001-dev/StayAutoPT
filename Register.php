@@ -2,7 +2,7 @@
 session_start();
 //TODO: Alterar inserção na db para com Prepare (ver standregister)
 require_once('Public/config.php');
-define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
 define("INCLUDE_PATH", __DIR__);
 
 $Mail = $Name = $Phone = $Password = $REPassword = "";

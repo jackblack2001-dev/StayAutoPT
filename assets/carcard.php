@@ -1,6 +1,6 @@
 <?php
 session_start();
-define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
 define("INCLUDE_PATH", __DIR__);
 include('stand_user.php');
 include('car_stand.php');
