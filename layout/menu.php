@@ -19,7 +19,7 @@ if(isset($_SESSION['Id'])){
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="" class="nav-link"><i class="fa fa-car"></i>Carros</a>
+                <a href="Car_Search.php" class="nav-link"><i class="fa fa-car"></i>Carros</a>
             </li>
             <?php
             if (isset($_SESSION['Profile']) && $_SESSION['Profile'] == '0') {

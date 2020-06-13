@@ -10,6 +10,47 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="<?php echo ROOT_PATH; ?>ckeditor/ckeditor.js"></script>
     <style>
+        /* Index */
+        .div-5-most-viewed {
+            white-space: nowrap;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-left: -20px;
+            margin-right: -20px;
+        }
+        .div-5-most-viewed .card {
+            display: inline-block;
+            margin-left: auto !important;
+        }
+
+        .top-left-5-most-viewed {
+            position: absolute;
+            bottom: 365px;
+            left: -13px;
+            background-color: #d39e00;
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .div-other-cars{
+            padding-left: 30px;
+        }
+
+        @media (max-width:1840px){
+            .div-other-cars{
+                padding-left: 190px;
+            }
+        }
+
+        @media (max-width:1700px){
+            .div-other-cars{
+                padding-left: 0px;
+            }
+        }
+
         .card {
             border: 1px groove #8c8e8c38;
         }

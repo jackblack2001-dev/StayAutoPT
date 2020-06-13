@@ -136,7 +136,7 @@ include("../layout/menu.php");
             <div class="card shadow sd-most-view-car" style="width: 340px" id="card_MVC">
                 <div class="card-body no-padding">
                     <div class="col no-padding">
-                        <img src="<?php echo ROOT_PATH . $imgname ?>" alt="exemplo" style="width: 100%; height: 340px">
+                        <img src="<?php echo ROOT_PATH . $imgname ?>" alt="<?=$Name?>" style="width: 100%; height: 340px">
                         <div class="bottom-right-car shadow-lg">
                             <span style="font-size:25px"><?= $car["MV"] ?> <i class="fa fa-eye"></i></span>
                         </div>

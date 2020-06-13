@@ -13,8 +13,8 @@ function returnAllCars($con)
                 $data[] = $row;
             }
             return $data;
-        }
-    }
+        } else return null;
+    } else return null;
 }
 
 function returnCarsViews($con)
@@ -32,12 +32,18 @@ function returnCarsViews($con)
     }
 }
 
-function returnMoreViewedCar($id, $con)
+function returnMostViewedCar5($con)
 {
-    $sql = "SELECT *,Name FROM Cars 
-            INNER JOIN Cars_Images
-            ON Cars.License_Plate = Cars_Images.License_Plate
-            WHERE Stand_Id = $id";
+    $sql = "SELECT * FROM Cars WHERE State = 1 ORDER BY VIEWS DESC LIMIT 5";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $cars[] = $row;
+            }
+
+            return $cars;
+        } else return false;
+    } else return false;
 }
 
 function returnCarsLastX($id, $numrows, $con)
@@ -77,6 +83,20 @@ function returnCars($id, $con)
 
             return $cars;
         } else return 0;
+    } else return false;
+}
+
+function returnRandomCar6($con)
+{
+    $sql = "SELECT * FROM Cars WHERE State = 1 ORDER BY RAND() LIMIT 6";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $cars[] = $row;
+            }
+
+            return $cars;
+        } else return false;
     } else return false;
 }
 
@@ -143,43 +163,43 @@ function UpdateCar($id, $brand, $model, $kms, $year, $type_fuel, $type_gear, $de
         }
     }
 
-    if($kms != ""){
+    if ($kms != "") {
         $sql = "UPDATE Cars SET Kms = '$kms' WHERE License_Plate = '$id'";
         if ($con->query($sql) != true) {
             return false;
         }
     }
 
-    if($year != ""){
+    if ($year != "") {
         $sql = "UPDATE Cars SET Year = '$year' WHERE License_Plate = '$id'";
         if ($con->query($sql) != true) {
             return false;
         }
     }
 
-    if($type_fuel != ""){
+    if ($type_fuel != "") {
         $sql = "UPDATE Cars SET Type_Fuel = '$type_fuel'WHERE License_Plate = '$id'";
         if ($con->query($sql) != true) {
             return false;
         }
     }
 
-    if($type_gear != ""){
+    if ($type_gear != "") {
         $sql = "UPDATE Cars SET Type_Gear = '$type_gear' WHERE License_Plate = '$id'";
         if ($con->query($sql) != true) {
             return false;
         }
     }
 
-    if($description != ""){
-        $sql = "UPDATE Cars SET Description = '$description' WHERE License_Plate = '$id'";    
+    if ($description != "") {
+        $sql = "UPDATE Cars SET Description = '$description' WHERE License_Plate = '$id'";
         if ($con->query($sql) != true) {
             return false;
         }
     }
 
-    if($price != ""){
-        $sql = "UPDATE Cars SET Price = '$price' WHERE License_Plate = '$id'";    
+    if ($price != "") {
+        $sql = "UPDATE Cars SET Price = '$price' WHERE License_Plate = '$id'";
         if ($con->query($sql) != true) {
             return false;
         }

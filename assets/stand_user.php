@@ -60,6 +60,30 @@ function returnStand($id, $con)
     }
 }
 
+function returnStandsRandom5($con)
+{
+    $sql = "SELECT S.Stand_Id,Name, Banner_Name FROM Stands S 
+    INNER JOIN Stands_Badges SB
+    ON
+    SB.Stand_Id = S.Stand_Id
+    INNER JOIN Stands_Banners SBN
+    ON
+    SBN.Stand_Id = S.Stand_Id
+    WHERE SB.State = 1 AND SBN.State = 1
+    ORDER BY Rand() LIMIT 5";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] = $row;
+            }
+
+            return $data;
+        } else {
+            return null;
+        }
+    }
+}
+
 function returnNews($id, $con)
 {
     $sql = "SELECT News_Id, U.Name, Title, Text, CreatedNews FROM News N
@@ -107,22 +131,6 @@ function returnNew($idnews, $idstand, $con)
             } else {
                 return null;
             }
-        }
-    }
-}
-
-function returnStandsRandom5($con)
-{
-    $sql = "SELECT User_Id, Banner, Name FROM Stands WHERE Banner != '' ORDER BY Rand() LIMIT 5";
-    if ($Result = $con->query($sql)) {
-        if ($Result->num_rows >= 1) {
-            while ($row = $Result->fetch_array()) {
-                $data[] = $row;
-            }
-
-            return $data;
-        } else {
-            return null;
         }
     }
 }
@@ -261,7 +269,7 @@ function InsertNews($standid, $userid, $title, $text, $con)
 #region Photos
 function InsertBanner($con, $id, $name)
 {
-    storePreviousBanner($id,$con);
+    storePreviousBanner($id, $con);
 
     $sql = "INSERT INTO Stands_Banners (Stand_Id, Banner_Name) VALUES(?,?)";
     $stmt = $con->prepare($sql);
@@ -277,7 +285,7 @@ function InsertBanner($con, $id, $name)
 
 function InsertBadge($con, $id, $name)
 {
-    storePreviousBadge($id,$con);
+    storePreviousBadge($id, $con);
 
     $sql = "INSERT INTO Stands_Badges (Stand_Id, Badge_Name) VALUES(?,?)";
     $stmt = $con->prepare($sql);
@@ -291,7 +299,7 @@ function InsertBadge($con, $id, $name)
     }
 }
 
-function storePreviousBadge($id,$con)
+function storePreviousBadge($id, $con)
 {
     $sql = "SELECT Id_Badge FROM Stands_Badges WHERE Stand_Id = $id ORDER BY CreatedBadge DESC LIMIT 1";
     if ($Result = $con->query($sql)) {
@@ -305,7 +313,7 @@ function storePreviousBadge($id,$con)
     }
 }
 
-function storePreviousBanner($id,$con)
+function storePreviousBanner($id, $con)
 {
     $sql = "SELECT Id_Banner FROM Stands_Banners WHERE Stand_Id = $id ORDER BY CreatedBanner DESC LIMIT 1";
     if ($Result = $con->query($sql)) {
