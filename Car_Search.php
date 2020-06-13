@@ -1,6 +1,6 @@
 <?php
 session_start();
-define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
 define("INCLUDE_PATH", __DIR__);
 include("assets/user_info.php");
 
@@ -14,11 +14,11 @@ include("layout/menu.php");
             <!-- divisoria -->
         </div>
         <div class="col-md-8">
+            <!-- Area do ricardo -->
             <div class="row">
-                <!-- minha area de trabalho -->
                 <div class="card shadow">
                     <div class="card-header">
-                    <h4>Filtros</h4>
+                        <h4>Filtros</h4>
                     </div>
                     <div class="card-body">
                     </div>
@@ -27,7 +27,6 @@ include("layout/menu.php");
             <div class="row mt-4" id="cars_show">
             </div>
             <div class="card shadow-lg">
-                <!-- parte david -->
                 <div class="card-body">
                     <div class="row">
                         <img src="Public/Images/Car_Photos/no_image_car.png" alt="" style="width: 250px; height: 170px;">
