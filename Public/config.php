@@ -11,7 +11,5 @@ if($con == false){
     die("ERRO: de ligação ao servidor. " . $con->connect_error);
 }
 
-$con->set_charset("utf8");
-
-echo "UwU";
+$con->set_charset("utf8"); /* dasfsdf */
 ?>
