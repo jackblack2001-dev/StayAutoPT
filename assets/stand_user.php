@@ -1,5 +1,39 @@
 <?php
+#region DataProcessing
+function StandProcessing($data)
+{
+    if ($data["Banner_Name"] != null) {
+        $data["Banner_Name"] = $data["Stand_Id"] . "/" . $data["Banner_Name"];
+    } else {
+        $data["Banner_Name"] = "default_stand_banner.jpg";
+    }
+
+    //TODO: localidades
+
+    return $data;
+}
+#endregion
+
 #region Selects
+function returnPaginationStands($page, $num_rows_on_page, $con)
+{
+    $sql = "SELECT * FROM Stands S
+    INNER JOIN Stands_Banners SB
+    ON SB.Stand_Id = S.Stand_Id
+    WHERE SB.State = 1 LIMIT ?,?";
+
+    if ($stmt = $con->prepare($sql)) {
+        $calc_page = ($page - 1) * $num_rows_on_page;
+        $stmt->bind_param('ii', $calc_page, $num_rows_on_page);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = StandProcessing($row);
+        }
+        return $data;
+    }
+}
+
 function returnAllStands($con)
 {
     $data = null;

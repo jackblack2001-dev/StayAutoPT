@@ -20,6 +20,7 @@
             margin-left: -20px;
             margin-right: -20px;
         }
+
         .div-5-most-viewed .card {
             display: inline-block;
             margin-left: auto !important;
@@ -35,20 +36,71 @@
             padding-right: 10px;
         }
 
-        .div-other-cars{
+        .div-other-cars {
             padding-left: 30px;
         }
 
-        @media (max-width:1840px){
-            .div-other-cars{
+        @media (max-width:1840px) {
+            .div-other-cars {
                 padding-left: 190px;
             }
         }
 
-        @media (max-width:1700px){
-            .div-other-cars{
+        @media (max-width:1700px) {
+            .div-other-cars {
                 padding-left: 0px;
             }
+        }
+
+        /* car search */
+        .pagination {
+            list-style-type: none;
+            padding: 10px 0;
+            display: inline-flex;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        .pagination li {
+            box-sizing: border-box;
+            padding-right: 10px;
+        }
+
+        .pagination li a {
+            box-sizing: border-box;
+            background-color: #e2e6e6;
+            padding: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            color: #616872;
+            border-radius: 4px;
+        }
+
+        .pagination li a:hover {
+            background-color: #d4dada;
+        }
+
+        .pagination .next a,
+        .pagination .prev a {
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .pagination .currentpage a {
+            background-color: #518acb;
+            color: #fff;
+        }
+
+        .pagination .currentpage a:hover {
+            background-color: #518acb;
+        }
+
+        /*  */
+
+        .a-cars{
+            color: #000000;
+            text-decoration: none !important;
         }
 
         .card {

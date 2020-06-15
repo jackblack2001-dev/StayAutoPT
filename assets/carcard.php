@@ -1,6 +1,6 @@
 <?php
 session_start();
-define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAuto_PT/");
+define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
 define("INCLUDE_PATH", __DIR__);
 include('stand_user.php');
 include('car_stand.php');
@@ -73,33 +73,11 @@ function ShowCarCarsLastX($numrows, $con)
 
     $cars = returnCarsLastX($data['Stand_Id'], $numrows, $con);
 
-    $string = "";
-    $Name = "";
-    if ($cars!=null) {
+    if ($cars != null) {
         foreach ($cars as $row) {
-            $string = $row["Brand"] . " " . $row["Model"];
-
-            if (strlen($string) > 15) {
-                $Name = substr($string, 0, 15) . "...";
-            } else {
-                $Name = $string;
-            }
-
-            if ($row["Card_Image"] == null) {
-                $name = FirtPhotoInserted($row["License_Plate"], $con);
-
-                if ($name == false) {
-                    $imgname = "no_image_car.png";
-                } else {
-                    $imgname = $row["License_Plate"] . "/" . $name;
-                }
-            } else {
-                $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
-            }
-
-            $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
+            $card .= card($row["Model"], $row["Price"], $row["Year"], $row["Kms"], $row["Card_Image"], $row["License_Plate"]);
         }
-    }else{
+    } else {
         $card = error(0);
     }
     echo $card;
@@ -112,35 +90,13 @@ function ShowCarCars($con)
     $card = "";
     $data = returnStand($_SESSION["Id"], $con);
 
-    $cars = returnCars($data["Stand_Id"], $con);
+    $cars = returnStandCars($data["Stand_Id"], $con);
 
     if ($cars == 0) {
         error(0);
     } else {
-        $string = "";
-        $Name = "";
         foreach ($cars as $row) {
-            $string = $row["Brand"] . " " . $row["Model"];
-
-            if (strlen($string) > 15) {
-                $Name = substr($string, 0, 15) . "...";
-            } else {
-                $Name = $string;
-            }
-
-            if ($row["Card_Image"] == null) {
-                $name = FirtPhotoInserted($row["License_Plate"], $con);
-
-                if ($name == false) {
-                    $imgname = "no_image_car.png";
-                } else {
-                    $imgname = $row["License_Plate"] . "/" . $name;
-                }
-            } else {
-                $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
-            }
-
-            $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
+            $card .= card($row["Model"], $row["Price"], $row["Year"], $row["Kms"], $row["Card_Image"], $row["License_Plate"]);
         }
         echo $card;
     }
@@ -156,30 +112,8 @@ function ShowCarCarsSearch($search, $con)
     if ($cars == 1) {
         error(1);
     } else {
-        $string = "";
-        $Name = "";
         foreach ($cars as $row) {
-            $string = $row["Brand"] . " " . $row["Model"];
-
-            if (strlen($string) > 15) {
-                $Name = substr($string, 0, 15) . "...";
-            } else {
-                $Name = $string;
-            }
-
-            if ($row["Card_Image"] == null) {
-                $name = FirtPhotoInserted($row["License_Plate"], $con);
-
-                if ($name == false) {
-                    $imgname = "no_image_car.png";
-                } else {
-                    $imgname = $row["License_Plate"] . "/" . $name;
-                }
-            } else {
-                $imgname = $row["License_Plate"] . "/" . $row["Card_Image"];
-            }
-
-            $card .= card($Name, $row["Price"], $row["Year"], $row["Kms"], $imgname, $row["License_Plate"]);
+            $card .= card($row["Model"], $row["Price"], $row["Year"], $row["Kms"], $row["Card_Image"], $row["License_Plate"]);
         }
         echo $card;
     }

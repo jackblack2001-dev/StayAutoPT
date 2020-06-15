@@ -1,6 +1,6 @@
 <?php
-if(isset($_SESSION['Id'])){
-    $row = returnUser($_SESSION['Id'],$con);
+if (isset($_SESSION['Id'])) {
+    $row = returnUser($_SESSION['Id'], $con);
     if ($row['Badge'] != null) {
         $badge = ROOT_PATH . "Public/Images/User_Badge/" . $row["User_Id"] . "/" . $row["Badge"];
     } else {
@@ -19,7 +19,10 @@ if(isset($_SESSION['Id'])){
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="Car_Search.php" class="nav-link"><i class="fa fa-car"></i>Carros</a>
+                <a href="<?= ROOT_PATH ?>Car_Search.php" class="nav-link"><i class="fa fa-car"></i>Carros</a>
+            </li>
+            <li class="nav-item">
+                <a href="<?= ROOT_PATH ?>Stand_Search.php" class="nav-link">Stands</a>
             </li>
             <?php
             if (isset($_SESSION['Profile']) && $_SESSION['Profile'] == '0') {

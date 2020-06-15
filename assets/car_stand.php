@@ -1,20 +1,71 @@
 <?php
 
-#region SELECT
-function returnAllCars($con)
+#region DataProcessing
+function DataProcessing($data, $iscard, $con)
 {
-    $data = null;
+    //fuel Processing
+    if ($data["Type_Fuel"] == 1) {
+        $data["Type_Fuel"] = "Gasolina";
+    } else {
+        $data["Type_Fuel"] = "Diesel";
+    }
 
-    $sql = "SELECT * FROM Cars";
+    //gear Processing
+    if ($data["Type_Gear"] == 1) {
+        $data["Type_Gear"] = "Manual";
+    } else if ($data["Type_Gear"] == 2) {
+        $data["Type_Gear"] = "Automatico";
+    } else {
+        $data["Type_Gear"] = "CVT";
+    }
 
-    if ($Result = $con->query($sql)) {
-        if ($Result->num_rows >= 1) {
-            while ($row = $Result->fetch_array()) {
-                $data[] = $row;
-            }
-            return $data;
-        } else return null;
-    } else return null;
+    //car name Processing
+    $Name = $data["Brand"] . " " . $data["Model"];
+
+    if ($iscard) {
+        if (strlen($Name) > 15) {
+            $data["Model"] = substr($Name, 0, 15) . "...";
+        } else {
+            $data["Model"] = $Name;
+        }
+    } else {
+        $data["Model"] = $Name;
+    }
+
+    //image Processing
+    if ($data["Card_Image"] == null) {
+        $name = FirtPhotoInserted($data["License_Plate"], $con);
+
+        if ($name == false) {
+            $data["Card_Image"] = "no_image_car.png";
+        } else {
+            $data["Card_Image"] = $data["License_Plate"] . "/" . $name;
+        }
+    } else {
+        $name = $data["License_Plate"] . "/" . $data["Card_Image"];
+        $data["Card_Image"] = $name;
+    }
+
+    return $data;
+}
+#endregion
+
+
+#region SELECT
+function returnPaginationCars($page, $num_rows_on_page, $con)
+{
+    $sql = "SELECT * FROM Cars WHERE State = 1 LIMIT ?,?";
+
+    if ($stmt = $con->prepare($sql)) {
+        $calc_page = ($page - 1) * $num_rows_on_page;
+        $stmt->bind_param('ii', $calc_page, $num_rows_on_page);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = DataProcessing($row, false, $con);
+        }
+        return $data;
+    }
 }
 
 function returnCarsViews($con)
@@ -52,9 +103,8 @@ function returnCarsLastX($id, $numrows, $con)
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
-                $cars[] = $row;
+                $cars[] = DataProcessing($row, true, $con);
             }
-
             return $cars;
         } else return false;
     } else return false;
@@ -72,13 +122,13 @@ function returnCar($id, $con)
     }
 }
 
-function returnCars($id, $con)
+function returnStandCars($id, $con)
 {
     $sql = "SELECT * FROM Cars WHERE Stand_id = '$id' AND State = 1";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
-            while ($row = $Result->fetch_array()) {
-                $cars[] = $row;
+            while ($row = $Result->fetch_assoc()) {
+                $cars[] = DataProcessing($row, true, $con);
             }
 
             return $cars;
@@ -107,7 +157,7 @@ function returnCarsSearch($id, $search, $con)
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
-                $cars[] = $row;
+                $cars[] = DataProcessing($row, true, $con);
             }
 
             return $cars;

@@ -4,15 +4,15 @@ define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
 define("INCLUDE_PATH", __DIR__);
 include("Public/config.php");
 include("assets/user_info.php");
-include("assets/car_stand.php");
+include("assets/stand_user.php");
 
-$total_pages = $con->query("SELECT * FROM Cars WHERE State = 1")->num_rows;
+$total_pages = $con->query("SELECT * FROM Stands")->num_rows;
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 
 $num_rows_on_page = 5;
 
-$data = returnPaginationCars($page, $num_rows_on_page, $con);
+$data = returnPaginationStands($page, $num_rows_on_page, $con);
 
 include("layout/header.php");
 include("layout/menu.php");
@@ -39,17 +39,10 @@ include("layout/menu.php");
                     <div class="card shadow-lg" style="width: 100%;">
                         <div class="card-body">
                             <div class="row">
-                                <img class="rounded" src="Public/Images/Car_Photos/<?=$row["Card_Image"]?>" alt="" style="width: 250px; height: 170px;">
+                                <img class="rounded" src="Public/Images/Stand_Banners/<?=$row["Banner_Name"]?>" alt="" style="width: 250px; height: 170px;">
                                 <div class="col ml-2">
-                                    <h4><strong><a class="a-cars" href="<?= ROOT_PATH?>User_Stand/Car_Profile.php?id=<?=urlencode(base64_encode($row["License_Plate"]))?>"><?= $row["Model"] ?></a></strong></h4>
-                                    <h5><small><?=$row["Type_Fuel"]?> - <?=$row["Kms"]?> Km</small></h5>
+                                    <h4><strong><?= $row["Name"] ?></strong></h4>
                                     <small>Viseu <i class="fa fa-map-marker" style="color: red;"></i></small>
-                                </div>
-                                <div class="col">
-                                    <div class="float-right">
-                                        <h2 class="mb-4"><?= $row["Price"]?> <i class="fa fa-euro"></i></h2>
-                                        <h5 class="float-right"><small><?=$row["Year"]?></small></h5>
-                                    </div>
                                 </div>
                             </div>
                         </div>
