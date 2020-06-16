@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 13-Jun-2020 às 18:33
+-- Generation Time: 16-Jun-2020 às 12:32
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 7.2.12
 
@@ -133,7 +133,7 @@ CREATE TABLE `config_stands` (
 --
 
 INSERT INTO `config_stands` (`Id_CS`, `Stand_Id`, `ItemsOrder`, `Id_News`, `NumCarN`) VALUES
-(1, 1, 'card_c:card_p:card_n:card_nc', 4, 4),
+(1, 1, 'card_c:card_p:card_n:card_nc', 2, 5),
 (2, 12, 'card_n:card_c:card_nc', 0, 4),
 (3, 13, 'card_nc', 0, 1),
 (4, 14, 'card_nc', 0, 5);
@@ -317,6 +317,31 @@ INSERT INTO `locations` (`local_id`, `name_location`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `messages`
+--
+
+CREATE TABLE `messages` (
+  `Message_Id` int(11) NOT NULL,
+  `User_Id` int(11) NOT NULL,
+  `Receiver_Id` int(11) NOT NULL,
+  `License_Plate` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `Message` varchar(5000) COLLATE utf8_unicode_ci NOT NULL,
+  `Neg_Price` int(11) DEFAULT NULL,
+  `Viewed` int(11) NOT NULL DEFAULT '0',
+  `CreatedMessage` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `messages`
+--
+
+INSERT INTO `messages` (`Message_Id`, `User_Id`, `Receiver_Id`, `License_Plate`, `Title`, `Message`, `Neg_Price`, `Viewed`, `CreatedMessage`) VALUES
+(1, 6, 1, 'AE-86-TY', 'quero desesperadamente este carro', '<p>este carro e e muito importante para mim o belhote</p>\r\n', 1000, 0, '2020-06-15 16:28:16');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `news`
 --
 
@@ -367,7 +392,7 @@ CREATE TABLE `stands` (
 --
 
 INSERT INTO `stands` (`Stand_Id`, `User_Id`, `Phone`, `Adress`, `Locality`, `Name`, `Views`, `CreatedStand`, `UpdatedStand`) VALUES
-(1, 1, '938366677', 'Rua do Arco ', 'Viseu', 'Initial D the Ultimate Stand', 1, '0000-00-00 00:00:00', '2020-06-08 19:32:57'),
+(1, 1, '938366677', 'Rua do Arco ', 'Viseu', 'Initial D the Ultimate Stand', 1, '0000-00-00 00:00:00', '2020-06-16 10:27:16'),
 (12, 5, '998877123', 'Rua da Avenida das meninas duvidosas', 'Viseu', 'Jomamas Place', 0, '2020-06-09 15:35:46', '2020-06-09 20:07:17'),
 (13, 6, '1578495623', 'Rua ao pe do rio tejo', 'Lisboa', 'Lindo Stand a beira mar', 0, '2020-06-09 20:54:32', NULL),
 (14, 3, '939393861', 'Rua da tia maria 2a', 'Braga', 'Stand do tio João', 0, '2020-06-10 16:14:57', NULL);
@@ -435,7 +460,8 @@ INSERT INTO `stands_banners` (`Id_Banner`, `Stand_Id`, `Banner_Name`, `State`, `
 (10, 12, '5ee38aa9069ef7.02008432.png', 1, '2020-06-12 15:01:13', NULL),
 (11, 13, '5ee38b0fb4d215.05094237.jpg', 1, '2020-06-12 15:02:55', NULL),
 (12, 14, '5ee38b6b764c96.78375973.png', 1, '2020-06-12 15:04:27', NULL),
-(13, 1, '5ee38b8ada2260.24139323.jpg', 1, '2020-06-12 15:04:58', NULL);
+(13, 1, '5ee38b8ada2260.24139323.jpg', 0, '2020-06-12 15:04:58', '2020-06-15 10:27:01'),
+(14, 1, '5ee73ee5c536d4.01328283.jpg', 1, '2020-06-15 10:27:01', NULL);
 
 -- --------------------------------------------------------
 
@@ -479,7 +505,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`User_Id`, `Name`, `Email`, `Phone`, `Profile`, `Password`, `Banner`, `Badge`, `createdAccount`, `updateAccount`) VALUES
 (1, 'David Coelho', 'ddsc2001@gmail.com', '996683254', 2, '$2y$10$rpwpf9UXeqxu/jgo7JB1TexZWwK7rFhAm4esZDojP.vJE9M/asHs6', '5ed0e974784653.70049562.jpg', '5ed0f51b3a8d55.32124935.jpg', '2019-04-10 12:15:24', '2020-05-29 12:42:19'),
-(2, 'admin', 'admin@admin.com', '938366677', 0, '$2y$10$CDhswNyixY8rYpzRpJdqkeXqL0gi5EmB1pKkaJrhwkCj1VKG5Aq26', '5ec7ae0ea5e6f3.54048202.jpg', '5ec7ae88280104.83625511.jpg', '2020-03-18 07:51:04', '2020-05-22 11:50:48'),
+(2, 'admin', 'admin@admin.com', '938366677', 0, '$2y$10$CDhswNyixY8rYpzRpJdqkeXqL0gi5EmB1pKkaJrhwkCj1VKG5Aq26', '5ee8953e44d041.38674520.jpg', '5ec7ae88280104.83625511.jpg', '2020-03-18 07:51:04', '2020-06-16 10:47:42'),
 (3, 'Teste', 'teste@teste.com', '983564721', 2, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', NULL, NULL, '2020-05-09 12:06:38', '2020-06-10 16:09:29'),
 (4, 'Armindo Pereira', 'AP1980@gmail.com', '958674321', 1, '$2y$10$Rw8aadCvBUI8PpzRaLS/Wu9hj3jpC1teg2zwL/11NKRqrgnl3l4JG', NULL, NULL, '2020-05-13 13:17:38', '2020-05-10 16:38:17'),
 (5, 'Joes nada', 'joes@nada.pt', '383559557', 2, '$2y$10$VhZn6PK4LqvFDiG2J3RTc.CRBVegA31AhhQwxS9KUwAyH0IPnoZ0G', NULL, NULL, '2020-05-18 15:16:14', '2020-06-09 12:40:35'),
@@ -529,6 +555,15 @@ ALTER TABLE `cars_images`
 ALTER TABLE `config_stands`
   ADD PRIMARY KEY (`Id_CS`),
   ADD KEY `standid` (`Stand_Id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`Message_Id`),
+  ADD KEY `MUS` (`User_Id`),
+  ADD KEY `MUR` (`Receiver_Id`),
+  ADD KEY `MCI` (`License_Plate`);
 
 --
 -- Indexes for table `news`
@@ -602,6 +637,12 @@ ALTER TABLE `config_stands`
   MODIFY `Id_CS` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `Message_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
@@ -623,7 +664,7 @@ ALTER TABLE `stands_badges`
 -- AUTO_INCREMENT for table `stands_banners`
 --
 ALTER TABLE `stands_banners`
-  MODIFY `Id_Banner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Id_Banner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `stand_ban`
@@ -667,6 +708,14 @@ ALTER TABLE `config_stands`
   ADD CONSTRAINT `standid` FOREIGN KEY (`Stand_Id`) REFERENCES `stands` (`Stand_Id`);
 
 --
+-- Limitadores para a tabela `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `MCI` FOREIGN KEY (`License_Plate`) REFERENCES `cars` (`License_Plate`),
+  ADD CONSTRAINT `MUR` FOREIGN KEY (`Receiver_Id`) REFERENCES `users` (`User_Id`),
+  ADD CONSTRAINT `MUS` FOREIGN KEY (`User_Id`) REFERENCES `users` (`User_Id`);
+
+--
 -- Limitadores para a tabela `news`
 --
 ALTER TABLE `news`
@@ -705,304 +754,6 @@ ALTER TABLE `users_ban`
   ADD CONSTRAINT `User_Id` FOREIGN KEY (`User_id`) REFERENCES `users` (`User_Id`),
   ADD CONSTRAINT `User_ban_Id` FOREIGN KEY (`User_ban_id`) REFERENCES `users` (`User_Id`);
 COMMIT;
---
--- brands
---
-CREATE TABLE `brand` (
-  `brand_id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `brand`
---
-
-INSERT INTO `brand` (`brand_id`, `name`) VALUES
-(1, 'toyota'),
-(2, 'BMW'),
-(7, 'KTM'),
-(8, 'Land Rover'),
-(9, 'Maybach'),
-(12, 'Renault'),
-(13, 'Dodge Viper'),
-(14, 'Koenigsegg'),
-(16, 'Scion'),
-(17, 'Skoda'),
-(18, 'Daewoo'),
-(20, 'Opel'),
-(21, 'Datsun'),
-(22, 'Holden'),
-(23, 'Smart'),
-(24, 'Alpine'),
-(25, 'DS'),
-(27, 'Nissan'),
-(28, 'Nissan Nismo'),
-(29, 'Pagani'),
-(30, 'Rover'),
-(31, 'Vauxhall'),
-(32, 'Ariel'),
-(33, 'ISUZU'),
-(36, 'Abarth'),
-(37, 'Hummer'),
-(38, 'Seat'),
-(41, 'Abbott-Detroit'),
-(44, 'Acura'),
-(46, 'Alfa Romeo'),
-(47, 'Alpina'),
-(50, 'AMC'),
-(51, 'Apollo'),
-(52, 'Arash'),
-(54, 'Arrinera'),
-(55, 'Artega'),
-(58, 'Aston Martin'),
-(61, 'Audi'),
-(62, 'Austin'),
-(69, 'Bentley'),
-(76, 'BMW M'),
-(78, 'Bowler'),
-(79, 'Brabus'),
-(84, 'Bufori'),
-(85, 'Bugatti'),
-(86, 'Buick'),
-(87, 'BYD'),
-(88, 'Cadillac'),
-(89, 'caparo'),
-(90, 'Capar'),
-(91, 'Carlsson'),
-(96, 'Chevrolet Corvette'),
-(97, 'Chevrolet'),
-(98, 'Chrysler'),
-(100, 'Citroën'),
-(104, 'Dacia'),
-(105, 'Daewoo'),
-(106, 'DAF'),
-(107, 'Daihatsu'),
-(109, 'Daimler'),
-(110, 'Dartz'),
-(115, 'Detroit Electric'),
-(121, 'Dodge'),
-(122, 'Dongfeng'),
-(123, 'Donkervoort'),
-(124, 'DS'),
-(125, 'Duesenberg'),
-(132, 'Englon'),
-(133, 'ERF'),
-(134, 'Eterniti'),
-(137, 'Faraday Future'),
-(139, 'Ferrari'),
-(140, 'Fiat'),
-(141, 'Fisker'),
-(142, 'Foden'),
-(143, 'Force Motors'),
-(144, 'Ford'),
-(145, 'Ford Mustang'),
-(146, 'Foton'),
-(147, 'FPV'),
-(148, 'Franklin'),
-(149, 'Freightliner'),
-(157, 'Gilbern'),
-(158, 'Gillet'),
-(159, 'Ginetta'),
-(160, 'GMC'),
-(161, 'Gonow'),
-(162, 'Great Wall'),
-(163, 'Grinnall'),
-(164, 'Gumpert'),
-(165, 'Hafei'),
-(166, 'Haima'),
-(167, 'Haval'),
-(168, 'Hawtai'),
-(169, 'Hennessey'),
-(170, 'Hillman'),
-(171, 'Hillman'),
-(172, 'Hindustan Motors'),
-(173, 'Hino'),
-(174, 'Hispano-Suiza'),
-(175, 'Holden'),
-(176, 'Hommell'),
-(177, 'Honda'),
-(178, 'Horch'),
-(179, 'HSV'),
-(180, 'Hudson'),
-(181, 'Hupmobile'),
-(182, 'Hyundai'),
-(183, 'IC Bus'),
-(184, 'Infiniti'),
-(185, 'Innocenti'),
-(186, 'Intermeccanica'),
-(187, 'IH'),
-(188, 'International'),
-(189, 'IKCO'),
-(190, 'Irizar'),
-(191, 'Isdera'),
-(192, 'Iso'),
-(193, 'Iveco'),
-(194, 'JAC'),
-(195, 'Jaguar'),
-(196, 'Jawa'),
-(197, 'JBA Motors'),
-(198, 'Jeep'),
-(199, 'Jensen'),
-(200, 'JMC'),
-(201, 'Kaiser'),
-(202, 'Kamaz'),
-(203, 'Karma'),
-(204, 'Keating'),
-(205, 'Kenworth'),
-(206, 'Kia'),
-(207, 'Lada'),
-(208, 'Lagonda'),
-(209, 'Lamborghini'),
-(210, 'Lancia'),
-(211, 'Land Rover'),
-(212, 'Landwind'),
-(213, 'Laraki'),
-(214, 'Lexus'),
-(215, 'Leyland'),
-(216, 'Lifan'),
-(217, 'Ligier'),
-(218, 'Lincoln'),
-(219, 'Lister'),
-(220, 'Lloyd'),
-(221, 'Lobini'),
-(222, 'LEVC'),
-(223, 'Lotus'),
-(224, 'Lucid'),
-(225, 'Luxgen'),
-(226, 'Mack'),
-(227, 'Mahindra'),
-(228, 'MAN'),
-(229, 'Mansory'),
-(230, 'Marcos'),
-(231, 'Marlin'),
-(232, 'Maserati'),
-(233, 'Mastretta'),
-(234, 'Maxus'),
-(235, 'Maybach'),
-(236, 'MAZ'),
-(237, 'Mazda'),
-(238, 'Mazzanti'),
-(239, 'McLaren'),
-(240, 'Melkus'),
-(241, 'Mercedes-AMG'),
-(242, 'Mercedes-Benz'),
-(243, 'Mercury'),
-(244, 'Merkur'),
-(245, 'MEV'),
-(246, 'MG'),
-(247, 'Microcar'),
-(248, 'Mini'),
-(249, 'Mitsubishi'),
-(250, 'Mitsuoka'),
-(251, 'MK'),
-(252, 'Morgan'),
-(253, 'Morris'),
-(254, 'Mosler'),
-(255, 'Nissan GT-R'),
-(256, 'Navistar'),
-(257, 'Noble'),
-(258, 'Oltcit'),
-(259, 'OSCA'),
-(260, 'Paccar'),
-(261, 'Packard'),
-(262, 'Pagani'),
-(263, 'Panhard'),
-(264, 'Panoz'),
-(265, 'Pegaso'),
-(266, 'Perodua'),
-(267, 'Peterbilt'),
-(268, 'Peugeot'),
-(269, 'PGO'),
-(270, 'Pierce-Arrow'),
-(271, 'Pininfarina'),
-(272, 'Plymouth'),
-(273, 'Polestar'),
-(274, 'Pontiac'),
-(275, 'Porsche'),
-(276, 'Praga'),
-(277, 'Premier'),
-(278, 'Prodrive'),
-(279, 'Proton'),
-(280, 'Qoros'),
-(281, 'Radical'),
-(282, 'RAM'),
-(283, 'Rambler'),
-(284, 'Ranz'),
-(285, 'Renault'),
-(286, 'Renault Samsung'),
-(287, 'Rezvani'),
-(288, 'Riley'),
-(289, 'Rimac'),
-(290, 'Rinspeed'),
-(291, 'Roewe'),
-(292, 'Rolls-Royce'),
-(293, 'Ronart'),
-(294, 'Rossion'),
-(295, 'Rover'),
-(296, 'RUF'),
-(297, 'Saab'),
-(298, 'SAIC Motor'),
-(299, 'Saipa'),
-(300, 'Saleen'),
-(301, 'Saturn'),
-(302, 'Scania'),
-(303, 'Scion'),
-(304, 'Setra'),
-(305, 'Sisu'),
-(306, 'Sma'),
-(307, 'Soueast'),
-(308, 'Spania GTA'),
-(309, 'Spirra'),
-(310, 'Spyker'),
-(311, 'SsangYong'),
-(312, 'SSC'),
-(313, 'Sterling'),
-(314, 'Studebaker'),
-(315, 'Stutz'),
-(316, 'Subaru'),
-(317, 'Suffolk'),
-(318, 'Suzuki'),
-(319, 'Talbot'),
-(320, 'Tata'),
-(321, 'Tatra'),
-(322, 'Tauro'),
-(323, 'TechArt'),
-(324, 'Tesla'),
-(325, 'Toyota Crown'),
-(326, 'Toyota'),
-(327, 'Tramontana'),
-(328, 'Trion'),
-(329, 'Triumph'),
-(330, 'Troller'),
-(331, 'Tucker'),
-(332, 'TVR'),
-(333, 'UAZ'),
-(334, 'UD'),
-(335, 'Ultima'),
-(336, 'Vandenbrink'),
-(337, 'Vauxhall'),
-(338, 'Vector'),
-(339, 'Vencer'),
-(340, 'Venturi'),
-(341, 'Venucia'),
-(342, 'VLF'),
-(343, 'Volkswagen'),
-(344, 'Volvo'),
-(345, 'Wanderer'),
-(346, 'W Motors'),
-(347, 'Wartburg'),
-(348, 'Western Star'),
-(349, 'Westfield'),
-(350, 'Wiesmann'),
-(351, 'Willys-Overland'),
-(352, 'Wuling'),
-(353, 'Yulon'),
-(354, 'Zarooq Motors'),
-(355, 'Zastava'),
-(356, 'ZAZ'),
-(357, 'Zenos'),
-(358, 'Zenvo'),
-(359, 'Zotye');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

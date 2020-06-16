@@ -4,6 +4,7 @@ define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
 define("INCLUDE_PATH", __DIR__);
 include("../assets/role_checker.php");
 include("../Public/config.php");
+include("../assets/message_user.php");
 include("../assets/user_info.php");
 
 roleAdmin();
@@ -70,7 +71,7 @@ include("../layout/menu.php");
     </div>
 </div>
 
-<?php include("../Includes/footer.php") ?>
+<?php include("../layout/footer.php") ?>
 
 <script>
     $(document).ready(function() {

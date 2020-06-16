@@ -5,6 +5,7 @@ define("INCLUDE_PATH", __DIR__);
 include('../Public/config.php');
 include('../assets/stand_user.php');
 include('../assets/role_checker.php');
+include("../assets/message_user.php");
 include("../assets/user_info.php");
 
 roleStand();
@@ -18,23 +19,12 @@ if ($data === null) {
     header("location: StandRegister.php");
 } else {
     $id = $data["Stand_Id"];
-
-    if ($data["Banner_Name"] != null) {
-        $imgbanner = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner_Name"];
-    } else {
-        $imgbanner = "../Public/Images/Stand_Banners/default_stand_banner.jpg";
-    }
-
-    if ($data["Badge_Name"] != null) {
-        $imgbadge = "../Public/Images/Stand_Badge/" . $data["Stand_Id"] . "/" . $data["Badge_Name"];
-    } else {
-        $imgbadge = "../Public/Images/Stand_Badge/";
-    }
-
     $news = returnNews($data["Stand_Id"], $con);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
     if (isset($_POST["Order"])) {
         UpdateStandItemsOrder($_POST["Order"], $data["Stand_Id"], $con);
     }
@@ -52,7 +42,7 @@ include("../layout/menu.php");
 
 <div class="container">
     <div class="div-overlay-stand-profile-banner mt-4">
-        <img class="text-center Img_Banner shadow" src="<?php echo $imgbanner ?>" />
+        <img class="text-center Img_Banner shadow" src="../Public/Images/Stand_Banners/<?= $data["Banner_Name"] ?>" />
         <div class="overlay-stand-profile-banner" id="overlay-banner">
             <h3 class="text-center">
                 <i class="fa fa-image fa-4x" style="position: relative; top: 130px;"></i>
@@ -63,7 +53,7 @@ include("../layout/menu.php");
         </div>
     </div>
     <div class="div-overlay-stand-profile-badge">
-        <img class="rounded-circle Img_Profile shadow-lg" src="<?php echo $imgbadge ?>" />
+        <img class="rounded-circle Img_Profile shadow-lg" src="../Public/Images/Stand_Badge/<?= $data["Badge_Name"] ?>" />
         <div class="overlay-stand-profile-badge rounded-circle Img_Profile" id="overlay-badge">
             <h3 class="text-center">
                 <i class="fa fa-image fa-2x" style="position: relative; top: 60px;"></i>
@@ -362,8 +352,8 @@ include("../layout/menu.php");
 
             if (this == "card_nc") {
                 $("#items").append(cards("nc"));
-                $("#ncar").val("<?=$data["NumCarN"]?>")
-                CCSLX("new_cars", <?= $data["NumCarN"] ?>,false);
+                $("#ncar").val("<?= $data["NumCarN"] ?>")
+                CCSLX("new_cars", <?= $data["NumCarN"] ?>, false);
                 $("#new_car").hide();
             }
 
@@ -379,8 +369,8 @@ include("../layout/menu.php");
         }
     })
 
-    function UpdateNC(sel){
-        CCSLX("new_cars",$(sel).val(),true);
+    function UpdateNC(sel) {
+        CCSLX("new_cars", $(sel).val(), true);
     }
 
     $(document).ready(function() {

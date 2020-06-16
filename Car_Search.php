@@ -4,6 +4,7 @@ define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
 define("INCLUDE_PATH", __DIR__);
 include("Public/config.php");
 include("assets/user_info.php");
+include("assets/message_user.php");
 include("assets/car_stand.php");
 
 $total_pages = $con->query("SELECT * FROM Cars WHERE State = 1")->num_rows;

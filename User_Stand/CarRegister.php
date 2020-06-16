@@ -7,6 +7,7 @@ include('../assets/user_info.php');
 include('../Public/Config.php');
 include('../assets/stand_user.php');
 include('../assets/role_checker.php');
+include("../assets/message_user.php");
 include('../assets/car_stand.php');
 
 $License_Plate = $Kms = $Year = $Type_Gear = $Brand = $Model = $Type_Fuel = $Price = $Description = $files = "";

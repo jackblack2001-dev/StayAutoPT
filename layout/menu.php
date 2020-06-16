@@ -6,6 +6,8 @@ if (isset($_SESSION['Id'])) {
     } else {
         $badge = ROOT_PATH . "Public/Images/User_Badge/default_user_badge.jpg";
     }
+
+    $messages = badgeNumNewMessages($_SESSION['Id'], $con);
 }
 
 ?>
@@ -51,16 +53,16 @@ if (isset($_SESSION['Id'])) {
             ?>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <?php
-            if (isset($_SESSION['Id']) || !empty($_SESSION['Id'])) {
-                echo '<li class="nav-item">
-                        <a class="nav-link no-padding" type="button">
-                            <i class="fa fa-envelope-o fa-lg"></i>
-                            <span class="badge badge-danger badge-counter message-badge">7</span>
-                        </a>
-                    </li>';
-            }
-            ?>
+            <?php if (isset($_SESSION['Id']) || !empty($_SESSION['Id'])) : ?>
+                <li class="nav-item">
+                    <a class="nav-link no-padding" type="button">
+                        <i class="fa fa-envelope-o fa-lg"></i>
+                        <?php if($messages["New_Messages"] > 0) :?>
+                        <span class="badge badge-danger badge-counter message-badge"><?= $messages["New_Messages"]?></span>
+                        <?php endif?>
+                    </a>
+                </li>
+            <?php endif ?>
             <li class="nav-item mr-4">
                 <a class="nav-link no-padding" type="button">
                     <i class="fa fa-star-o fa-lg"></i>Favoritos
@@ -68,7 +70,7 @@ if (isset($_SESSION['Id'])) {
             </li>
             <?php
             if (!isset($_SESSION['Id']) || empty($_SESSION['Id'])) {
-                echo '<a href="Login.php" class="nav-link" type="button" class="btn btn-primary"><i class="fa fa-sign-in"></i>Login</a>';
+                echo '<a href="' . ROOT_PATH . 'Login.php" class="nav-link" type="button" class="btn btn-primary"><i class="fa fa-sign-in"></i>Login</a>';
             } else {
 
                 echo '<li class="nav-item dropdown">

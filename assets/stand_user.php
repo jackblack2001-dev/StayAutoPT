@@ -2,10 +2,20 @@
 #region DataProcessing
 function StandProcessing($data)
 {
-    if ($data["Banner_Name"] != null) {
-        $data["Banner_Name"] = $data["Stand_Id"] . "/" . $data["Banner_Name"];
-    } else {
-        $data["Banner_Name"] = "default_stand_banner.jpg";
+    if (isset($data["Banner_Name"])) {
+        if ($data["Banner_Name"] != null) {
+            $data["Banner_Name"] = $data["Stand_Id"] . "/" . $data["Banner_Name"];
+        } else {
+            $data["Banner_Name"] = "default_stand_banner.jpg";
+        }
+    }
+
+    if (isset($data["Badge_Name"])) {
+        if ($data["Badge_Name"] != null) {
+            $data["Badge_Name"] = $data["Stand_Id"] . "/" . $data["Badge_Name"];
+        } else {
+            $data["Badge_Name"] = "default_stand_badge.jpg";
+        }
     }
 
     //TODO: localidades
@@ -83,7 +93,27 @@ function returnStand($id, $con)
         WHERE User_Id = '$id' AND SB.State = 1 AND SBN.State = 1";
         $Result = $con->query($sql);
         if ($Result->num_rows == 1) {
-            if ($row = $Result->fetch_array()) {
+            if ($row = $Result->fetch_assoc()) {
+                return StandProcessing($row);
+            }
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
+function returnCarStand($carid, $con)
+{
+    if (isset($carid)) {
+        $sql = "SELECT * FROM Stands S 
+        INNER JOIN Cars C
+        ON C.Stand_Id = S.Stand_id
+        WHERE License_Plate = '$carid'";
+        $Result = $con->query($sql);
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_assoc()) {
                 return $row;
             }
         } else {
@@ -138,7 +168,7 @@ function returnNews($id, $con)
 
 function returnLastNew($id, $con)
 {
-    $sql = "SELECT User_Id, Title, Text, CreatedNews FROM News WHERE News_Id = (SELECT MAX(News_Id) FROM News) AND Stand_Id = $id AND State = 1";
+    $sql = "SELECT User_Id, Title, Text, CreatedNews FROM News WHERE Stand_Id = $id ORDER BY News_Id DESC LIMIT 1";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows == 1) {
             if ($row = $Result->fetch_array()) {

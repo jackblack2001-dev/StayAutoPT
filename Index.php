@@ -5,6 +5,7 @@ define("INCLUDE_PATH", __DIR__);
 include("Public/config.php");
 include("assets/user_info.php");
 include("assets/stand_user.php");
+include("assets/message_user.php");
 include("assets/car_stand.php");
 
 $stands = returnStandsRandom5($con);
@@ -116,13 +117,13 @@ include("layout/menu.php");
                                     $Name = $string;
                                 }
 
-                                carcards($imgname, $Name, $car["Views"], $car["Year"], $grid);
+                                carcards($car["License_Plate"], $imgname, $Name, $car["Views"], $car["Year"], $grid);
 
                                 $Aux++;
                             }
                         }
 
-                        function carcards($imgname, $name, $viewsnum, $year, $grid)
+                        function carcards($id, $imgname, $name, $viewsnum, $year, $grid)
                         {
                             echo '<div class="card shadow ml-4 mr-4 mb-4" style="width: 340px">
                                 <div class="card-body no-padding">
@@ -134,7 +135,9 @@ include("layout/menu.php");
                                     </div>
                                     <div class="col no-padding">
                                         <div class="card-title margins">
-                                            <h5><small class="font-weight-bold">' . $name . '</small></h5>
+                                            <a class="a-cars" href="' . ROOT_PATH . 'User_Stand/Car_Profile.php?id=' . urlencode(base64_encode($id)) . '">
+                                                <h5><small class="font-weight-bold">' . $name . '</small></h5>
+                                            </a>
                                             <p class="card-text">' . $year . '</p>
                                         </div>
                                     </div>
@@ -181,10 +184,10 @@ include("layout/menu.php");
                         $Name = $string;
                     }
 
-                    othercard($imgname, $Name, $car["Price"], $car["Year"]);
+                    othercard($car["License_Plate"], $imgname, $Name, $car["Price"], $car["Year"]);
                 }
 
-                function othercard($imgname, $name, $price, $year)
+                function othercard($id, $imgname, $name, $price, $year)
                 {
                     echo '<div class="card shadow ml-4 mr-4 mt-4" style="width: 340px">
                             <div class="card-body no-padding">
@@ -196,7 +199,9 @@ include("layout/menu.php");
                                 </div>
                                 <div class="col no-padding">
                                     <div class="card-title margins">
-                                        <h5><small class="font-weight-bold">' . $name . '</small></h5>
+                                        <a class="a-cars" href="' . ROOT_PATH . 'User_Stand/Car_Profile.php?id=' . urlencode(base64_encode($id)) . '">
+                                            <h5><small class="font-weight-bold">' . $name . '</small></h5>
+                                        </a>
                                         <p class="card-text">' . $year . '</p>
                                     </div>
                                 </div>

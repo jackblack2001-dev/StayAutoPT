@@ -6,6 +6,7 @@ include('../Public/config.php');
 include('../assets/stand_user.php');
 include('../assets/role_checker.php');
 include("../assets/user_info.php");
+include("../assets/message_user.php");
 include("../assets/car_stand.php");
 
 roleStand();
@@ -15,12 +16,6 @@ $imgurl = "";
 $data = returnStand($_SESSION['Id'], $con);
 if ($data === null) {
     header("location: StandRegister.php");
-} else {
-    if ($data["Banner_Name"] != null) {
-        $imgurl = "../Public/Images/Stand_Banners/" . $data["Stand_Id"] . "/" . $data["Banner_Name"];
-    } else {
-        $imgurl = "../Public/Images/Stand_Banners/default_stand_banner.jpg";
-    }
 }
 
 $car = returnMostViewed($data["Stand_Id"], $con);
@@ -62,7 +57,7 @@ include("../layout/menu.php");
         </div>
         <div class="col-md-8 col-sm-10 mt-4" style="padding-left: 62px; padding-right: 62px;">
             <div class="div-overlay-sd">
-                <img src="<?php echo $imgurl ?>" alt="<?php echo $data["Name"] ?>" id="photo" class="shadow-lg">
+                <img src="../Public/Images/Stand_Banners/<?= $data["Banner_Name"] ?>" alt="<?php echo $data["Name"] ?>" id="photo" class="shadow-lg">
                 <div class="overlay-sd" id="overlay">
                     <h3 class="text-center">
                         <div style="margin-top:140px">Pagina do Stand</div>

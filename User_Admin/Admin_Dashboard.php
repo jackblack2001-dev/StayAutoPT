@@ -6,6 +6,7 @@ include('../Public/config.php');
 include('../assets/car_stand.php');
 include('../assets/stand_user.php');
 include('../assets/user_info.php');
+include("../assets/message_user.php");
 include('../assets/role_checker.php');
 
 roleAdmin();
@@ -159,7 +160,7 @@ include("../layout/menu.php");
 </div>
 </div>
 
-<?php include('../Includes/footer.php') ?>
+<?php include('../layout/footer.php') ?>
 
 <script>
     var aux = "<?php echo $E ?>";

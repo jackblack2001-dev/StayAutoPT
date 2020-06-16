@@ -115,8 +115,8 @@ function returnCar($id, $con)
     $sql = "SELECT * FROM Cars WHERE License_Plate = '$id'";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows == 1) {
-            while ($row = $Result->fetch_array()) {
-                return $row;
+            if ($row = $Result->fetch_assoc()) {
+                return DataProcessing($row,false,$con);
             }
         }
     }
