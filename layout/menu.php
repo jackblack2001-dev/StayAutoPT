@@ -21,7 +21,7 @@ if (isset($_SESSION['Id'])) {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="<?= ROOT_PATH ?>Car_Search.php" class="nav-link"><i class="fa fa-car"></i>Carros</a>
+                <a href="<?= ROOT_PATH ?>Car_Search.php" class="nav-link"><i class="fa fa-car"></i> Carros</a>
             </li>
             <li class="nav-item">
                 <a href="<?= ROOT_PATH ?>Stand_Search.php" class="nav-link">Stands</a>

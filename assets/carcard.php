@@ -42,7 +42,7 @@ function error($aux)
 function card($Name, $Price, $Year, $Kms, $Imgpath, $id)
 {
     return "<div class='card shadow margins mb-4' style='width: 340px;'>
-    <a href=" . ROOT_PATH . 'User_Stand/Car_Profile.php?id=' . urlencode(base64_encode($id)) . ">
+    <a class='a-cars' href=" . ROOT_PATH . 'User_Stand/Car_Profile.php?id=' . urlencode(base64_encode($id)) . ">
     <div class='card-body no-padding'>
         <div class='col no-padding'>
             <img src='" . ROOT_PATH . "Public/Images/Car_Photos/" . $Imgpath . "' alt='" . $Name . "' style='width: 100%; height: 340px'>
@@ -65,7 +65,11 @@ function card($Name, $Price, $Year, $Kms, $Imgpath, $id)
 function ShowCarCarsLastX($numrows, $con)
 {
     $card = "";
-    $data = returnStand($_SESSION["Id"], $con);
+    if (isset($_GET["id"])) {
+        $data = returnUrlStand($_GET["id"], $con);
+    } else {
+        $data = returnStand($_SESSION["Id"], $con);
+    }
 
     if (isset($_GET['up']) && $_GET['up'] == true) {
         UpdateStandNumCarN($data["Stand_Id"], $numrows, $con);

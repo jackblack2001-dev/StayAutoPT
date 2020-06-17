@@ -57,7 +57,7 @@ include("layout/menu.php");
                         echo '<div class="' . $ini . '">
                                     <img src="Public/Images/Stand_Banners/' . $id . '/' . $img . '" alt="' . $title . '">
                                     <div class="carousel-caption">
-                                        <h3>' . $title . '</h3>
+                                        <h3><a class="a-carousel-stands" href="'.ROOT_PATH.'/User_Stand/Stand_Profile.php?id='.$id.'">' . $title . '</h3>
                                     </div>
                                 </div>';
                     }

@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&table=news -->
+<html lang="pt" dir="ltr"><script data-dapp-detection="">
+(function() {
+  let alreadyInsertedMetaTag = false
+
+  function __insertDappDetected() {
+    if (!alreadyInsertedMetaTag) {
+      const meta = document.createElement('meta')
+      meta.name = 'dapp-detected'
+      document.head.appendChild(meta)
+      alreadyInsertedMetaTag = true
+    }
+  }
+
+  if (window.hasOwnProperty('web3')) {
+    // Note a closure can't be used for this var because some sites like
+    // www.wnyc.org do a second script execution via eval for some reason.
+    window.__disableDappDetectionInsertion = true
+    // Likely oldWeb3 is undefined and it has a property only because
+    // we defined it. Some sites like wnyc.org are evaling all scripts
+    // that exist again, so this is protection against multiple calls.
+    if (window.web3 === undefined) {
+      return
+    }
+    __insertDappDetected()
+  } else {
+    var oldWeb3 = window.web3
+    Object.defineProperty(window, 'web3', {
+      configurable: true,
+      set: function (val) {
+        if (!window.__disableDappDetectionInsertion)
+          __insertDappDetected()
+        oldWeb3 = val
+      },
+      get: function () {
+        if (!window.__disableDappDetectionInsertion)
+          __insertDappDetected()
+        return oldWeb3
+      }
+    })
+  }
+})()</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" href="http://localhost/phpmyadmin/favicon.ico" type="image/x-icon"><link rel="shortcut icon" href="http://localhost/phpmyadmin/favicon.ico" type="image/x-icon"><link rel="stylesheet" type="text/css" href="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery-ui.css"><link rel="stylesheet" type="text/css" href="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/codemirror.css"><link rel="stylesheet" type="text/css" href="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/show-hint.css"><link rel="stylesheet" type="text/css" href="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/lint.css"><link rel="stylesheet" type="text/css" href="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/phpmyadmin.css.php"><link rel="stylesheet" type="text/css" href="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/printview.css" media="print" id="printcss"><title>localhost / 127.0.0.1 / sap_pt / S | phpMyAdmin 4.8.3</title><script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery.min.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery-migrate.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/whitelist.php"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/sprintf.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/ajax.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/keyhandler.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery-ui.min.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/js.cookie.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery.mousewheel.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery.event.drag-2.2.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery.validate.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery-ui-timepicker-addon.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery.ba-hashchange-1.3.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery.debounce-1.0.5.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/menu-resizer.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/cross_framing_protection.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/rte.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/tracekit.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/error_report.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/messages.php"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/config.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/doclinks.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/functions.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/navigation.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/indexes.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/common.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/page_settings.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/shortcuts_handler.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/makegrid.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/jquery.uitablefilter.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/sql.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/codemirror.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/sql.js(1).transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/runmode.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/show-hint.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/sql-hint.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/lint.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/sql-lint.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/console.js.transferir"></script>
+<script data-cfasync="false" type="text/javascript">// <![CDATA[
+PMA_commonParams.setAll({common_query:"",opendb_url:"db_structure.php",lang:"pt",server:"1",table:"news",db:"sap_pt",token:"K:\"f1+P6js*1_=tw",text_dir:"ltr",show_databases_navigation_as_tree:true,pma_text_default_tab:"Procurar",pma_text_left_default_tab:"Estrutura",pma_text_left_default_tab2:false,LimitChars:"50",pftext:"P",confirm:true,LoginCookieValidity:"1440",session_gc_maxlifetime:"1440",logged_in:true,is_https:false,rootPath:"/phpmyadmin/",arg_separator:"&",PMA_VERSION:"4.8.3",auth_type:"config",user:"root"});
+ConsoleEnterExecutes=false
+AJAX.scriptHandler.add("vendor/jquery/jquery.min.js",0).add("vendor/jquery/jquery-migrate.js",0).add("whitelist.php",1).add("vendor/sprintf.js",1).add("ajax.js",0).add("keyhandler.js",1).add("vendor/jquery/jquery-ui.min.js",0).add("vendor/js.cookie.js",1).add("vendor/jquery/jquery.mousewheel.js",0).add("vendor/jquery/jquery.event.drag-2.2.js",0).add("vendor/jquery/jquery.validate.js",0).add("vendor/jquery/jquery-ui-timepicker-addon.js",0).add("vendor/jquery/jquery.ba-hashchange-1.3.js",0).add("vendor/jquery/jquery.debounce-1.0.5.js",0).add("menu-resizer.js",1).add("cross_framing_protection.js",0).add("rte.js",1).add("vendor/tracekit.js",1).add("error_report.js",1).add("messages.php",0).add("config.js",1).add("doclinks.js",1).add("functions.js",1).add("navigation.js",1).add("indexes.js",1).add("common.js",1).add("page_settings.js",1).add("shortcuts_handler.js",1).add("makegrid.js",1).add("vendor/jquery/jquery.uitablefilter.js",0).add("sql.js",1).add("vendor/codemirror/lib/codemirror.js",0).add("vendor/codemirror/mode/sql/sql.js",0).add("vendor/codemirror/addon/runmode/runmode.js",0).add("vendor/codemirror/addon/hint/show-hint.js",0).add("vendor/codemirror/addon/hint/sql-hint.js",0).add("vendor/codemirror/addon/lint/lint.js",0).add("codemirror/addon/lint/sql-lint.js",0).add("console.js",1);
+$(function() {AJAX.fireOnload("whitelist.php");AJAX.fireOnload("vendor/sprintf.js");AJAX.fireOnload("keyhandler.js");AJAX.fireOnload("vendor/js.cookie.js");AJAX.fireOnload("menu-resizer.js");AJAX.fireOnload("rte.js");AJAX.fireOnload("vendor/tracekit.js");AJAX.fireOnload("error_report.js");AJAX.fireOnload("config.js");AJAX.fireOnload("doclinks.js");AJAX.fireOnload("functions.js");AJAX.fireOnload("navigation.js");AJAX.fireOnload("indexes.js");AJAX.fireOnload("common.js");AJAX.fireOnload("page_settings.js");AJAX.fireOnload("shortcuts_handler.js");AJAX.fireOnload("makegrid.js");AJAX.fireOnload("sql.js");AJAX.fireOnload("console.js");});
+// ]]></script><noscript><style>html{display:block}</style></noscript></head><body style="margin-left: 240px; margin-bottom: 17.5938px; padding-top: 57.5625px; cursor: inherit;"><div id="pma_navigation" style="width: 240px;"><div id="pma_navigation_resizer" style="left: 240px; width: 3px;"></div><div id="pma_navigation_collapser" title="Esconder painel" style="left: 240px;">←</div><div id="pma_navigation_content"><div id="pma_navigation_header"><a class="hide navigation_url" href="http://localhost/phpmyadmin/navigation.php?ajax_request=1"></a>    <div id="pmalogo">
+                    <a href="http://localhost/phpmyadmin/index.php">
+                <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/logo_left.png" alt="phpMyAdmin" id="imgpmalogo">
+                    </a>
+            </div>
+<!-- LINKS START --><div id="navipanellinks"><a href="http://localhost/phpmyadmin/index.php" title="Início"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Início" alt="Início" class="icon ic_b_home"></a><a href="http://localhost/phpmyadmin/logout.php?db=sap_pt&amp;table=news&amp;goto=tbl_sql.php&amp;back=tbl_sql.php" class="logout disableAjax" title="Empty session data"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Empty session data" alt="Empty session data" class="icon ic_s_loggoff"></a><a href="http://localhost/phpmyadmin/doc/html/index.html" target="documentation" title="Documentação do phpMyAdmin"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação do phpMyAdmin" alt="Documentação do phpMyAdmin" class="icon ic_b_docs"></a><a href="http://localhost/phpmyadmin/url.php?url=https%3A%2F%2Fdev.mysql.com%2Fdoc%2Frefman%2F5.7%2Fen%2Findex.html" target="mysql_doc" title="Documentação"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_sqlhelp"></a><a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" id="pma_navigation_settings_icon" title="Navigation panel settings"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Navigation panel settings" alt="Navigation panel settings" class="icon ic_s_cog"></a><a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" id="pma_navigation_reload" title="Reload navigation panel"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Reload navigation panel" alt="Reload navigation panel" class="icon ic_s_reload"></a></div><!-- LINKS ENDS --><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Carregando…" alt="Carregando…" style="visibility: hidden; display:none" class="icon ic_ajax_clock_small throbber"></div><div id="pma_navigation_tree" class="list_container synced highlight" style="height: 852.406px;"><div class="pma_quick_warp"><div class="drop_list"><span title="Tabelas recentes" class="drop_button">Recente</span><ul id="pma_recent_list"><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=Cars">`sap_pt`.`Cars`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=news">`sap_pt`.`news`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=News">`sap_pt`.`News`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=stands">`sap_pt`.`stands`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=locations">`sap_pt`.`locations`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=cars_images">`sap_pt`.`cars_images`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=messages">`sap_pt`.`messages`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=Messages">`sap_pt`.`Messages`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=stands_banners">`sap_pt`.`stands_banners`</a></li><li class="warp_link"><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=cars">`sap_pt`.`cars`</a></li></ul></div><div class="drop_list"><span title="Tabelas Favoritas" class="drop_button">Favoritos</span><ul id="pma_favorite_list"><li class="warp_link"><a class="ajax favorite_table_anchor" href="http://localhost/phpmyadmin/db_structure.php?db=sap_pt&amp;ajax_request=1&amp;favorite_table=users&amp;remove_favorite=1" title="Remover dos Favoritos" data-favtargetn="4ecd1652a5624773f4ffeca4998e5f1f"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_b_favorite">&nbsp;</span></a><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=users">`sap_pt`.`users`</a></li><li class="warp_link"><a class="ajax favorite_table_anchor" href="http://localhost/phpmyadmin/db_structure.php?db=sap_pt&amp;ajax_request=1&amp;favorite_table=cars&amp;remove_favorite=1" title="Remover dos Favoritos" data-favtargetn="2b4be919c6b2d4d8f7f347246746ce21"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_b_favorite">&nbsp;</span></a><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=cars">`sap_pt`.`cars`</a></li><li class="warp_link"><a class="ajax favorite_table_anchor" href="http://localhost/phpmyadmin/db_structure.php?db=sap_pt&amp;ajax_request=1&amp;favorite_table=stands&amp;remove_favorite=1" title="Remover dos Favoritos" data-favtargetn="9e7972fc7a84f99e1e444c5c8a1299fe"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_b_favorite">&nbsp;</span></a><a href="http://localhost/phpmyadmin/tbl_recent_favorite.php?db=sap_pt&amp;table=stands">`sap_pt`.`stands`</a></li></ul></div><div class="clearfloat"></div></div><div class="clearfloat"></div><ul><!-- CONTROLS START --><li id="navigation_controls_outer"><div id="navigation_controls"><a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" id="pma_navigation_collapse" title="Collapse all"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Collapse all" alt="Collapse all" class="icon ic_s_collapseall"></a><a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" id="pma_navigation_sync" title="Desconectar do painel principal"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Desconectar do painel principal" alt="Desconectar do painel principal" class="icon ic_s_link"></a></div></li><!-- CONTROLS ENDS --></ul><div id="pma_navigation_tree_content" style="height: 807.391px;"><ul><li class="first new_database italics"><div class="block"><i class="first"></i></div><div class="block "><a href="http://localhost/phpmyadmin/server_databases.php?server=1"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_b_newdb"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/server_databases.php?server=1" title="">New</a><div class="clearfloat"></div></li><li class="database"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.aW5mb3JtYXRpb25fc2NoZW1h</span><span class="hide vPath">cm9vdA==.aW5mb3JtYXRpb25fc2NoZW1h</span><span class="hide pos">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=information_schema&amp;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Database operations" alt="Database operations" class="icon ic_s_db"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/db_structure.php?server=1&amp;db=information_schema" title="Estrutura">information_schema</a><div class="clearfloat"></div></li><li class="database"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.bGlzdGFfY29tcHJhcw==</span><span class="hide vPath">cm9vdA==.bGlzdGFfY29tcHJhcw==</span><span class="hide pos">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=lista_compras&amp;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Database operations" alt="Database operations" class="icon ic_s_db"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/db_structure.php?server=1&amp;db=lista_compras" title="Estrutura">lista_compras</a><div class="clearfloat"></div></li><li class="database"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.bXlzcWw=</span><span class="hide vPath">cm9vdA==.bXlzcWw=</span><span class="hide pos">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=mysql&amp;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Database operations" alt="Database operations" class="icon ic_s_db"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/db_structure.php?server=1&amp;db=mysql" title="Estrutura">mysql</a><div class="clearfloat"></div></li><li class="database"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.cGVyZm9ybWFuY2Vfc2NoZW1h</span><span class="hide vPath">cm9vdA==.cGVyZm9ybWFuY2Vfc2NoZW1h</span><span class="hide pos">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=performance_schema&amp;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Database operations" alt="Database operations" class="icon ic_s_db"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/db_structure.php?server=1&amp;db=performance_schema" title="Estrutura">performance_schema</a><div class="clearfloat"></div></li><li class="database"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.cGhwbXlhZG1pbg==</span><span class="hide vPath">cm9vdA==.cGhwbXlhZG1pbg==</span><span class="hide pos">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=phpmyadmin&amp;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Database operations" alt="Database operations" class="icon ic_s_db"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/db_structure.php?server=1&amp;db=phpmyadmin" title="Estrutura">phpmyadmin</a><div class="clearfloat"></div></li><li class="database"><div class="block"><i></i><b></b><a class="expander loaded" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0</span><span class="hide vPath">cm9vdA==.c2FwX3B0</span><span class="hide pos">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_minus" style=""></a></div><div class="block "><a href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=sap_pt&amp;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Database operations" alt="Database operations" class="icon ic_s_db"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/db_structure.php?server=1&amp;db=sap_pt" title="Estrutura">sap_pt</a><div class="clearfloat"></div><div class="list_container hide" style="display: block;"><ul><li class="new_table italics"><div class="block"><i></i><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_create.php?server=1&amp;db=sap_pt"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="New" alt="New" class="icon ic_b_table_add"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/tbl_create.php?server=1&amp;db=sap_pt" title="">New</a><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.Y2Fycw==</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.Y2Fycw==</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=cars"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=cars&amp;pos=0" title="Procurar">cars</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=cars&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.Y2Fyc19pbWFnZXM=</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.Y2Fyc19pbWFnZXM=</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=cars_images"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=cars_images&amp;pos=0" title="Procurar">cars_images</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=cars_images&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.Y29uZmlnX3N0YW5kcw==</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.Y29uZmlnX3N0YW5kcw==</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=config_stands"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=config_stands&amp;pos=0" title="Procurar">config_stands</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=config_stands&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.bG9jYXRpb25z</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.bG9jYXRpb25z</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=locations"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=locations&amp;pos=0" title="Procurar">locations</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=locations&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.bWVzc2FnZXM=</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.bWVzc2FnZXM=</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=messages"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=messages&amp;pos=0" title="Procurar">messages</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=messages&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.bmV3cw==</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.bmV3cw==</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=news"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=news&amp;pos=0" title="Procurar">news</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=news&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.c3RhbmRz</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.c3RhbmRz</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=stands"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=stands&amp;pos=0" title="Procurar">stands</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=stands&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.c3RhbmRzX2JhZGdlcw==</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.c3RhbmRzX2JhZGdlcw==</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=stands_badges"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=stands_badges&amp;pos=0" title="Procurar">stands_badges</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=stands_badges&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.c3RhbmRzX2Jhbm5lcnM=</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.c3RhbmRzX2Jhbm5lcnM=</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=stands_banners"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=stands_banners&amp;pos=0" title="Procurar">stands_banners</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=stands_banners&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.c3RhbmRfYmFu</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.c3RhbmRfYmFu</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=stand_ban"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=stand_ban&amp;pos=0" title="Procurar">stand_ban</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=stand_ban&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="table"><div class="block"><i></i><b></b><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.dXNlcnM=</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.dXNlcnM=</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=users"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=users&amp;pos=0" title="Procurar">users</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=users&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li><li class="last table"><div class="block"><i></i><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.c2FwX3B0.dGFibGVz.dXNlcnNfYmFu</span><span class="hide vPath">cm9vdA==.c2FwX3B0.VGFiZWxhcw==.dXNlcnNfYmFu</span><span class="hide pos">0</span><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/tbl_structure.php?server=1&amp;db=sap_pt&amp;table=users_ban"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/sql.php?server=1&amp;db=sap_pt&amp;table=users_ban&amp;pos=0" title="Procurar">users_ban</a><span class="navItemControls"><a href="http://localhost/phpmyadmin/navigation.php?hideNavItem=1&amp;itemType=table&amp;itemName=users_ban&amp;dbName=sap_pt" class="hideNavItem ajax"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Esconder" alt="Esconder" class="icon ic_hide"></a></span><div class="clearfloat"></div></li></ul></div></li><li class="last database"><div class="block"><i></i><a class="expander" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><span class="hide aPath">cm9vdA==.dGVzdA==</span><span class="hide vPath">cm9vdA==.dGVzdA==</span><span class="hide pos">0</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Expand/Collapse" alt="Expand/Collapse" class="icon ic_b_plus"></a></div><div class="block "><a href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=test&amp;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Database operations" alt="Database operations" class="icon ic_s_db"></a></div><a class="hover_show_full" href="http://localhost/phpmyadmin/db_structure.php?server=1&amp;db=test" title="Estrutura">test</a><div class="clearfloat"></div></li></ul></div></div><div id="pma_navi_settings_container"><div id="pma_navigation_settings"><div class="page_settings"><form method="post" action="http://localhost/phpmyadmin/tbl_structure.php?db=sap_pt&amp;table=S&amp;server=1&amp;target=" class="config-form disableAjax"><input type="hidden" name="tab_hash" value=""><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw">
+<input type="hidden" name="submit_save" value="Navi"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw"><ul class="tabs responsivetable">
+
+                                    <li class="active">
+
+            <a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#Navi_panel">
+            Painel de navegação
+            </a>
+        </li>
+                                <li>
+
+            <a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#Navi_tree">
+            Navigation tree
+            </a>
+        </li>
+                                <li>
+
+            <a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#Navi_servers">
+            Servidores
+            </a>
+        </li>
+                                <li>
+
+            <a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#Navi_databases">
+            Base de Dados
+            </a>
+        </li>
+                                <li>
+
+            <a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#Navi_tables">
+            Tabelas
+            </a>
+        </li>
+            </ul>
+<br><div class="tabs_contents"><fieldset class="optbox" id="Navi_panel" style="">
+<legend>Painel de navegação</legend>
+    <p>Personalizar a aparência do painel de navegação.</p>
+<table width="100%" cellspacing="0">
+<tbody><tr><th><label for="ShowDatabasesNavigationAsTree">Mostra navegação de bases de dados como árvore</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_ShowDatabasesNavigationAsTree" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>No painel de navegação, substitui a árvore da base de dados por um seletor</small></th><td><span class="checkbox"><input type="checkbox" name="ShowDatabasesNavigationAsTree" id="ShowDatabasesNavigationAsTree" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#ShowDatabasesNavigationAsTree" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationLinkWithMainPanel">Conectar com o painel principal</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationLinkWithMainPanel" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Liga com o painel principal destacando a base de dados ou tabela actual.</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationLinkWithMainPanel" id="NavigationLinkWithMainPanel" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationLinkWithMainPanel" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationDisplayLogo">Mostrar logotipo</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationDisplayLogo" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Mostrar o logótipo no painel de navegação.</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationDisplayLogo" id="NavigationDisplayLogo" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationDisplayLogo" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationLogoLink">URL do link do logotipo</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationLogoLink" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>URL para onde irá apontar o logótipo do painel de navegação.</small></th><td><input type="text" class="all85" name="NavigationLogoLink" id="NavigationLogoLink" value="index.php"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationLogoLink" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationLogoLinkWindow">Destino da ligação do logótipo</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationLogoLinkWindow" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Abre a página ligada na janela principal (<kbd>principal</kbd>) ou numa nova janela (<kbd>nova</kbd>).</small></th><td><select class="all85" name="NavigationLogoLinkWindow" id="NavigationLogoLinkWindow"><option value="main" selected="selected">main</option><option value="new">new</option></select><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationLogoLinkWindow" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreePointerEnable">Ativar destaque</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreePointerEnable" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Destaque servidor sob o cursor do rato.</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreePointerEnable" id="NavigationTreePointerEnable" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreePointerEnable" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="FirstLevelNavigationItems">Máximo de itens no primeiro nível</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_FirstLevelNavigationItems" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>O número de itens que podem ser mostrados em cada página no primeiro nível da árvore de navegação.</small></th><td><input type="number" name="FirstLevelNavigationItems" id="FirstLevelNavigationItems" value="100"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#FirstLevelNavigationItems" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeDisplayItemFilterMinimum">Número mínimo de itens a apresentar na caixa de filtragem</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDisplayItemFilterMinimum" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Define o número mínimo de itens (tabelas, vistas, rotinas e eventos) a apresentar numa caixa de filtragem.</small></th><td><input type="number" name="NavigationTreeDisplayItemFilterMinimum" id="NavigationTreeDisplayItemFilterMinimum" value="30"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeDisplayItemFilterMinimum" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NumRecentTables">Tabelas utilizadas recentemente</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NumRecentTables" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Número máximo de tabelas utilizadas recentemente, definir 0 para desativar.</small></th><td><input type="number" name="NumRecentTables" id="NumRecentTables" value="10"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NumRecentTables" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NumFavoriteTables">Tabelas Favoritas</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NumFavoriteTables" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Número máximo de tabelas favoritas, definir 0 para desativar.</small></th><td><input type="number" name="NumFavoriteTables" id="NumFavoriteTables" value="10"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NumFavoriteTables" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationWidth">Navigation panel width</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationWidth" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Set to 0 to collapse navigation panel.</small></th><td><input type="number" name="NavigationWidth" id="NavigationWidth" value="240"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationWidth" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr></tbody></table>
+</fieldset>
+<fieldset class="optbox" id="Navi_tree" style="display: none;">
+<legend>Navigation tree</legend>
+    <p>Customize the navigation tree.</p>
+<table width="100%" cellspacing="0">
+<tbody><tr><th><label for="MaxNavigationItems">Máximo de itens por ramo</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_MaxNavigationItems" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>O número de itens que podem ser mostradas em cada página da árvore de navegação.</small></th><td><input type="number" name="MaxNavigationItems" id="MaxNavigationItems" value="50"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#MaxNavigationItems" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeEnableGrouping">Agrupar itens na árvore</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeEnableGrouping" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Group items in the navigation tree (determined by the separator defined in the Databases and Tables tabs above).</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreeEnableGrouping" id="NavigationTreeEnableGrouping" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeEnableGrouping" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeEnableExpansion">Enable navigation tree expansion</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeEnableExpansion" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Whether to offer the possibility of tree expansion in the navigation panel.</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreeEnableExpansion" id="NavigationTreeEnableExpansion" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeEnableExpansion" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeShowTables">Show tables in tree</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowTables" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Whether to show tables under database in the navigation tree</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreeShowTables" id="NavigationTreeShowTables" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeShowTables" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeShowViews">Show views in tree</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowViews" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Whether to show views under database in the navigation tree</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreeShowViews" id="NavigationTreeShowViews" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeShowViews" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeShowFunctions">Show functions in tree</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowFunctions" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Se para mostrar funções abaixo da base de dados na árvore de navegação</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreeShowFunctions" id="NavigationTreeShowFunctions" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeShowFunctions" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeShowProcedures">Show procedures in tree</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowProcedures" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Se para mostrar procedimentos abaixo da base de dados na árvore de navegação</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreeShowProcedures" id="NavigationTreeShowProcedures" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeShowProcedures" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeShowEvents">Show events in tree</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowEvents" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Whether to show events under database in the navigation tree</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationTreeShowEvents" id="NavigationTreeShowEvents" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeShowEvents" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr></tbody></table>
+</fieldset>
+<fieldset class="optbox" id="Navi_servers" style="display: none;">
+<legend>Servidores</legend>
+    <p>Exibir as opções dos servidores.</p>
+<table width="100%" cellspacing="0">
+<tbody><tr><th><label for="NavigationDisplayServers">Mostrar seleção de servidores</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationDisplayServers" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Apresentar o servidor escolhido no topo do painel de navegação.</small></th><td><span class="checkbox"><input type="checkbox" name="NavigationDisplayServers" id="NavigationDisplayServers" checked="checked"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationDisplayServers" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="DisplayServersList">Mostrar servidores como uma lista</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_DisplayServersList" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Mostrar lista de servidores como uma lista ao invés de um menu drop down.</small></th><td><span class="checkbox"><input type="checkbox" name="DisplayServersList" id="DisplayServersList"></span><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#DisplayServersList" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr></tbody></table>
+</fieldset>
+<fieldset class="optbox" id="Navi_databases" style="display: none;">
+<legend>Base de Dados</legend>
+    <p>Opções de visualização das Bases de dados.</p>
+<table width="100%" cellspacing="0">
+<tbody><tr><th><label for="NavigationTreeDisplayDbFilterMinimum">Número mínimo de bases de dados para mostrar a caixa de filtragem de base de dados</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDisplayDbFilterMinimum" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span></th><td><input type="number" name="NavigationTreeDisplayDbFilterMinimum" id="NavigationTreeDisplayDbFilterMinimum" value="30"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeDisplayDbFilterMinimum" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeDbSeparator">Divisor de árvore da base de dados</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDbSeparator" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Cadeia de caracteres que separa bases de dados em diferentes níveis de árvore.</small></th><td><input type="text" size="25" name="NavigationTreeDbSeparator" id="NavigationTreeDbSeparator" value="_"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeDbSeparator" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr></tbody></table>
+</fieldset>
+<fieldset class="optbox" id="Navi_tables" style="display: none;">
+<legend>Tabelas</legend>
+    <p>Opções de exibição de tabelas.</p>
+<table width="100%" cellspacing="0">
+<tbody><tr><th><label for="NavigationTreeDefaultTabTable">Alvo para ícone de acesso rápido</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDefaultTabTable" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span></th><td><select class="all85" name="NavigationTreeDefaultTabTable" id="NavigationTreeDefaultTabTable"><option value="structure" selected="selected">Estrutura</option><option value="sql">SQL</option><option value="search">Pesquisar</option><option value="insert">Insere</option><option value="browse">Procurar</option></select><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeDefaultTabTable" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeDefaultTabTable2">Target for second quick access icon</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDefaultTabTable2" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span></th><td><select class="all85" name="NavigationTreeDefaultTabTable2" id="NavigationTreeDefaultTabTable2"><option value="" selected="selected"></option><option value="structure">Estrutura</option><option value="sql">SQL</option><option value="search">Pesquisar</option><option value="insert">Insere</option><option value="browse">Procurar</option></select><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeDefaultTabTable2" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeTableSeparator">Separador de árvore da tabela</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeTableSeparator" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span><small>Cadeia de caracteres que separa tabelas em níveis diferentes de árvores.</small></th><td><input type="text" size="25" name="NavigationTreeTableSeparator" id="NavigationTreeTableSeparator" value="__"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeTableSeparator" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr><tr><th><label for="NavigationTreeTableLevel">Profundidade máxima da árvore da tabela</label><span class="doc"><a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeTableLevel" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a>
+</span></th><td><input type="number" name="NavigationTreeTableLevel" id="NavigationTreeTableLevel" value="1"><a class="restore-default hide" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#NavigationTreeTableLevel" title="Restaurar valor padrão" style="display: inline-block; opacity: 0.25;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_reload" style="display: none;"></a></td></tr></tbody></table>
+</fieldset>
+</div>
+</form>
+<script type="text/javascript">
+if (typeof configInlineParams === "undefined" || !Array.isArray(configInlineParams)) configInlineParams = [];
+configInlineParams.push(function() {
+validateField('FirstLevelNavigationItems', 'PMA_validatePositiveNumber', true);
+validateField('NumRecentTables', 'PMA_validateNonNegativeNumber', true);
+validateField('NumFavoriteTables', 'PMA_validateNonNegativeNumber', true);
+validateField('NavigationWidth', 'PMA_validateNonNegativeNumber', true);
+validateField('MaxNavigationItems', 'PMA_validatePositiveNumber', true);
+validateField('NavigationTreeTableLevel', 'PMA_validatePositiveNumber', true);
+$.extend(PMA_messages, {
+	'error_nan_p': 'Número não positivo!',
+	'error_nan_nneg': 'Não é um número não-negativo!',
+	'error_incorrect_port': 'Número de porta inválido!',
+	'error_invalid_value': 'Valor incorrecto!',
+	'error_value_lte': 'O valor precisa ser igual ou menor que %s!'});
+$.extend(defaultValues, {
+	'ShowDatabasesNavigationAsTree': true,
+	'NavigationLinkWithMainPanel': true,
+	'NavigationDisplayLogo': true,
+	'NavigationLogoLink': 'index.php',
+	'NavigationLogoLinkWindow': ['main'],
+	'NavigationTreePointerEnable': true,
+	'FirstLevelNavigationItems': '100',
+	'NavigationTreeDisplayItemFilterMinimum': '30',
+	'NumRecentTables': '10',
+	'NumFavoriteTables': '10',
+	'NavigationWidth': '240',
+	'MaxNavigationItems': '50',
+	'NavigationTreeEnableGrouping': true,
+	'NavigationTreeEnableExpansion': true,
+	'NavigationTreeShowTables': true,
+	'NavigationTreeShowViews': true,
+	'NavigationTreeShowFunctions': true,
+	'NavigationTreeShowProcedures': true,
+	'NavigationTreeShowEvents': true,
+	'NavigationDisplayServers': true,
+	'DisplayServersList': false,
+	'NavigationTreeDisplayDbFilterMinimum': '30',
+	'NavigationTreeDbSeparator': '_',
+	'NavigationTreeDefaultTabTable': ['structure'],
+	'NavigationTreeDefaultTabTable2': [''],
+	'NavigationTreeTableSeparator': '__',
+	'NavigationTreeTableLevel': '1'});
+});
+if (typeof configScriptLoaded !== "undefined" && configInlineParams) loadInlineConfig();
+</script>
+</div></div></div></div><div class="pma_drop_handler">Largue ficheiros aqui</div><div class="pma_sql_import_status"><h2>SQL upload ( <span class="pma_import_count">0</span> ) <span class="close">x</span><span class="minimize">-</span></h2><div></div></div></div><div id="floating_menubar" style="margin-left: 243px; left: 0px; position: fixed; top: 0px; width: 100%; z-index: 99;"><div id="serverinfo"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_host item"><a href="http://localhost/phpmyadmin/index.php" class="item">Servidor: 127.0.0.1</a><span class="separator item">&nbsp;»</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_db item"><a href="http://localhost/phpmyadmin/db_structure.php?db=sap_pt" class="item">Base de Dados: sap_pt</a><span class="separator item">&nbsp;»</span><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_tbl item"><a href="http://localhost/phpmyadmin/sql.php?db=sap_pt&amp;table=S" class="item">Tabela: S</a><div class="clearfloat"></div></div><div id="topmenucontainer" class="menucontainer"><i class="scrollindicator scrollindicator--left"><img alt="" title="" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" class="icon ic_b_left"></i><div class="navigationbar" style="width: auto; overflow: visible;"><ul id="topmenu" class="resizable-menu"><li>
+
+            <a href="http://localhost/phpmyadmin/sql.php?db=sap_pt&amp;table=S&amp;pos=0" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Procurar" alt="Procurar" class="icon ic_b_browse">&nbsp;Procurar
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_structure.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Estrutura" alt="Estrutura" class="icon ic_b_props">&nbsp;Estrutura
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="SQL" alt="SQL" class="icon ic_b_sql">&nbsp;SQL
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_select.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Pesquisar" alt="Pesquisar" class="icon ic_b_search">&nbsp;Pesquisar
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_change.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Insere" alt="Insere" class="icon ic_b_insrow">&nbsp;Insere
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_export.php?db=sap_pt&amp;table=S&amp;single_table=true" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Exportar" alt="Exportar" class="icon ic_b_tblexport">&nbsp;Exportar
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_import.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Importar" alt="Importar" class="icon ic_b_tblimport">&nbsp;Importar
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/server_privileges.php?db=sap_pt&amp;table=S&amp;checkprivsdb=sap_pt&amp;checkprivstable=S&amp;viewing_mode=table" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Privilégios" alt="Privilégios" class="icon ic_s_rights">&nbsp;Privilégios
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_operations.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Operações" alt="Operações" class="icon ic_b_tblops">&nbsp;Operações
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_tracking.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Rastreando" alt="Rastreando" class="icon ic_eye">&nbsp;Rastreando
+            </a>
+        </li>
+<li>
+
+            <a href="http://localhost/phpmyadmin/tbl_triggers.php?db=sap_pt&amp;table=S" class="tab">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Acionadores" alt="Acionadores" class="icon ic_b_triggers">&nbsp;Acionadores
+            </a>
+        </li>
+<li class="submenu" style=""><a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" class="tab nowrap"><img alt="" title="" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" class="icon ic_b_more">Mais</a><ul class="notonly"></ul></li><div class="clearfloat"></div></ul></div>
+<i class="scrollindicator scrollindicator--right"><img alt="" title="" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" class="icon ic_b_right"></i></div>
+</div>
+<span id="page_nav_icons"><span id="lock_page_icon"><img alt="Indica que foram feitas mudanças nesta página; Será pedida confirmação antes de abandonar as mudanças" title="Indica que foram feitas mudanças nesta página; Será pedida confirmação antes de abandonar as mudanças" src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" class="icon ic_s_lock"></span><span id="page_settings_icon" style="display: none;"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Configurações relacionadas com a página" alt="Configurações relacionadas com a página" class="icon ic_s_cog"></span><a id="goto_pagetop" href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Clique na barra para deslizar para o topo da página" alt="Clique na barra para deslizar para o topo da página" class="icon ic_s_top"></a></span><div id="pma_console_container">
+    <div id="pma_console" style="margin-left: 243px;">
+                <div class="toolbar collapsed">
+                    <div class="switch_button console_switch">
+            <img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Consola de Consulta SQL" alt="Consola de Consulta SQL" class="icon ic_console">
+            <span>Consola</span>
+        </div>
+                            <div class="button clear">
+            
+            <span>Limpar</span>
+        </div>
+                            <div class="button history">
+            
+            <span>Histórico</span>
+        </div>
+                            <div class="button options">
+            
+            <span>Opções</span>
+        </div>
+                            <div class="button bookmarks">
+            
+            <span>Marcadores</span>
+        </div>
+                            <div class="button debug hide">
+            
+            <span>Depurar SQL</span>
+        </div>
+            </div>
+                <div class="content" style="height: 92px; margin-bottom: -98.248px; display: none;">
+            <div class="console_message_container">
+                <div class="message welcome binded">
+                    <span id="instructions-0">
+                        Use Ctrl+Enter para executar a consulta                    </span>
+                    <span class="hide" id="instructions-1">
+                        Press Enter to execute query                    </span>
+                </div>
+                                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="stands_banners">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `stands_banners`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="cars_images">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `cars_images`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="cars_images">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `cars_images`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="cars_images">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `cars_images`</span>
+                        </div>
+                                            <div class="message history collapsed hide binded" targetdb="sap_pt" targettable="Messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">CREATE</span> <span class="cm-keyword">TABLE</span> `sap_pt`.`Messages` ( `Message_Id` <span class="cm-builtin">INT</span> <span class="cm-keyword">NOT</span> <span class="cm-atom">NULL</span> AUTO_INCREMENT ,  `User_Id` <span class="cm-builtin">INT</span> <span class="cm-keyword">NOT</span> <span class="cm-atom">NULL</span> ,  `Receiver_Id` <span class="cm-builtin">INT</span> <span class="cm-keyword">NOT</span> <span class="cm-atom">NULL</span> ,  `Message` <span class="cm-builtin">VARCHAR</span>(<span class="cm-number">5000</span>) <span class="cm-keyword">NOT</span> <span class="cm-atom">NULL</span> ,  `Neg_Price` <span class="cm-builtin">INT</span> <span class="cm-atom">NULL</span> ,  `Viewed` <span class="cm-builtin">INT</span> <span class="cm-keyword">NOT</span> <span class="cm-atom">NULL</span> DEFAULT <span class="cm-string">'0'</span> ,  `CreatedMessage` <span class="cm-builtin">DATETIME</span> <span class="cm-keyword">NOT</span> <span class="cm-atom">NULL</span> DEFAULT CURRENT_TIMESTAMP ,    PRIMARY KEY  (`Message_Id`)) ENGINE = InnoDB;</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="locations">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `locations`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `messages`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="cars_images">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `cars_images`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `messages`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="cars_images">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `cars_images`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `messages`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `messages`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `messages`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `messages`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="messages">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `messages`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="cars_images">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `cars_images`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="cars_images">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `cars_images`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="locations">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `locations`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="locations">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `locations`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="stands">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `stands`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="stands">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `stands`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="news">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> * <span class="cm-keyword">FROM</span> `news`</span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="News">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> User_Id, Title, <span class="cm-builtin">Text</span>, CreatedNews <span class="cm-keyword">FROM</span> News <span class="cm-keyword">WHERE</span> News_Id = (<span class="cm-keyword">SELECT</span> MAX(News_Id) <span class="cm-keyword">FROM</span> News) <span class="cm-keyword">AND</span> Stand_Id = <span class="cm-number">1</span> <span class="cm-keyword">AND</span> State = <span class="cm-number">1</span></span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="News">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> User_Id, Title, <span class="cm-builtin">Text</span>, CreatedNews <span class="cm-keyword">FROM</span> News <span class="cm-keyword">WHERE</span> News_Id = (<span class="cm-keyword">SELECT</span> MAX(News_Id) <span class="cm-keyword">FROM</span> News) <span class="cm-keyword">AND</span> Stand_Id = <span class="cm-number">1</span></span>
+                        </div>
+                                            <div class="message history collapsed hide select binded" targetdb="sap_pt" targettable="News">
+                            <div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                            : <span>sap_pt</span>
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                            : <span>Durante a sessão atual</span>
+                    </span>
+            </div>
+                            <span class="query highlighted"><span class="cm-keyword">SELECT</span> User_Id, Title, <span class="cm-builtin">Text</span>, CreatedNews <span class="cm-keyword">FROM</span> News <span class="cm-keyword">WHERE</span> Stand_Id = <span class="cm-number">1</span> <span class="cm-keyword">ORDER</span> <span class="cm-keyword">BY</span> News_Id <span class="cm-keyword">DESC</span> <span class="cm-keyword">LIMIT</span> <span class="cm-number">1</span></span>
+                        </div>
+                                                <div class="message collapsed binded select successed" msgid="791382363135" targetdb="sap_pt" targettable="Cars"><div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                    </span>
+            </div><div class="query highlighted"><span class="cm-keyword">SELECT</span> SUM(C<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> CarViews, SUM(S<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> StandViews, SUM(C<span class="cm-variable-2">.Views</span> + S<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> TotalViews <span class="cm-keyword">FROM</span> Cars C
+            INNER <span class="cm-keyword">JOIN</span> Stands S
+            <span class="cm-keyword">ON</span> C<span class="cm-variable-2">.Stand_Id</span> = S<span class="cm-variable-2">.Stand_Id</span>
+            <span class="cm-keyword">WHERE</span> C<span class="cm-variable-2">.Stand_Id</span> = <span class="cm-number">1</span> <span class="cm-keyword">AND</span> C<span class="cm-variable-2">.State</span> = <span class="cm-number">1</span></div></div><div class="message collapsed binded select successed" msgid="114573366141" targetdb="sap_pt" targettable="Cars"><div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                    </span>
+            </div><div class="query highlighted"><span class="cm-keyword">SELECT</span> SUM(C<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> CarViews, SUM(S<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> StandViews, SUM(C<span class="cm-variable-2">.Views</span> + S<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> TotalViews <span class="cm-keyword">FROM</span> Cars C
+            INNER <span class="cm-keyword">JOIN</span> Stands S
+            <span class="cm-keyword">ON</span> C<span class="cm-variable-2">.Stand_Id</span> = S<span class="cm-variable-2">.Stand_Id</span>
+            <span class="cm-keyword">WHERE</span> C<span class="cm-variable-2">.Stand_Id</span> = <span class="cm-number">1</span> <span class="cm-keyword">AND</span> S<span class="cm-variable-2">.Stand_Id</span> = <span class="cm-number">1</span> <span class="cm-keyword">AND</span> C<span class="cm-variable-2">.State</span> = <span class="cm-number">1</span></div></div><div class="message collapsed binded select successed" msgid="293723777371" targetdb="sap_pt" targettable="S"><div class="action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                    </span>
+            </div><div class="query highlighted"><span class="cm-keyword">SELECT</span> SUM(C<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> CarViews, S<span class="cm-variable-2">.Views</span> <span class="cm-keyword">AS</span> StandViews, SUM(C<span class="cm-variable-2">.Views</span> + S<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> TotalViews <span class="cm-keyword">FROM</span> Cars C
+            INNER <span class="cm-keyword">JOIN</span> Stands S
+            <span class="cm-keyword">ON</span> C<span class="cm-variable-2">.Stand_Id</span> = S<span class="cm-variable-2">.Stand_Id</span>
+            <span class="cm-keyword">WHERE</span> C<span class="cm-variable-2">.Stand_Id</span> = <span class="cm-number">1</span> <span class="cm-keyword">AND</span> C<span class="cm-variable-2">.State</span> = <span class="cm-number">1</span></div></div></div><!-- console_message_container -->
+            <div class="query_input">
+                <span class="console_query_input"><div class="CodeMirror cm-s-pma CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 16px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="0"></textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 16px; margin-bottom: -17px; border-right-width: 13px; min-height: 15px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"><div class="CodeMirror-cursor" style="left: 0px; top: 0px; height: 15px;">&nbsp;</div></div><div class="CodeMirror-code" role="presentation"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 15px;"></div><div class="CodeMirror-gutters" style="height: 28px;"><div class="CodeMirror-gutter CodeMirror-lint-markers"></div></div></div></div></span>
+            </div>
+        </div><!-- message end -->
+                <div class="mid_layer"></div>
+                <div class="card ungrouped" id="debug_console">
+            <div class="toolbar ">
+                    <div class="button order order_asc active">
+            
+            <span>ascending</span>
+        </div>
+                            <div class="button order order_desc">
+            
+            <span>descending</span>
+        </div>
+                            <div class="text">
+            
+            <span>Order:</span>
+        </div>
+                            <div class="switch_button">
+            
+            <span>Depurar SQL</span>
+        </div>
+                            <div class="button order_by sort_count">
+            
+            <span>Contagem</span>
+        </div>
+                            <div class="button order_by sort_exec active">
+            
+            <span>Execution order</span>
+        </div>
+                            <div class="button order_by sort_time">
+            
+            <span>Time taken</span>
+        </div>
+                            <div class="text">
+            
+            <span>Order by:</span>
+        </div>
+                            <div class="button group_queries">
+            
+            <span>Group queries</span>
+        </div>
+                            <div class="button ungroup_queries">
+            
+            <span>Ungroup queries</span>
+        </div>
+            </div>
+            <div class="content debug" style="height: 92px;">
+                <div class="message welcome binded">Algum erro ocorreu ao carregar a informação de debug do SQL.</div>
+                <div class="debugLog"></div>
+            </div> <!-- Content -->
+            <div class="templates">
+                <div class="debug_query action_content">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action dbg_show_trace">
+            Show trace
+                    </span>
+                            <span class="action dbg_hide_trace">
+            Hide trace
+                    </span>
+                            <span class="text count hide">
+            Contagem
+                    </span>
+                            <span class="text time">
+            Time taken
+                    </span>
+            </div>
+            </div> <!-- Template -->
+        </div> <!-- Debug SQL card -->
+                    <div class="card" id="pma_bookmarks">
+                <div class="toolbar ">
+                    <div class="switch_button">
+            
+            <span>Marcadores</span>
+        </div>
+                            <div class="button refresh">
+            
+            <span>Actualizar</span>
+        </div>
+                            <div class="button add">
+            
+            <span>Adicionar</span>
+        </div>
+            </div>
+                <div class="content bookmark" style="height: 92px;">
+                    <div class="message welcome binded">
+    <span>Sem marcadores</span>
+</div>
+
+                </div>
+                <div class="mid_layer"></div>
+                <div class="card add">
+                    <div class="toolbar ">
+                    <div class="switch_button">
+            
+            <span>Adicionar marcador</span>
+        </div>
+            </div>
+                    <div class="content add_bookmark" style="height: 92px;">
+                        <div class="options">
+                            <label>
+                                Label: <input type="text" name="label">
+                            </label>
+                            <label>
+                                Base de dados destino: <input type="text" name="targetdb">
+                            </label>
+                            <label>
+                                <input type="checkbox" name="shared">Partilhar marcador                            </label>
+                            <button type="submit" name="submit">OK</button>
+                        </div> <!-- options -->
+                        <div class="query_input">
+                            <span class="bookmark_add_input"><div class="CodeMirror cm-s-pma CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 16px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="0"></textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 16px; margin-bottom: -17px; border-right-width: 13px; min-height: 15px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"><div class="CodeMirror-cursor" style="left: 0px; top: 0px; height: 15px;">&nbsp;</div></div><div class="CodeMirror-code" role="presentation"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 15px;"></div><div class="CodeMirror-gutters" style="height: 28px;"><div class="CodeMirror-gutter CodeMirror-lint-markers"></div></div></div></div></span>
+                        </div>
+                    </div>
+                </div> <!-- Add bookmark card -->
+            </div> <!-- Bookmarks card -->
+                        <div class="card" id="pma_console_options">
+            <div class="toolbar ">
+                    <div class="switch_button">
+            
+            <span>Opções</span>
+        </div>
+                            <div class="button default">
+            
+            <span>Definir como padrão</span>
+        </div>
+            </div>
+            <div class="content" style="height: 92px;">
+                <label>
+                    <input type="checkbox" name="always_expand">Expandir sempre mensagens da consulta                </label>
+                <br>
+                <label>
+                    <input type="checkbox" name="start_history">Mostrar histórico da consulta no início                </label>
+                <br>
+                <label>
+                    <input type="checkbox" name="current_query">Show current browsing query                </label>
+                <br>
+                <label>
+                    <input type="checkbox" name="enter_executes">
+                        Execute queries on Enter and insert new line with Shift + Enter. To make this permanent, view settings.                </label>
+                <br>
+                <label>
+                    <input type="checkbox" name="dark_theme">Switch to dark theme                </label>
+                <br>
+            </div>
+        </div> <!-- Options card -->
+        <div class="templates">
+                        <div class="query_actions">
+                    <span class="action collapse">
+            Ocultar
+                    </span>
+                            <span class="action expand">
+            Mostrar
+                    </span>
+                            <span class="action requery">
+            Re-consultar
+                    </span>
+                            <span class="action edit">
+            Edita
+                    </span>
+                            <span class="action explain">
+            Explicar
+                    </span>
+                            <span class="action profiling">
+            Perfil
+                    </span>
+                            <span class="action bookmark">
+            Marcadores
+                    </span>
+                            <span class="text failed">
+            Consulta falhou
+                    </span>
+                            <span class="text targetdb">
+            Base de Dados
+                    </span>
+                            <span class="text query_time">
+            Queried time
+                    </span>
+            </div>
+        </div>
+    </div> <!-- #console end -->
+</div> <!-- #console_container end -->
+<div id="page_content"><div id="loading_parent"><span class="ajax_notification dismissable" id="ajax_message_num_10" style="cursor: pointer;"><div class="error">Erro ao processar pedido<div>Texto do erro: error (rejected)</div><div>Parece que se perdeu a conexão ao servidor. Por favor, verifique a conectividade da sua rede e o estado do seu servidor.</div></div></span></div><a class="hide" id="update_recent_tables" href="http://localhost/phpmyadmin/index.php?ajax_request=1&amp;recent_table=1"></a><div class="sqlqueryresults ajax"><div class="notice"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_notice"> Current selection does not contain a unique column. Grid edit, checkbox, Edit, Copy and Delete features are not available. <a href="http://localhost/phpmyadmin/doc/html/config.html#cfg_RowActionLinksWithoutUnique" target="documentation"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Documentação" alt="Documentação" class="icon ic_b_help"></a></div><div class="result_query">
+<div class="success"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="" alt="" class="icon ic_s_success"> A mostrar registos de 0 -  0 (1 total, A consulta demorou 0,0000 segundos.)</div><div class="sqlOuter"><div id="inline_editor_outer"><textarea name="sql_query_edit" id="sql_query_edit" style="display: none;">SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1</textarea><div class="CodeMirror cm-s-default CodeMirror-wrap ui-resizable CodeMirror-focused" style="resize: vertical; height: 74.6094px;"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 4px; left: 460.438px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="0"></textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 46px; margin-bottom: -17px; border-right-width: 13px; min-height: 60px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors" style=""><div class="CodeMirror-cursor" style="left: 414.438px; top: 0px; height: 13px;">&nbsp;</div></div><div class="CodeMirror-code" role="presentation"><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -46px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 16px; width: 21px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">SELECT</span> <span class="cm-keyword">SUM</span>(C<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> CarViews, S<span class="cm-variable-2">.Views</span> <span class="cm-keyword">AS</span> StandViews, <span class="cm-keyword">SUM</span>(C<span class="cm-variable-2">.Views</span>) + S<span class="cm-variable-2">.Views</span> <span class="cm-keyword">AS</span> TotalViews <span class="cm-keyword">FROM</span> Cars C</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -46px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 16px; width: 21px;">2</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">INNER</span> <span class="cm-keyword">JOIN</span> Stands S</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -46px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 16px; width: 21px;">3</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">ON</span> C<span class="cm-variable-2">.Stand_Id</span> = S<span class="cm-variable-2">.Stand_Id</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -46px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 16px; width: 21px;">4</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">WHERE</span> C<span class="cm-variable-2">.Stand_Id</span> = <span class="cm-number">1</span> <span class="cm-keyword">AND</span> C<span class="cm-variable-2">.State</span> = <span class="cm-number">1</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 13px; width: 1px; border-bottom: 0px solid transparent; top: 60px;"></div><div class="CodeMirror-gutters" style="height: 73px; left: 0px;"><div class="CodeMirror-gutter CodeMirror-lint-markers"></div><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 29px;"></div></div></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div></div>
+<div><input type="hidden" name="fk_checks" value="0"><input type="checkbox" name="fk_checks" id="fk_checks" checked="checked"><label for="fk_checks">Ativa a verificação de chaves estrangeiras</label></div><input type="submit" id="sql_query_edit_save" class="button btnSave" value="Executar">
+<input type="button" id="sql_query_edit_discard" class="button btnDiscard" value="Cancelar">
+</div><code class="sql" style="display: none;"><pre style="display: none;">SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1
+</pre><div class="sql-highlight cm-s-default"><span class="cm-keyword"><a target="mysql_doc" class="cm-sql-doc" href="http://localhost/phpmyadmin/url.php?url=https://dev.mysql.com/doc/refman/5.5/en/select.html">SELECT</a></span> <span class="cm-keyword"><a target="mysql_doc" class="cm-sql-doc" href="http://localhost/phpmyadmin/url.php?url=https://dev.mysql.com/doc/refman/5.5/en/group-by-functions.html#function_sum">SUM</a></span>(C<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> CarViews, S<span class="cm-variable-2">.Views</span> <span class="cm-keyword">AS</span> StandViews, <span class="cm-keyword"><a target="mysql_doc" class="cm-sql-doc" href="http://localhost/phpmyadmin/url.php?url=https://dev.mysql.com/doc/refman/5.5/en/group-by-functions.html#function_sum">SUM</a></span>(C<span class="cm-variable-2">.Views</span> + S<span class="cm-variable-2">.Views</span>) <span class="cm-keyword">AS</span> TotalViews <span class="cm-keyword">FROM</span> Cars C
+            <span class="cm-keyword">INNER</span> <span class="cm-keyword">JOIN</span> Stands S
+            <span class="cm-keyword">ON</span> C<span class="cm-variable-2">.Stand_Id</span> = S<span class="cm-variable-2">.Stand_Id</span>
+            <span class="cm-keyword">WHERE</span> C<span class="cm-variable-2">.Stand_Id</span> = <span class="cm-number">1</span> <span class="cm-keyword"><a target="mysql_doc" class="cm-sql-doc" href="http://localhost/phpmyadmin/url.php?url=https://dev.mysql.com/doc/refman/5.5/en/logical-operators.html#operator_and">AND</a></span> C<span class="cm-variable-2">.State</span> = <span class="cm-number">1</span>
+</div></code></div><div class="tools print_ignore"><form action="http://localhost/phpmyadmin/sql.php" method="post"><input type="hidden" name="db" value="sap_pt"><input type="hidden" name="table" value="S"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw"><input type="hidden" name="sql_query" value="SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1"><input type="hidden" name="profiling_form" value="1"><input type="checkbox" name="profiling" id="" class="autosubmit"><label for="">Perfil</label>
+</form> [<a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" class="inline_edit_sql">Editar em linha</a>] [&nbsp;<a href="http://localhost/phpmyadmin/tbl_sql.php" data-post="db=sap_pt&amp;table=S&amp;sql_query=SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1&amp;show_query=1#querybox">Edita</a>&nbsp;] [&nbsp;<a href="http://localhost/phpmyadmin/import.php" data-post="db=sap_pt&amp;table=S&amp;sql_query=EXPLAIN+SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1">Explicar SQL</a>&nbsp;] [&nbsp;<a href="http://localhost/phpmyadmin/import.php" data-post="db=sap_pt&amp;table=S&amp;sql_query=SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1&amp;show_query=1&amp;show_as_php=1">Criar código PHP</a>&nbsp;] [&nbsp;<a href="http://localhost/phpmyadmin/import.php" data-post="db=sap_pt&amp;table=S&amp;sql_query=SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1&amp;show_query=1">Actualizar</a>]</div></div><table class="navigation nospacing nopadding print_ignore"><tbody><tr><td class="navigation_separator"></td><td>
+    <form action="http://localhost/phpmyadmin/sql.php" method="post">
+        <input type="hidden" name="db" value="sap_pt"><input type="hidden" name="table" value="S"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw">
+        <input type="hidden" name="sql_query" value="SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1">
+        <input type="hidden" name="pos" value="0">
+        <input type="hidden" name="is_browse_distinct" value="">
+        <input type="hidden" name="session_max_rows" value="all">
+        <input type="hidden" name="goto" value="tbl_structure.php">
+        <input type="checkbox" name="navig" id="showAll_1397955414" class="showAllRows" value="all">
+        <label for="showAll_1397955414">Mostrar tudo</label>
+    </form>
+</td>
+<td><div class="navigation_separator">|</div></td><td><div class="save_edited hide"><input type="submit" value="Guardar dados editados"><div class="navigation_separator">|</div></div></td><td><div class="restore_column hide" style="display: none;"><input type="submit" value="Restaurar ordem da coluna"><div class="navigation_separator">|</div></div></td><td class="navigation_goto"><form action="http://localhost/phpmyadmin/sql.php" method="post" onsubmit=""><input type="hidden" name="db" value="sap_pt"><input type="hidden" name="table" value="S"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw"><input type="hidden" name="sql_query" value="SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1">
+<input type="hidden" name="goto" value="tbl_structure.php">
+<input type="hidden" name="pos" size="3" value="0">
+<input type="hidden" name="is_browse_distinct" value="">
+Número de registos:<select name="session_max_rows" class="autosubmit">
+<option value="25" selected="selected">25</option>
+<option value="50">50</option>
+<option value="100">100</option>
+<option value="250">250</option>
+<option value="500">500</option>
+</select>
+
+</form></td><td class="navigation_separator"></td><td class="largescreenonly"><span>Filtrar registos:</span><input type="text" class="filter_rows" placeholder="Pesquisar esta tabela" data-for="1397955414"></td><td class="largescreenonly"></td><td class="navigation_separator"></td></tr></tbody></table>
+<input class="save_cells_at_once" type="hidden" value=""><div class="common_hidden_inputs"><input type="hidden" name="db" value="sap_pt"><input type="hidden" name="table" value="S"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw"></div><form method="post" action="http://localhost/phpmyadmin/sql.php" name="displayOptionsForm" class="ajax print_ignore">
+    <input type="hidden" name="db" value="sap_pt"><input type="hidden" name="table" value="S"><input type="hidden" name="sql_query" value="SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1"><input type="hidden" name="goto" value="tbl_structure.php"><input type="hidden" name="display_options_form" value="1"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw">
+
+            <a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" class="ajax"><span>+ </span>Opções</a><div class="slide-wrapper" style="display: none;"><div id="" style="display: none; overflow:auto;" class="pma_auto_slider">
+
+        <fieldset>
+            <div class="formelement">
+                                <input type="radio" name="pftext" id="pftext_1397955414_P" value="P" checked="checked">
+<label for="pftext_1397955414_P">Textos parciais</label>
+<br>
+<input type="radio" name="pftext" id="pftext_1397955414_F" value="F">
+<label for="pftext_1397955414_F">Textos completos</label>
+<br>
+
+            </div>
+
+                            <div class="formelement">
+                    <input type="radio" name="relational_display" id="relational_display_1397955414_K" value="K" checked="checked">
+<label for="relational_display_1397955414_K">Chave de relação</label>
+<br>
+<input type="radio" name="relational_display" id="relational_display_1397955414_D" value="D">
+<label for="relational_display_1397955414_D">Mostrar colunas para relação</label>
+<br>
+
+                </div>
+            
+            <div class="formelement">
+                <input type="checkbox" name="display_binary" id="display_binary_1397955414" checked="checked"><label for="display_binary_1397955414">Mostrar conteúdo binário</label>
+                <input type="checkbox" name="display_blob" id="display_blob_1397955414"><label for="display_blob_1397955414">Exibir conteúdos BLOB</label>
+            </div>
+
+                        <div class="formelement">
+                <input type="checkbox" name="hide_transformation" id="hide_transformation_1397955414"><label for="hide_transformation_1397955414">Ocultar transformações do navegador</label>
+            </div>
+
+
+                            <div class="formelement">
+                    
+                    <input type="radio" name="geoOption" id="geoOption_1397955414_WKT" value="WKT" checked="checked">
+<label for="geoOption_1397955414_WKT">Texto bem conhecido</label>
+<br>
+<input type="radio" name="geoOption" id="geoOption_1397955414_WKB" value="WKB">
+<label for="geoOption_1397955414_WKB">Binario bem conhecido</label>
+<br>
+
+                </div>
+                        <div class="clearfloat"></div>
+        </fieldset>
+
+        <fieldset class="tblFooters">
+            <input type="submit" value="Executar">
+        </fieldset>
+    </div></div></form>
+
+<div class="responsivetable">
+    <div class="data" style="position: relative;"><div class="cRsz" style="height: 34px;"><div class="colborder" style="left: 75.7128px;"></div><div class="colborder" style="left: 166.713px;"></div><div class="colborder" style="left: 252.713px;"></div></div><table class="sticky_columns" style="position: fixed; z-index: 99; width: 263px; margin-left: 6.56px; top: 57.5625px; display: none;"><thead><tr>
+<th class="draggable right" data-column="CarViews" style="width: 59.9688px;"><span>CarViews
+</span></th><th class="draggable right" data-column="StandViews" style="width: 74.9688px;"><span>StandViews
+</span></th><th class="draggable right" data-column="TotalViews" style="width: 68.9688px;"><span>TotalViews
+</span></th>
+<td class="print_ignore" style="width: 1.15625px;"><span></span></td></tr></thead></table><table class="table_results ajax pma_table" data-uniqueid="1397955414">
+<thead><tr>
+<th class="draggable right" data-column="CarViews"><span>CarViews
+</span></th><th class="draggable right" data-column="StandViews"><span>StandViews
+</span></th><th class="draggable right" data-column="TotalViews" style="cursor: move;"><span>TotalViews
+</span></th>
+<td class="print_ignore"><span></span></td></tr></thead><tbody>
+<tr><td data-decimals="0" data-type="real" class="right data       nowrap"><span>1659</span></td>
+<td data-decimals="0" data-type="int" class="right data       nowrap"><span>1</span></td>
+<td data-decimals="0" data-type="real" class="right data       nowrap"><span>1669</span></td>
+</tr>
+</tbody>
+</table><div class="cPointer" style="visibility: hidden;"></div><div class="cCpy" style="display: none;"></div><div class="cDrop"></div><div class="cList" style="display: none;"><div class="lDiv"><div><input type="checkbox" checked="checked">CarViews
+</div><div><input type="checkbox" checked="checked">StandViews
+</div><div><input type="checkbox" checked="checked">TotalViews
+</div></div><div class="showAllColBtn">Mostrar tudo</div></div><div class="cEdit" style="display: none;"><input class="edit_box" rows="1"><div class="edit_area"></div></div><div class="cEdit" style="display: none;"><textarea class="edit_box" rows="1"></textarea><div class="edit_area"></div></div></div></div><br>
+<table class="navigation nospacing nopadding print_ignore"><tbody><tr><td class="navigation_separator"></td><td>
+    <form action="http://localhost/phpmyadmin/sql.php" method="post">
+        <input type="hidden" name="db" value="sap_pt"><input type="hidden" name="table" value="S"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw">
+        <input type="hidden" name="sql_query" value="SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1">
+        <input type="hidden" name="pos" value="0">
+        <input type="hidden" name="is_browse_distinct" value="">
+        <input type="hidden" name="session_max_rows" value="all">
+        <input type="hidden" name="goto" value="tbl_structure.php">
+        <input type="checkbox" name="navig" id="showAll_1397955414" class="showAllRows" value="all">
+        <label for="showAll_1397955414">Mostrar tudo</label>
+    </form>
+</td>
+<td><div class="navigation_separator">|</div></td><td><div class="save_edited hide"><input type="submit" value="Guardar dados editados"><div class="navigation_separator">|</div></div></td><td><div class="restore_column hide" style="display: none;"><input type="submit" value="Restaurar ordem da coluna"><div class="navigation_separator">|</div></div></td><td class="navigation_goto"><form action="http://localhost/phpmyadmin/sql.php" method="post" onsubmit=""><input type="hidden" name="db" value="sap_pt"><input type="hidden" name="table" value="S"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw"><input type="hidden" name="sql_query" value="SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1">
+<input type="hidden" name="goto" value="tbl_structure.php">
+<input type="hidden" name="pos" size="3" value="0">
+<input type="hidden" name="is_browse_distinct" value="">
+Número de registos:<select name="session_max_rows" class="autosubmit">
+<option value="25" selected="selected">25</option>
+<option value="50">50</option>
+<option value="100">100</option>
+<option value="250">250</option>
+<option value="500">500</option>
+</select>
+
+</form></td><td class="navigation_separator"></td><td class="largescreenonly"><span>Filtrar registos:</span><input type="text" class="filter_rows" placeholder="Pesquisar esta tabela" data-for="1397955414"></td><td class="largescreenonly"></td><td class="navigation_separator"></td></tr></tbody></table><fieldset class="print_ignore"><legend>Operações resultantes das consultas</legend><a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" id="printView" target="print_view"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Imprimir" alt="Imprimir" class="icon ic_b_print">&nbsp;Imprimir</span></a><a href="http://localhost/phpmyadmin/tbl_sql.php?db=sap_pt&amp;table=news#" id="copyToClipBoard"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Copiar para área de transferência" alt="Copiar para área de transferência" class="icon ic_b_insrow">&nbsp;Copiar para área de transferência</span></a><a href="http://localhost/phpmyadmin/tbl_export.php" data-post="db=sap_pt&amp;table=S&amp;printview=1&amp;sql_query=SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1&amp;single_table=true&amp;unlim_num_rows=1"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Exportar" alt="Exportar" class="icon ic_b_tblexport">&nbsp;Exportar</span></a>
+<a href="http://localhost/phpmyadmin/tbl_chart.php" data-post="db=sap_pt&amp;table=S&amp;printview=1&amp;sql_query=SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1&amp;single_table=true&amp;unlim_num_rows=1"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Mostrar gráfico" alt="Mostrar gráfico" class="icon ic_b_chart">&nbsp;Mostrar gráfico</span></a>
+<span><a href="http://localhost/phpmyadmin/view_create.php?db=sap_pt" data-post="db=sap_pt&amp;table=S&amp;printview=1&amp;sql_query=SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1" class="create_view ajax"><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Criar visualização" alt="Criar visualização" class="icon ic_b_view_add">&nbsp;Criar visualização</span></a></span>
+</fieldset><br><form action="http://localhost/phpmyadmin/sql.php" method="post" onsubmit="" class="bookmarkQueryForm print_ignore"><input type="hidden" name="token" value="K:&quot;f1+P6js*1_=tw"><input type="hidden" name="db" value="sap_pt"><input type="hidden" name="goto" value="sql.php?db=sap_pt&amp;table=S&amp;sql_query=SELECT+SUM%28C.Views%29+AS+CarViews%2C+S.Views+AS+StandViews%2C+SUM%28C.Views+%2B+S.Views%29+AS+TotalViews+FROM+Cars+C%0D%0A++++++++++++INNER+JOIN+Stands+S%0D%0A++++++++++++ON+C.Stand_Id+%3D+S.Stand_Id%0D%0A++++++++++++WHERE+C.Stand_Id+%3D+1+AND+C.State+%3D+1&amp;id_bookmark=1"><input type="hidden" name="bkm_fields[bkm_database]" value="sap_pt"><input type="hidden" name="bkm_fields[bkm_user]" value="root"><input type="hidden" name="bkm_fields[bkm_sql_query]" value="SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views + S.Views) AS TotalViews FROM Cars C
+            INNER JOIN Stands S
+            ON C.Stand_Id = S.Stand_Id
+            WHERE C.Stand_Id = 1 AND C.State = 1"><fieldset><legend><span class="nowrap"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Marcar este comando SQL" alt="Marcar este comando SQL" class="icon ic_b_bookmark">&nbsp;Marcar este comando SQL</span></legend><div class="formelement"><label>Label:<input type="text" name="bkm_fields[bkm_label]" value=""></label></div><div class="formelement"><label><input type="checkbox" name="bkm_all_users" value="true">Deixar todos os utilizadores acederem a este marcador</label></div><div class="clearfloat"></div></fieldset><fieldset class="tblFooters"><input type="hidden" name="store_bkm" value="1"><input type="submit" value="Marcar este comando SQL"></fieldset></form></div></div><div id="selflink" class="print_ignore"><a href="http://localhost/phpmyadmin/tbl_structure.php?db=sap_pt&amp;table=S&amp;server=1&amp;target=" title="Abrir nova janela do phpMyAdmin" target="_blank" rel="noopener noreferrer"><img src="./localhost _ 127.0.0.1 _ sap_pt _ S _ phpMyAdmin 4.8.3_files/dot.gif" title="Abrir nova janela do phpMyAdmin" alt="Abrir nova janela do phpMyAdmin" class="icon ic_window-new"></a></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div></body></html>

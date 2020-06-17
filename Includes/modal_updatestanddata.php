@@ -2,6 +2,7 @@
     <div class="modal-dialog">
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <input type="hidden" value="<?= isset($data) ? $data["Stand_Id"] : 0 ?>" name="id_stand">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Atualizar informações do Stand</h4>
@@ -28,8 +29,17 @@
                     </div>
                     <div class="form-group">
                         <label for="locality"><strong>Localidade</strong></label>
-                        <select class="form-control" onchange="Showitems(this)" name="Locality">
-                            <option value="" disabled selected id="default">Escolha a Localidade</option>
+                        <select class="form-control" name="locality">
+                            <?php if (isset($locations)) : ?>
+                                <?php foreach ($locations as $location) : ?>
+                                    <?php if (isset($stand_location) && $location["local_id"] == $stand_location["local_id"]) : ?>
+                                        <option value="<?= $location["local_id"] ?>" selected><?= $location["name_location"] ?></option>
+                                    <?php endif ?>
+                                    <?php if (!isset($stand_location) || $location["local_id"] != $stand_location["local_id"]) : ?>
+                                        <option value="<?= $location["local_id"] ?>"><?= $location["name_location"] ?></option>
+                                    <?php endif ?>
+                                <?php endforeach ?>
+                            <?php endif ?>
                         </select>
                     </div>
                 </div>

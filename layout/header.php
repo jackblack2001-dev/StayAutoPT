@@ -103,6 +103,11 @@
             text-decoration: none !important;
         }
 
+        .a-carousel-stands{
+            color: #ffffff;
+            text-decoration: none !important;
+        }
+
         .card {
             border: 1px groove #8c8e8c38;
         }
@@ -168,7 +173,7 @@
         .bottom-right-stand {
             position: absolute;
             bottom: 20px;
-            right: 30px;
+            right: -40px;
             background-color: black;
             color: white;
             padding-left: 20px;

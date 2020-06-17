@@ -116,7 +116,7 @@ function returnCar($id, $con)
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows == 1) {
             if ($row = $Result->fetch_assoc()) {
-                return DataProcessing($row,false,$con);
+                return DataProcessing($row, false, $con);
             }
         }
     }
@@ -194,6 +194,64 @@ function returnMostViewed($id, $con)
         }
     }
 }
+
+#region Stand_Dashboard_Statistics
+function returnTotalNumcars($id, $con)
+{
+    $sql = "SELECT COUNT(*) AS NumCars FROM Cars WHERE Stand_Id = $id";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                return $row;
+            }
+        } else {
+            return null;
+        }
+    }
+}
+
+function returnTotalAvailablecars($id, $con)
+{
+    $sql = "SELECT COUNT(*) AS AvailableCars FROM Cars WHERE Stand_Id = $id AND State = 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                return $row;
+            }
+        } else {
+            return 0;
+        }
+    }
+}
+
+function returnTotalSellcars($id, $con)
+{
+    $sql = "SELECT COUNT(*) AS SelledCars, SUM(Price) AS TotalPrice FROM Cars WHERE Stand_Id = $id AND State = 2";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                return $row;
+            }
+        } else {
+            return 0;
+        }
+    }
+}
+
+function returnCarStandViews($id, $con)
+{
+    $sql = "SELECT SUM(C.Views) AS CarViews, S.Views AS StandViews, SUM(C.Views) + S.Views AS TotalViews FROM Cars C INNER JOIN Stands S ON C.Stand_Id = S.Stand_Id WHERE C.Stand_Id = $id AND C.State = 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                return $row;
+            }
+        } else {
+            return 0;
+        }
+    }
+}
+#endregion
 #endregion
 
 #region UPDATE

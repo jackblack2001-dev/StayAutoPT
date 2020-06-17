@@ -8,30 +8,45 @@ include('../assets/role_checker.php');
 include("../assets/message_user.php");
 include("../assets/user_info.php");
 
-roleStand();
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if (isset($_GET["id"])) {
+        $data = returnUrlStand($_GET["id"], $con);
 
-$imgbanner = $imgbadge = "";
+        if (isset($_SESSION['Id']) && $_SESSION['Id'] != $data["Stand_Id"]) {
+            $is_favourit = returnFavourit($data["Stand_Id"], $_SESSION['Id'], $con);
+        } else $is_favourit = false;
 
-$who = "stand";
-$data = returnStand($_SESSION['Id'], $con);
+        if ($data === null) {
+            //404 Error page
+            //header("location: StandRegister.php");
+        } else {
+            $id = $data["Stand_Id"];
+            $news = returnNews($data["Stand_Id"], $con);
+            $stand_location = returnStandLocation($data["Locality"], $con);
+        }
+    } else {
+        $who = "stand";
+        $data = returnStand($_SESSION['Id'], $con);
 
-if ($data === null) {
-    header("location: StandRegister.php");
-} else {
-    $id = $data["Stand_Id"];
-    $news = returnNews($data["Stand_Id"], $con);
+        if ($data === null) {
+            header("location: StandRegister.php");
+        } else {
+            $id = $data["Stand_Id"];
+            $news = returnNews($data["Stand_Id"], $con);
+            $locations = returnLocations($con);
+            $stand_location = returnStandLocation($data["Locality"], $con);
+        }
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
 
     if (isset($_POST["Order"])) {
         UpdateStandItemsOrder($_POST["Order"], $data["Stand_Id"], $con);
     }
 
-    if (isset($_POST["name"]) && isset($_POST["adress"]) && isset($_POST["phone"]) /* && isset($_POST["locality"]) */) {
-        $id = $data["Stand_Id"];
-        UpdateStand($id, $_POST["name"], $_POST["adress"], $_POST["phone"], $con);
+    if (isset($_POST["id_stand"]) && isset($_POST["name"]) && isset($_POST["adress"]) && isset($_POST["phone"]) && isset($_POST["locality"])) {
+        UpdateStand($_POST["id_stand"], $_POST["name"], $_POST["adress"], $_POST["phone"], $_POST["locality"], $con);
         header("Refresh:0");
     }
 }
@@ -69,7 +84,7 @@ include("../layout/menu.php");
                             <div class="col-md-10">
                                 <h4>Informações</h4>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2" id="info_coner">
                                 <button class="btn btn-outline-secondary float-right" id="BTN_Edit_Stand" data-toggle="modal" data-target="#ModalUpdateStand">Editar</button>
                             </div>
                         </div>
@@ -80,7 +95,7 @@ include("../layout/menu.php");
                                 <h5>Localidade</h5>
                             </dt>
                             <dd>
-                                <h4><small><?= $data["Locality"] ?></small></h4>
+                                <h4><small><?= $stand_location["name_location"] ?></small></h4>
                             </dd>
                         </dl>
                         <dl>
@@ -137,6 +152,23 @@ include("../layout/menu.php");
 <script>
     $(document).ready(function() {
         geocode();
+
+        var owner = "<?= $data["User_Id"] ?>";
+        var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : null ?>";
+        var isadmin = "<?= isset($_SESSION["Profile"]) && $_SESSION["Profile"] == 0 ? true : false ?>";
+
+        var favourits = '<a class="float-right" type="button" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : false ?>,<?= $data["Stand_Id"] ?>)"><i id="icon_fav" class="<?= isset($is_favourit) && $is_favourit ? "fa fa-star" : "fa fa-star-o" ?>" style="font-size:25px;"></i></a>';
+
+        if (visitor != null) {
+            if (visitor != owner) {
+                $("#BTN_Edit_Stand").remove();
+                $("#Edit_Exbitions").remove();
+                $("#overlay-banner").remove();
+                $("#overlay-badge").remove();
+
+                $("#info_coner").append(favourits);
+            }
+        }
     })
 
     function geocode() {
@@ -163,13 +195,15 @@ include("../layout/menu.php");
     }
 
     function CCSLX(div, rows, up) {
+        var id = "<?= $data["Stand_Id"] ?>"
         $.ajax({
             type: "GET",
             url: "../assets/carcard.php",
             data: {
                 SCCLX: true,
                 rows,
-                up
+                up,
+                id
             },
             success: function(response) {
                 $("#" + div + "").html(response);
@@ -222,20 +256,12 @@ include("../layout/menu.php");
     })
 
     function cards(request) {
+        var owner = "<?= $data["User_Id"] ?>";
+        var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : null ?>";
+
         if (request == "n") {
-            return '<div class="card shadow mb-4" id="card_n">' +
-                '<div class="card-header">' +
-                '<div class="row">' +
-                '<div class="col-md-11">' +
-                '<h5>Notícias do Stand</h5>' +
-                '</div>' +
-                '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(news)"><i class="fa fa-trash-o"></i></a>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="card-body">' +
-                '<div class="row mb-4">' +
+            var remove_news = '<a class="float-right" type="button" onclick="Remove(news)"><i class="fa fa-trash-o"></i></a>';
+            var btns_news = '<div class="row mb-4" id="Btn_Group_News">' +
                 '<div class="col-md-6">' +
                 '<div class="btn-group" role="group">' +
                 '<button type="button" class="btn btn-outline-secondary" id="BTN_Last" onclick="GetNews(0)">Ultima Notícia</button>' +
@@ -245,7 +271,28 @@ include("../layout/menu.php");
                 '<div class="col-md-6">' +
                 '<button type="button" class="btn btn-outline-success float-right" data-toggle="modal" data-target="#ModalCreateNews">Adicionar Notícia</button>' +
                 '</div>' +
+                '</div>';
+
+            if (visitor != null) {
+                if (visitor != owner) {
+                    remove_news = "";
+                    btns_news = "";
+                }
+            }
+
+            return '<div class="card shadow mb-4" id="card_n">' +
+                '<div class="card-header">' +
+                '<div class="row">' +
+                '<div class="col-md-11">' +
+                '<h5>Notícias do Stand</h5>' +
                 '</div>' +
+                '<div class="col-md-1 text-danger">' +
+                remove_news +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="card-body">' +
+                btns_news +
                 '<div class="row" id="card_news">' +
                 '</div>' +
                 '</div>' +
@@ -253,6 +300,14 @@ include("../layout/menu.php");
         }
 
         if (request == "c") {
+            var remove_featured = '<a class="float-right" type="button" onclick="Remove(featured)"><i class="fa fa-trash-o" id="ir"></i></a>';
+
+            if (visitor != null) {
+                if (visitor != owner) {
+                    remove_featured = "";
+                }
+            }
+
             return '<div class="card shadow mb-4" id="card_c">' +
                 '<div class="card-header">' +
                 '<div class="row">' +
@@ -260,7 +315,7 @@ include("../layout/menu.php");
                 '<h5>Em Destaque</h5>' +
                 '</div>' +
                 '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(featured)"><i class="fa fa-trash-o" id="ir"></i></a>' +
+                remove_featured +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -279,19 +334,8 @@ include("../layout/menu.php");
         }
 
         if (request == "nc") {
-            return '<div class="card shadow mb-4" id="card_nc">' +
-                '<div class="card-header">' +
-                '<div class="row">' +
-                '<div class="col-md-11">' +
-                '<h5>Novidades</h5>' +
-                '</div>' +
-                '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(new_car)"><i class="fa fa-trash-o" id="ir"></i></a>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="card-body">' +
-                '<div class="row mb-4">' +
+            var remove_new_car = '<a class="float-right" type="button" onclick="Remove(new_car)"><i class="fa fa-trash-o" id="ir"></i></a>'
+            var new_car_select = '<div class="row mb-4">' +
                 '<div class="col-md-3">' +
                 '<div class="form-group">' +
                 '<label for="ncar"><strong>Nº de Carros a Mostrar</strong></label>' +
@@ -309,7 +353,28 @@ include("../layout/menu.php");
                 '</select>' +
                 '</div>' +
                 '</div>' +
+                '</div>';
+
+            if (visitor != null) {
+                if (visitor != owner) {
+                    new_car_select = "";
+                    remove_new_car = "";
+                }
+            }
+
+            return '<div class="card shadow mb-4" id="card_nc">' +
+                '<div class="card-header">' +
+                '<div class="row">' +
+                '<div class="col-md-11">' +
+                '<h5>Novidades</h5>' +
                 '</div>' +
+                '<div class="col-md-1 text-danger">' +
+                remove_new_car +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="card-body">' +
+                new_car_select +
                 '<div class="div_nc" id="new_cars">' +
                 '</div>' +
                 '</div>' +
@@ -317,6 +382,14 @@ include("../layout/menu.php");
         }
 
         if (request == "p") {
+            var remove_premiers = '<a class="float-right" type="button" onclick="Remove(premiers)"><i class="fa fa-trash-o" id="ir"></i></a>';
+
+            if (visitor != null) {
+                if (visitor != owner) {
+                    remove_premiers = "";
+                }
+            }
+
             return '<div class="card shadow mb-4" id="card_p">' +
                 '<div class="card-header">' +
                 '<div class="row">' +
@@ -324,7 +397,7 @@ include("../layout/menu.php");
                 '<h5>Brevemente</h5>' +
                 '</div>' +
                 '<div class="col-md-1 text-danger">' +
-                '<a class="float-right" type="button" onclick="Remove(premiers)"><i class="fa fa-trash-o" id="ir"></i></a>' +
+                remove_premiers +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -469,6 +542,24 @@ include("../layout/menu.php");
 
         if ($("#card_n").length == 0 || $("#card_c").length == 0 || $("#card_nc").length == 0 || $("#card_p").length == 0) {
             $("#default").text("Selecione um Item a Exibir");
+        }
+    }
+
+    function favorits(user, stand) {
+        if (user == false) {
+            //coockies UwU
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "../assets/favourits.php",
+                data: {
+                    user,
+                    stand
+                },
+                success: function(response) {
+                    $("#icon_fav").toggleClass('fa-star fa-star-o');
+                }
+            });
         }
     }
 </script>

@@ -85,8 +85,11 @@ include("layout/menu.php");
             </div>
         </div>
         <span class="border-left"></span>
-        <div class="col">
-            <div style="border: black"></div>
+        <div class="col mt-4">
+            <div class="text-center">
+                <h3><small>Possui um Stand?</small></h3>
+            </div>
+            <div class="text-center mt-4"><a href="Register.php?is=true" class="btn btn-outline-success">Registe-se ainda hoje!</a></div>
         </div>
     </div>
 </div>

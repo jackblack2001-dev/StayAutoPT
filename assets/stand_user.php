@@ -30,6 +30,8 @@ function returnPaginationStands($page, $num_rows_on_page, $con)
     $sql = "SELECT * FROM Stands S
     INNER JOIN Stands_Banners SB
     ON SB.Stand_Id = S.Stand_Id
+    INNER JOIN Locations L
+    ON S.Locality = L.local_id
     WHERE SB.State = 1 LIMIT ?,?";
 
     if ($stmt = $con->prepare($sql)) {
@@ -91,6 +93,69 @@ function returnStand($id, $con)
         ON
         SBN.Stand_Id = S.Stand_Id
         WHERE User_Id = '$id' AND SB.State = 1 AND SBN.State = 1";
+        $Result = $con->query($sql);
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_assoc()) {
+                return StandProcessing($row);
+            }
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
+function returnLocations($con)
+{
+    $sql = "SELECT * FROM Locations";
+    $Result = $con->query($sql);
+    if ($Result->num_rows >= 1) {
+        while ($row = $Result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    } else return null;
+}
+
+function returnStandLocation($id, $con)
+{
+    $sql = "SELECT * FROM Locations WHERE local_id = $id";
+    $Result = $con->query($sql);
+    if ($Result->num_rows == 1) {
+        if ($row = $Result->fetch_assoc()) {
+            return $row;
+        }
+    } else return null;
+}
+
+function returnSubscriptions($id, $con)
+{
+    $sql = "SELECT COUNT(*) AS Subscriptions FROM Stands_Favourits WHERE Stand_Id = $id AND State = 1";
+    $Result = $con->query($sql);
+    if ($Result->num_rows == 1) {
+        if ($row = $Result->fetch_assoc()) {
+            return $row["Subscriptions"];
+        }
+    } else {
+        return 0;
+    }
+}
+
+function returnUrlStand($id, $con)
+{
+    if (isset($id)) {
+        $sql = "SELECT * FROM Stands S 
+        INNER JOIN Config_Stands C
+        ON
+        C.Stand_Id = S.Stand_Id
+        INNER JOIN Stands_Badges SB
+        ON
+        SB.Stand_Id = S.Stand_Id
+        INNER JOIN Stands_Banners SBN
+        ON
+        SBN.Stand_Id = S.Stand_Id
+        WHERE S.Stand_id = '$id' AND SB.State = 1 AND SBN.State = 1";
         $Result = $con->query($sql);
         if ($Result->num_rows == 1) {
             if ($row = $Result->fetch_assoc()) {
@@ -215,7 +280,7 @@ function returnlastid($con)
 #endregion
 #region Updates
 
-function UpdateStand($id, $name, $adress, $phone, $con)
+function UpdateStand($id, $name, $adress, $phone, $locality, $con)
 {
     if ($name != "") {
         $sql = "UPDATE Stands SET Name = '$name' WHERE Stand_Id = $id";
@@ -229,6 +294,11 @@ function UpdateStand($id, $name, $adress, $phone, $con)
 
     if ($phone != "") {
         $sql = "UPDATE Stands SET Phone = '$phone' WHERE Stand_Id = $id";
+        $con->query($sql);
+    }
+
+    if ($locality != "") {
+        $sql = "UPDATE Stands SET Locality = '$locality' WHERE Stand_Id = $id";
         $con->query($sql);
     }
 }
@@ -388,6 +458,56 @@ function storePreviousBanner($id, $con)
                 $con->query($sql);
             }
         }
+    }
+}
+#endregion
+#region Favourits
+function returnFavourit($sid, $uid, $con)
+{
+    $sql = "SELECT * FROM Stands_Favourits WHERE Stand_id = $sid AND User_Id = $uid AND State = 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            return true;
+        } else return false;
+    }
+}
+
+function seeifFavouritExist($sid, $uid, $con)
+{
+    $sql = "SELECT * FROM Stands_Favourits WHERE Stand_id = $sid AND User_Id = $uid";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            return true;
+        } else return false;
+    }
+}
+
+function manageFavourits($user, $stand, $con)
+{
+    if (seeifFavouritExist($stand, $user, $con)) {
+        $sql = "SELECT State FROM Stands_Favourits WHERE Stand_Id = $stand AND User_Id = $user";
+        if ($Result = $con->query($sql)) {
+            if ($Result->num_rows == 1) {
+                if ($row = $Result->fetch_array()) {
+                    $state = $row["State"];
+
+                    if ($state == 0) {
+                        $sql = "UPDATE Stands_Favourits SET State = 1 WHERE Stand_Id = $stand AND User_Id = $user";
+                        $con->query($sql);
+                    }
+
+                    if ($state == 1) {
+                        $sql = "UPDATE Stands_Favourits SET State = 0 WHERE Stand_Id = $stand AND User_Id = $user";
+                        $con->query($sql);
+                    }
+                }
+            }
+        }
+    } else {
+        $sql = "INSERT INTO Stands_Favourits(Stand_Id,User_Id,State) VALUES(?,?,1)";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param('ii', $stand, $user);
+        $stmt->execute();
     }
 }
 #endregion

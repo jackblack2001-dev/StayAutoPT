@@ -42,8 +42,8 @@ include("layout/menu.php");
                             <div class="row">
                                 <img class="rounded" src="Public/Images/Stand_Banners/<?=$row["Banner_Name"]?>" alt="" style="width: 250px; height: 170px;">
                                 <div class="col ml-2">
-                                    <h4><strong><?= $row["Name"] ?></strong></h4>
-                                    <small>Viseu <i class="fa fa-map-marker" style="color: red;"></i></small>
+                                    <h4><strong><a class="a-cars" href="<?=ROOT_PATH?>User_Stand/Stand_Profile.php?id=<?=$row["Stand_Id"]?>"><?= $row["Name"] ?></a></strong></h4>
+                                    <small><?=$row["name_location"]?> <i class="fa fa-map-marker" style="color: red;"></i></small>
                                 </div>
                             </div>
                         </div>
