@@ -98,12 +98,12 @@
 
         /*  */
 
-        .a-cars{
+        .a-cars {
             color: #000000;
             text-decoration: none !important;
         }
 
-        .a-carousel-stands{
+        .a-carousel-stands {
             color: #ffffff;
             text-decoration: none !important;
         }
@@ -226,24 +226,30 @@
 
         .overlay-profile-badge {
             position: absolute;
-            bottom: 0px;
+            top: 0px;
             opacity: 0;
             transition: .3s ease;
-
             border-width: 5px;
             border-style: dashed;
             color: #909090;
         }
 
         .div-overlay-profile-badge {
-            margin-top: -100px;
-            left: 358px;
-            margin-right: 716px;
-            position: relative;
+            width: 170px;
+            position: absolute;
+            top: 280px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
         }
 
         .div-overlay-profile-badge:hover .overlay-profile-badge {
             opacity: 1;
+        }
+
+        .div_profile_name{
+            margin-top: 30px;
         }
 
         /* Stand Dasboard */

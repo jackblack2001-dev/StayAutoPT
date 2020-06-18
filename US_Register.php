@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT Email FROM Users WHERE Email = '$Mail'";
         $Result = $con->query($sql);
         if ($Result->num_rows == 0) {
-            insertUser($Name, $Mail, $Phone, 1, $hased_password, $con);
+            insertUser($Name, $Mail, $Phone, 2, $hased_password, $con);
             header("location: Index.php");
         } else {
             echo "Erro ao criar Conta, tente novamente mais tarde";

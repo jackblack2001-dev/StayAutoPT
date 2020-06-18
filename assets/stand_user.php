@@ -382,7 +382,7 @@ function InsertStand($Phone, $Adress, $Locality, $Name, $con)
 {
     $sql = "INSERT INTO Stands(User_Id,Phone,Adress,Locality,Name,Views) VALUES(?,?,?,?,?,0)";
     $stmt = $con->prepare($sql);
-    $stmt->bind_param('issss', $_SESSION['Id'], $Phone, $Adress, $Locality, $Name);
+    $stmt->bind_param('issis', $_SESSION['Id'], $Phone, $Adress, $Locality, $Name);
     $stmt->execute();
     if ($stmt == true) {
         return true;

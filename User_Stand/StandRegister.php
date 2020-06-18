@@ -6,12 +6,15 @@ include('../assets/remove_cache.php');
 include('../Public/config.php');
 include('../assets/stand_user.php');
 include('../assets/role_checker.php');
+include("../assets/message_user.php");
 include("../assets/user_info.php");
 
 roleStand();
 
 $Name = $Phone = $Adress = $Locality = $Banner = "";
-$Name_ERROR = $Phone_ERROR = $Adress_ERROR = $Locality_ERROR = $Banner_ERROR = $Banner_ERROR = $Badge_ERROR = "";
+$Name_ERROR = $Phone_ERROR = $Adress_ERROR = $Locality_ERROR = $banner_ERROR = $badge_ERROR = "";
+
+$locations = returnLocations($con);
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST['TXT_Name'])) {
@@ -32,21 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $Adress = $_POST['TXT_Adress'];
     }
 
-    if (empty($_POST['TXT_Locality'])) {
+    if (!isset($_POST['TXT_Locality'])) {
         $Locality_ERROR = "Deve indicar a sua Localidade";
     } else {
         $Locality = $_POST['TXT_Locality'];
     }
 
     //banner
-    $banner = scandir('../User_Stand/tmp/' . $_SESSION['Id'], 1 . '/banner');
+    $banner = scandir('../User_Stand/tmp/' . $_SESSION['Id'] . '/banner', 1);
     array_splice($banner, -2);
     if (!$banner) {
         $banner_ERROR = "Tem que incluir um Banner";
     }
 
     //badge
-    $badge = scandir('../User_Stand/tmp/' . $_SESSION['Id'], 1 . '/badge');
+    $badge = scandir('../User_Stand/tmp/' . $_SESSION['Id'] . '/badge', 1);
     array_splice($badge, -2);
     if (!$badge) {
         $badge_ERROR = "Tem que incluir um Badge";
@@ -61,21 +64,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             if (InsertStandConfig($data["id"], $con) == true) {
                 $bannerTempName = 'tmp/' . $_SESSION['Id'] . '/banner/' . $banner[0];
-                $bannerDestination = "../Public/Images/Stand_Banner/" . $data["id"];
+                $bannerDestination = "../Public/Images/Stand_Banners/" . $data["id"];
 
                 $badgeTempName = 'tmp/' . $_SESSION['Id'] . '/badge/' . $badge[0];
                 $badgeDestination = "../Public/Images/Stand_Badge/" . $data["id"];
 
-                InsertBadge($con, $data["id"], $banner[0]);
+                InsertBanner($con, $data["id"], $banner[0]);
 
                 InsertBadge($con, $data["id"], $badge[0]);
 
                 if (!is_dir($bannerDestination)) {
-                    mkdir($bannerDestination);
+                    mkdir($bannerDestination, 0777, true);
                 }
 
                 if (!is_dir($badgeDestination)) {
-                    mkdir($badgeDestination);
+                    mkdir($badgeDestination, 0777, true);
                 }
 
                 $bannerDestination .= "/" . $banner[0];
@@ -121,7 +124,14 @@ include("../layout/menu.php");
                 </div>
                 <div class="col">
                     <label>Localidade <sup class="text-danger">*</sup></label>
-                    <input type="text" class="form-control" name="TXT_Locality" value="<?php echo $Locality ?>">
+                    <select class="form-control" name="TXT_Locality">
+                        <option value="" selected disabled>Selecione uma Localidade</option>
+                        <?php if (isset($locations)) : ?>
+                            <?php foreach ($locations as $location) : ?>
+                                <option value="<?= $location["local_id"] ?>"><?= $location["name_location"] ?></option>
+                            <?php endforeach ?>
+                        <?php endif ?>
+                    </select>
                     <small class="text-danger"><?php echo $Locality_ERROR ?></small>
                 </div>
             </div>
@@ -132,7 +142,7 @@ include("../layout/menu.php");
                     <div class="mb-4">
                         <label>Foto de Perfil <sup class="text-danger">*</sup></label><br>
                         <input type="file" class="form-control-file" id="bagde">
-                        <small class="text-danger"><?php echo $Badge_ERROR ?></small>
+                        <small class="text-danger"><?php echo $badge_ERROR ?></small>
                     </div>
 
                     <div class="row mt-4 mb-4 ml-2" id="thumbnails_badge">
@@ -145,7 +155,7 @@ include("../layout/menu.php");
                     <div class="mb-4">
                         <label>Foto de Banner<sup class="text-danger">*</sup></label><br>
                         <input type="file" class="form-control-file" id="banner">
-                        <small class="text-danger"><?php echo $Banner_ERROR ?></small>
+                        <small class="text-danger"><?php echo $banner_ERROR ?></small>
                     </div>
 
                     <div class="row mt-4 mb-4 ml-2" id="thumbnails_banner">

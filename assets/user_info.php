@@ -92,7 +92,15 @@ function returnUsersSearch($con, $search)
     }
 }
 #endregion
-
+#region INSERT
+function insertUser($Name, $Mail, $Phone, $profile, $hased_password, $con)
+{
+    $sql = "INSERT INTO Users(Name,Email,Phone,Profile,Password) VALUES(?,?,?,?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('sssis', $Name, $Mail, $Phone, $profile, $hased_password);
+    $stmt->execute();
+}
+#endregion
 #region UPDATE
 function UpdatePhone($phone, $id, $con)
 {

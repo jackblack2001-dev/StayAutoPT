@@ -7,13 +7,19 @@ include("assets/user_info.php");
 include("assets/message_user.php");
 include("assets/car_stand.php");
 
-$total_pages = $con->query("SELECT * FROM Cars WHERE State = 1")->num_rows;
+$sql = "SELECT License_Plate, Card_Image, Brand, Model, Type_Fuel, Kms, Price, Year, L.name_location FROM Cars C
+INNER JOIN Stands S
+ON S.Stand_Id = C.Stand_Id
+INNER JOIN Locations L
+ON L.local_id = S.Locality WHERE State = 1";
+
+$total_pages = $con->query($sql)->num_rows;
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 
 $num_rows_on_page = 5;
 
-$data = returnPaginationCars($page, $num_rows_on_page, $con);
+$data = returnPaginationCars($sql, $page, $num_rows_on_page, $con);
 
 include("layout/header.php");
 include("layout/menu.php");
@@ -40,16 +46,16 @@ include("layout/menu.php");
                     <div class="card shadow-lg" style="width: 100%;">
                         <div class="card-body">
                             <div class="row">
-                                <img class="rounded" src="Public/Images/Car_Photos/<?=$row["Card_Image"]?>" alt="" style="width: 250px; height: 170px;">
+                                <img class="rounded" src="Public/Images/Car_Photos/<?= $row["Card_Image"] ?>" alt="" style="width: 250px; height: 170px;">
                                 <div class="col ml-2">
-                                    <h4><strong><a class="a-cars" href="<?= ROOT_PATH?>User_Stand/Car_Profile.php?id=<?=urlencode(base64_encode($row["License_Plate"]))?>"><?= $row["Model"] ?></a></strong></h4>
-                                    <h5><small><?=$row["Type_Fuel"]?> - <?=$row["Kms"]?> Km</small></h5>
-                                    <small>Viseu <i class="fa fa-map-marker" style="color: red;"></i></small>
+                                    <h4><strong><a class="a-cars" href="<?= ROOT_PATH ?>User_Stand/Car_Profile.php?id=<?= urlencode(base64_encode($row["License_Plate"])) ?>"><?= $row["Model"] ?></a></strong></h4>
+                                    <h5><small><?= $row["Type_Fuel"] ?> - <?= $row["Kms"] ?> Km</small></h5>
+                                    <small><?= $row["name_location"]?> <i class="fa fa-map-marker" style="color: red;"></i></small>
                                 </div>
                                 <div class="col">
                                     <div class="float-right">
-                                        <h2 class="mb-4"><?= $row["Price"]?> <i class="fa fa-euro"></i></h2>
-                                        <h5 class="float-right"><small><?=$row["Year"]?></small></h5>
+                                        <h2 class="mb-4"><?= $row["Price"] ?> <i class="fa fa-euro"></i></h2>
+                                        <h5 class="float-right"><small><?= $row["Year"] ?></small></h5>
                                     </div>
                                 </div>
                             </div>

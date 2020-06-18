@@ -89,7 +89,7 @@ include("layout/menu.php");
             <div class="text-center">
                 <h3><small>Possui um Stand?</small></h3>
             </div>
-            <div class="text-center mt-4"><a href="Register.php?is=true" class="btn btn-outline-success">Registe-se ainda hoje!</a></div>
+            <div class="text-center mt-4"><a href="US_Register.php" class="btn btn-outline-success">Registe-se ainda hoje!</a></div>
         </div>
     </div>
 </div>

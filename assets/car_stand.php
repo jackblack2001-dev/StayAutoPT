@@ -11,9 +11,9 @@ function DataProcessing($data, $iscard, $con)
     }
 
     //gear Processing
-    if ($data["Type_Gear"] == 1) {
+    if (isset($data["Type_Gear"]) == 1) {
         $data["Type_Gear"] = "Manual";
-    } else if ($data["Type_Gear"] == 2) {
+    } else if (isset($data["Type_Gear"]) == 2) {
         $data["Type_Gear"] = "Automatico";
     } else {
         $data["Type_Gear"] = "CVT";
@@ -52,9 +52,9 @@ function DataProcessing($data, $iscard, $con)
 
 
 #region SELECT
-function returnPaginationCars($page, $num_rows_on_page, $con)
+function returnPaginationCars($sql_body, $page, $num_rows_on_page, $con)
 {
-    $sql = "SELECT * FROM Cars WHERE State = 1 LIMIT ?,?";
+    $sql = "$sql_body LIMIT ?,?";
 
     if ($stmt = $con->prepare($sql)) {
         $calc_page = ($page - 1) * $num_rows_on_page;

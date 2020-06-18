@@ -87,6 +87,9 @@ include("../layout/menu.php");
                                 <?php $aux++ ?>
                             <?php endforeach ?>
                         <?php endif ?>
+                        <?php if ($photos == null) : ?>
+                            <img src="<?= ROOT_PATH ?>Public/Images/Car_Photos/no_image_car.png" alt="No image found">
+                        <?php endif ?>
                         <!-- Left and right controls -->
                         <a class="carousel-control-prev" href="#carouselcarimg" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
@@ -171,7 +174,7 @@ include("../layout/menu.php");
                         </div>
                     </div>
                     <hr>
-                    <button class="btn btn-outline-success float-right" data-toggle="modal" data-target="#ModalSendMessage">Deixe uma mensagem</button>
+                    <button class="btn btn-outline-success float-right" data-toggle="modal" data-target="#ModalSendMessage" id="btn_msg">Deixe uma mensagem</button>
                 </div>
             </div>
         </div>
@@ -191,6 +194,8 @@ include("../layout/menu.php");
         if (visitor != null) {
             if (visitor != owner && !isadmin) {
                 $("#div_btn_edit").remove();
+            } else {
+                $("#btn_msg").remove();
             }
         }
 

@@ -56,10 +56,10 @@ if (isset($_SESSION['Id'])) {
             <?php if (isset($_SESSION['Id']) || !empty($_SESSION['Id'])) : ?>
                 <li class="nav-item">
                     <a class="nav-link no-padding" type="button">
-                        <i class="fa fa-envelope-o fa-lg"></i>
-                        <?php if($messages["New_Messages"] > 0) :?>
-                        <span class="badge badge-danger badge-counter message-badge"><?= $messages["New_Messages"]?></span>
-                        <?php endif?>
+                        <i class="fa fa-envelope-o fa-lg <?= $messages["New_Messages"] == 0 ? "mr-4" : "" ?>"></i>
+                        <?php if ($messages["New_Messages"] > 0) : ?>
+                            <span class="badge badge-danger badge-counter message-badge"><?= $messages["New_Messages"] ?></span>
+                        <?php endif ?>
                     </a>
                 </li>
             <?php endif ?>

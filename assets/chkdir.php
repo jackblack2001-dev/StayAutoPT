@@ -12,7 +12,7 @@ function dirExists($who, $type, $id, $filename, $con)
             if (is_dir($photoDestination)) {
                 return $photoDestination;
             } else {
-                mkdir($photoDestination);
+                mkdir($photoDestination, 0777, true);
                 return $photoDestination;
             }
         }
@@ -22,7 +22,7 @@ function dirExists($who, $type, $id, $filename, $con)
             if (is_dir($photoDestination)) {
                 return $photoDestination;
             } else {
-                mkdir($photoDestination);
+                mkdir($photoDestination, 0777, true);
                 return $photoDestination;
             }
         }
@@ -34,7 +34,7 @@ function dirExists($who, $type, $id, $filename, $con)
                 if (is_dir($bannerDestination)) {
                     return $bannerDestination;
                 } else {
-                    mkdir($bannerDestination);
+                    mkdir($bannerDestination, 0777, true);
                     return $bannerDestination;
                 }
             } else return false;
@@ -47,7 +47,7 @@ function dirExists($who, $type, $id, $filename, $con)
                 if (is_dir($bagdeDestination)) {
                     return $bagdeDestination;
                 } else {
-                    mkdir($bagdeDestination);
+                    mkdir($bagdeDestination, 0777, true);
                     return $bagdeDestination;
                 }
             } else return false;
@@ -62,7 +62,7 @@ function dirExists($who, $type, $id, $filename, $con)
                 if (is_dir($bannerDestination)) {
                     return $bannerDestination;
                 } else {
-                    mkdir($bannerDestination);
+                    mkdir($bannerDestination, 0777, true);
                     return $bannerDestination;
                 }
             } else return false;
@@ -75,7 +75,7 @@ function dirExists($who, $type, $id, $filename, $con)
                 if (is_dir($bagdeDestination)) {
                     return $bagdeDestination;
                 } else {
-                    mkdir($bagdeDestination);
+                    mkdir($bagdeDestination, 0777, true);
                     return $bagdeDestination;
                 }
             } else return false;
@@ -91,7 +91,7 @@ function dirExists($who, $type, $id, $filename, $con)
             if (is_dir($photoDestination)) {
                 return $photoDestination;
             } else {
-                mkdir($photoDestination);
+                mkdir($photoDestination, 0777, true);
                 return $photoDestination;
             }
         }
@@ -102,7 +102,7 @@ function dirExists($who, $type, $id, $filename, $con)
                 if (is_dir($photoDestination)) {
                     return $photoDestination;
                 } else {
-                    mkdir($photoDestination);
+                    mkdir($photoDestination, 0777, true);
                     return $photoDestination;
                 }
             } else return false;

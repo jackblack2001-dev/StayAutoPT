@@ -116,7 +116,7 @@ include("../layout/menu.php");
                     </h3>
                 </div>
             </div>
-            <div class="text-center mb-5">
+            <div class="div_profile_name text-center mb-5">
                 <h1 class="Header"><?php echo $data["Name"] ?></h1>
                 <hr style="width: 100%;" />
             </div>
