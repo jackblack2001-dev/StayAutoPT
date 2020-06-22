@@ -51,6 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
 
+    if (isset($_GET["o"])) {
+        $url = urldecode(base64_decode($_GET["o"]));
+    } else {
+        $url = "";
+    }
+
     if ($id == $_SESSION['Id']) {
         $IsOwner = true;
     } else {
@@ -97,7 +103,9 @@ include("../layout/menu.php");
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <a class="btn btn-outline-primary mt-4" href="<?phP echo ROOT_PATH ?>User_Admin/Index_Users.php" id="BTN_Back" style="display:none;">Voltar</a>
+            <?php if ($url != "") : ?>
+                <a class="btn btn-outline-primary mt-4" href="<?= $url ?>" id="BTN_Back" style="display:none;">Voltar</a>
+            <?php endif ?>
         </div>
         <div class="col-md-6">
             <div class="div-overlay-profile-banner mt-4">

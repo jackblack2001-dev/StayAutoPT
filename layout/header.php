@@ -248,7 +248,7 @@
             opacity: 1;
         }
 
-        .div_profile_name{
+        .div_profile_name {
             margin-top: 30px;
         }
 
@@ -298,6 +298,34 @@
             padding-left: 10px;
             padding-right: 10px;
 
+        }
+
+        /* Car Profile */
+        .img-photo {
+            width: 130px;
+            height: 100px;
+            border: 0.5px solid black;
+        }
+
+        .img-add {
+            width: 130px;
+            height: 100px;
+            border: 3px dashed lightgray;
+        }
+
+        .checkbox-photo {
+            position: relative;
+            left: -135px;
+            top: -48px;
+        }
+
+        /* Messages */
+        .div-car-message {
+            position: absolute;
+            background-color: #104ebfcc;
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
         /* Stand Profile */

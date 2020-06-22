@@ -205,7 +205,7 @@ function returnTotalNumcars($id, $con)
                 return $row;
             }
         } else {
-            return null;
+            return 0;
         }
     }
 }
@@ -251,6 +251,21 @@ function returnCarStandViews($id, $con)
         }
     }
 }
+
+function returnFavourits($id, $con)
+{
+    $sql = "SELECT COUNT(*) AS Favourits FROM Cars_Favourits WHERE Stand_Id = $id";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                return $row;
+            }
+        } else {
+            return 0;
+        }
+    }
+}
+
 #endregion
 #endregion
 
@@ -353,6 +368,62 @@ function InsertPhotos($con, $id, $name)
     } else {
         //500 ERROR => header("Location: .../500.html")
         return false;
+    }
+}
+
+function DeletePhotos($id_photo, $id_car, $con)
+{
+    $sql = "UPDATE Cars_Images SET State = 0 WHERE Id_Image = '$id_photo' AND License_Plate = '$id_car'";
+    $con->query($sql);
+}
+#endregion
+#region Favourits
+function returnFavouritCars($cid, $uid, $con)
+{
+    $sql = "SELECT * FROM Car_Favourits WHERE License_Plate = $cid AND User_Id = $uid AND State = 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            return true;
+        } else return false;
+    }
+}
+
+function seeifFavouritExistCars($sid, $uid, $con)
+{
+    $sql = "SELECT * FROM Cars_Favourits WHERE License_Plate = $sid AND User_Id = $uid";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            return true;
+        } else return false;
+    }
+}
+
+function manageFavouritsCars($user, $car, $con)
+{
+    if (seeifFavouritExistCars($car, $user, $con)) {
+        $sql = "SELECT State FROM Cars_Favourits WHERE License_Plate = $car AND User_Id = $user";
+        if ($Result = $con->query($sql)) {
+            if ($Result->num_rows == 1) {
+                if ($row = $Result->fetch_array()) {
+                    $state = $row["State"];
+
+                    if ($state == 0) {
+                        $sql = "UPDATE Cars_Favourits SET State = 1 WHERE License_Plate = $car AND User_Id = $user";
+                        $con->query($sql);
+                    }
+
+                    if ($state == 1) {
+                        $sql = "UPDATE Cars_Favourits SET State = 0 WHERE License_Plate = $car AND User_Id = $user";
+                        $con->query($sql);
+                    }
+                }
+            }
+        }
+    } else {
+        $sql = "INSERT INTO Cars_Favourits(License_Plate,User_Id,State) VALUES(?,?,1)";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param('ii', $car, $user);
+        $stmt->execute();
     }
 }
 #endregion

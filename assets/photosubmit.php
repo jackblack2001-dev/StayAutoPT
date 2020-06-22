@@ -49,6 +49,10 @@ if (isset($_POST['who']) || isset($_POST['type']) || isset($_POST['id'])) {
                                 <img src="' . $fileDestination . '" alt="' . $fileName . '" width="100px" height="100px" style="border: #d6d6d6; border-style: outset">
                             </div>';
                     }
+
+                    if ($who == "car" && $type == "update") {
+                        header("location: ../User_Stand/Car_Profile.php?id=" . urlencode(base64_encode($id)));
+                    }
                 }
             } else {
                 $error = "O tamanha da Imagem Submetida não pode exeder os 5mb!";
@@ -72,7 +76,7 @@ if (isset($_POST['who']) || isset($_POST['type']) || isset($_POST['id'])) {
                 if ($id != $_SESSION['Id'] && $_SESSION['Profile'] == "0") {
                     header("location: ../User/Profile.php?id=" . $id . "&error=" . $error);
                 } else header("location: ../User/Profile.php?error=" . $error);
-            } else if ($who == "car"){
+            } else if ($who == "car") {
                 echo '<div class="alert alert-danger mt-2" role="alert">
                             A Fotografia que submeteu esta Corrumpida!
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

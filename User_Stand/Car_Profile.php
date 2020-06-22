@@ -15,6 +15,10 @@ if (isset($_GET['id'])) {
 
     $stand = returnCarStand($id, $con);
 
+    if (isset($_SESSION['Id']) && $_SESSION['Id'] != $stand["Stand_Id"]) {
+        $is_favourit = returnFavouritCars($car["License_Plate"], $_SESSION['Id'], $con);
+    } else $is_favourit = false;
+
     if ($car != null) {
         $photos = returnAllCarPhotos($id, $con);
     } else {
@@ -52,6 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         insertMessage($_POST["id_car"], $_SESSION["Id"], $_POST["id_stand_owner"], $_POST["title"], $_POST["message"], $price, $con);
         header("Location: " . ROOT_PATH . "User_Stand/Car_Profile.php?id=" . $_POST["redirect"] . "");
+    }
+
+    if (isset($_POST["photos"]) && isset($_POST["id_car"])) {
+        foreach ($_POST["photos"] as $photo) {
+            DeletePhotos($photo, $_POST["id_car"], $con);
+        }
     }
 }
 
@@ -99,11 +109,45 @@ include("../layout/menu.php");
                         </a>
 
                     </div>
-                    <!--                     <div class="top-left-car-price rounded shadow-lg">
-                        <span class="font-weight-bold" style="font-size: 25px;"><?= $car["Price"] ?><i class="fa fa-euro"></i></span>
-                    </div> -->
                 </div>
             </div>
+
+            <div class="card shadow mb-4" id="card_photos">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <h4><small>Fotografias <i class="fa fa-photo"></i></small></h4>
+                        </div>
+                        <div class="col text-right">
+                            <a type="button" onclick="Photos()"><img src="<?php echo ROOT_PATH ?>Icons/arrows-Expand.svg" style="width: 20px; height: 20px" id="IMG_CBP"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" id="CBP" style="display:none">
+                    <div class="row ml-4 mr-4" id="photos">
+                        <?php if ($photos != null) : ?>
+                            <?php foreach ($photos as $photo) : ?>
+                                <div>
+                                    <img class="img-photo mr-2 mb-4" src="<?= ROOT_PATH ?>Public/Images/Car_Photos/<?= $photo["License_Plate"] . "/" . $photo["Name"] ?>" id="<?= $photo["Id_Image"] ?>">
+                                    <input class="checkbox-photo" type="checkbox" id="<?= $photo["Id_Image"] ?>">
+                                </div>
+                            <?php endforeach ?>
+                        <?php endif ?>
+                        <div class="img-add" onclick="$('#ModalAddPhoto').modal()">
+                            <div class="text-center">
+                                <i class=" fa fa-image fa-2x" style="position: relative; top:30px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="width: 100%;">
+                    <div class="row">
+                        <div class="col">
+                            <button class="float-right btn btn-outline-danger" data-toggle="modal" data-target="#ModalDelete">Apagar <i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card shadow-lg ml-5 mr-5 mb-4">
                 <div class="card-header">
                     <div class="row">
@@ -153,6 +197,9 @@ include("../layout/menu.php");
                         <div class="col-md-10">
                             <h6>Informações do veiculo</h6>
                         </div>
+                        <div class="col-md-2" id="info_coner">
+
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -190,10 +237,13 @@ include("../layout/menu.php");
         var owner = "<?= $stand["User_Id"] ?>";
         var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : null ?>";
         var isadmin = "<?= isset($_SESSION["Profile"]) && $_SESSION["Profile"] == 0 ? true : false ?>"
+        var favourits = '<a class="float-right" type="button" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : false ?>,<?= $stand["Stand_Id"] ?>)"><i id="icon_fav" class="<?= isset($is_favourit) && $is_favourit ? "fa fa-star" : "fa fa-star-o" ?>" style="font-size:25px;"></i></a>';
 
         if (visitor != null) {
             if (visitor != owner && !isadmin) {
                 $("#div_btn_edit").remove();
+                $("#card_photos").remove();
+                $("#info_coner").append(favourits);
             } else {
                 $("#btn_msg").remove();
             }
@@ -208,5 +258,79 @@ include("../layout/menu.php");
         } else {
             $("#price_neg").hide();
         }
-    })
+    });
+
+    function SeeChks() {
+        var id_car = "<?= $id ?>";
+        var array = new Array();
+        var index = -1;
+        var aux = 0;
+
+        $(".checkbox-photo").each(function(i, obj) {
+            aux++;
+
+            var isChecked = $(obj).is(":checked");
+            if (isChecked == true) {
+                index++;
+                array[index] = $(obj).attr('id');
+                aux--;
+            }
+        });
+
+        if (array.length != 0) {
+            if (aux >= 3) {
+                DeletePhotos(array, id_car);
+            } else {
+                $("#ModalDeleteErrorTooMutch").modal();
+            }
+        } else {
+            $("#ModalDeleteErrorNoData").modal();
+        }
+    }
+
+    function DeletePhotos(photos, id_car) {
+        console.log(photos);
+        $.ajax({
+            type: "POST",
+            url: "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>",
+            data: {
+                photos,
+                id_car
+            },
+            success: function(response) {
+                window.location.href = "Car_Profile.php?id=<?= urlencode(base64_encode($id)) ?>";
+            }
+        });
+    }
+
+    function Photos() {
+        var div = document.getElementById("CBP");
+        var img = document.getElementById("IMG_CBP");
+
+        if (div.style.display === "none") {
+            $(div).show(500);
+            img.src = "<?php echo ROOT_PATH ?>Icons/arrows-collapse.svg";
+        } else {
+            $(div).hide(500);
+            img.src = "<?php echo ROOT_PATH ?>Icons/arrows-expand.svg";
+        }
+    }
+
+    function favorits(user, car) {
+        if (user == false) {
+            //coockies UwU
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "../assets/favourits.php",
+                data: {
+                    user,
+                    car,
+                },
+                success: function(response) {
+                    $("#icon_fav").toggleClass('fa-star fa-star-o');
+                }
+            });
+        }
+    }
 </script>

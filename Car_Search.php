@@ -17,7 +17,7 @@ $total_pages = $con->query($sql)->num_rows;
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 
-$num_rows_on_page = 5;
+$num_rows_on_page = 15;
 
 $data = returnPaginationCars($sql, $page, $num_rows_on_page, $con);
 

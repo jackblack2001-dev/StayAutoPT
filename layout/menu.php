@@ -55,7 +55,7 @@ if (isset($_SESSION['Id'])) {
         <ul class="navbar-nav ml-auto">
             <?php if (isset($_SESSION['Id']) || !empty($_SESSION['Id'])) : ?>
                 <li class="nav-item">
-                    <a class="nav-link no-padding" type="button">
+                    <a class="nav-link no-padding" type="button" href="<?=ROOT_PATH?>User/Messages.php">
                         <i class="fa fa-envelope-o fa-lg <?= $messages["New_Messages"] == 0 ? "mr-4" : "" ?>"></i>
                         <?php if ($messages["New_Messages"] > 0) : ?>
                             <span class="badge badge-danger badge-counter message-badge"><?= $messages["New_Messages"] ?></span>

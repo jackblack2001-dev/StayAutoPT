@@ -46,6 +46,50 @@ function returnPaginationStands($page, $num_rows_on_page, $con)
     }
 }
 
+function returnPaginationMessages($id, $page, $num_rows_on_page, $con)
+{
+    $sql = "SELECT Message_Id, Name, Brand, Model, Title, CreatedMessage, Viewed FROM Messages M
+    INNER JOIN Users U
+    ON U.User_Id = M.User_Id
+    INNER JOIN Cars C
+    ON C.License_Plate = M.License_Plate WHERE Receiver_Id = $id ORDER BY CreatedMessage DESC LIMIT ?,?";
+    if ($stmt = $con->prepare($sql)) {
+        $calc_page = ($page - 1) * $num_rows_on_page;
+        $stmt->bind_param('ii', $calc_page, $num_rows_on_page);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+}
+
+function returnMessage($id, $u_id, $con)
+{
+    $sql = "SELECT U.User_Id, Title, Message, Neg_Price, Name, M.License_Plate, Brand, Model, Price, Year, CreatedMessage FROM Messages M
+    INNER JOIN Users U
+    ON U.User_Id = M.User_Id
+    INNER JOIN Cars C
+    ON C.License_Plate = M.License_Plate
+    WHERE Message_Id = $id AND Receiver_Id = $u_id";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            while ($row = $Result->fetch_assoc()) {
+                $date = explode(" ", $row["CreatedMessage"]);
+                $row["CreatedMessage"] = $date[0];
+                return $row;
+            }
+        }
+    }
+}
+
+function viewMessage($id, $u_id, $con)
+{
+    $sql = "UPDATE Messages SET Viewed = 1 WHERE Message_Id = $id AND Receiver_Id = $u_id";
+    $con->query($sql);
+}
+
 function returnAllStands($con)
 {
     $data = null;
@@ -397,6 +441,14 @@ function InsertNews($standid, $userid, $title, $text, $con)
     $sql = "INSERT INTO News(Stand_Id,User_Id,Title,Text,State) Values(?,?,?,?,1)";
     $stmt = $con->prepare($sql);
     $stmt->bind_param('iiss', $standid, $userid, $title, $text);
+    $stmt->execute();
+}
+
+function insertMessageStand($idC, $idS, $idR, $title, $message, $accepted, $con)
+{
+    $sql = "INSERT INTO Messages(User_Id,Receiver_Id,License_Plate,Title,Message,Accept_Neg_Price) VALUES(?,?,?,?,?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('iisssi', $idS, $idR, $idC, $title, $message, $accepted);
     $stmt->execute();
 }
 #endregion

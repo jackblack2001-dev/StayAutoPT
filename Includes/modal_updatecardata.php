@@ -139,12 +139,100 @@
                     <h4 class="modal-title">Deve estar Logado para realizar esta ação</h4>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center"><h4><small>Para poder enviar uma mensagem ao dono deste carro, têm que efetuar o login primeiro</small></h4></p>
+                    <p class="text-center">
+                        <h4><small>Para poder enviar uma mensagem ao dono deste carro, têm que efetuar o login primeiro</small></h4>
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-outline-primary" href="../login.php">Login</a>
                 </div>
             </div>
         <?php endif ?>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAddPhoto" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <form action="<?php echo ROOT_PATH ?>assets/photosubmit.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="who" value="car">
+            <input type="hidden" name="type" value="update">
+            <input type="hidden" name="id" value="<?= $id ?>">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Adicionar foto</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="file" name="file">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-outline-success float-right" type="submit" name="submit" id="BTN_Save_Banner">Salvar <i class="fa fa-floppy-o"></i></button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div id="ModalDeleteErrorNoData" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="error_title">Nenhuma Fotografia Selecionada</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">
+                    <h4><small id="error_message">Selecione as fotografias para Eliminar</small></h4>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="ModalDeleteErrorTooMutch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="error_title">Impossivel Eliminar Fotografias</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">
+                    <h4><small id="error_message">Têm que ficar obrigatoriamente com 3 fotografias</small></h4>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="ModalDelete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="error_title">Eliminar Fotografias</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">
+                    <h4><small id="error_message">Esta ação é Irreversível, deseja continuar?</small></h4>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal" onclick="SeeChks()">Apagar <i class="fa fa-trash"></i></button>
+            </div>
+        </div>
+
     </div>
 </div>
