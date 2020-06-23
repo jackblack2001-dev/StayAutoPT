@@ -23,6 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $id = $data["Stand_Id"];
             $news = returnNews($data["Stand_Id"], $con);
             $stand_location = returnStandLocation($data["Locality"], $con);
+            
+            UpdateStandViews($data["Stand_Id"], $con);
         }
     } else {
         $who = "stand";
@@ -42,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST["Order"])) {
-        UpdateStandItemsOrder($_POST["Order"], $data["Stand_Id"], $con);
+        UpdateStandItemsOrder($_POST["Order"], $_POST["id"], $con);
     }
 
     if (isset($_POST["id_stand"]) && isset($_POST["name"]) && isset($_POST["adress"]) && isset($_POST["phone"]) && isset($_POST["locality"])) {
@@ -122,7 +124,7 @@ include("../layout/menu.php");
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-10">
-                        <h6>Exibir</h6>
+                        <h6>Visualizar</h6>
                     </div>
                     <div class="col-md-2">
                         <button class="btn btn-outline-success float-right" id="BTN_Save" onclick="Save()">Salvar <i class="fa fa-floppy-o"></i></button>
@@ -131,7 +133,7 @@ include("../layout/menu.php");
             </div>
             <div class="card-body">
                 <select class="form-control" onchange="Showitems(this)">
-                    <option value="" disabled selected id="default">Selecione um Item a Exibir</option>
+                    <option value="" disabled selected id="default">Selecione um Item a Visualizar</option>
                     <option value="0" id="news">Notícias</option>
                     <option value="1" id="featured">Carros em Destaque</option>
                     <option value="2" id="new_car">Novidades</option>
@@ -157,7 +159,7 @@ include("../layout/menu.php");
         var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : null ?>";
         var isadmin = "<?= isset($_SESSION["Profile"]) && $_SESSION["Profile"] == 0 ? true : false ?>";
 
-        var favourits = '<a class="float-right" type="button" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : false ?>,<?= $data["Stand_Id"] ?>)"><i id="icon_fav" class="<?= isset($is_favourit) && $is_favourit ? "fa fa-star" : "fa fa-star-o" ?>" style="font-size:25px;"></i></a>';
+        var favourits = '<button class="btn <?= $is_favourit == false ? "btn-outline-success" : "btn-success" ?> float-right" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : "false" ?>,<?= $data["Stand_Id"] ?>)" id="btn_subscribe">Subscrever</button>';
 
         if (visitor != null) {
             if (visitor != owner) {
@@ -438,7 +440,7 @@ include("../layout/menu.php");
         })
 
         if ($("#card_n").length != 0 && $("#card_c").length != 0 && $("#card_nc").length != 0 && $("#card_p").length != 0) {
-            $("#default").text("Não há mais nada para Exibir!");
+            $("#default").text("Não há mais nada para Visualizar!");
         }
     })
 
@@ -468,7 +470,8 @@ include("../layout/menu.php");
                 type: "POST",
                 url: "<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>",
                 data: {
-                    Order: $array
+                    Order: $array,
+                    id: "<?= $data["Stand_Id"] ?>"
                 },
                 success: function(response) {
                     /* Place Toaster */
@@ -515,7 +518,7 @@ include("../layout/menu.php");
         }
 
         if ($("#card_n").length != 0 && $("#card_c").length != 0 && $("#card_nc").length != 0 && $("#card_p").length != 0) {
-            $("#default").text("Não há mais nada para Exibir!");
+            $("#default").text("Não há mais nada para Visualizar!");
         }
     }
 
@@ -541,13 +544,13 @@ include("../layout/menu.php");
         }
 
         if ($("#card_n").length == 0 || $("#card_c").length == 0 || $("#card_nc").length == 0 || $("#card_p").length == 0) {
-            $("#default").text("Selecione um Item a Exibir");
+            $("#default").text("Selecione um Item a Visualizar");
         }
     }
 
     function favorits(user, stand) {
         if (user == false) {
-            //coockies UwU
+            $("#ModalLoginNeeded").modal();
         } else {
             $.ajax({
                 type: "POST",
@@ -557,7 +560,7 @@ include("../layout/menu.php");
                     stand
                 },
                 success: function(response) {
-                    $("#icon_fav").toggleClass('fa-star fa-star-o');
+                    $("#btn_subscribe").toggleClass('btn-outline-success btn-success');
                 }
             });
         }

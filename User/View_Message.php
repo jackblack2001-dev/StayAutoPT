@@ -81,7 +81,7 @@ include("../layout/menu.php");
                     <?php endif ?>
                 </div>
             </div>
-            <div class="card shadow mt-5 mb-4">
+            <div class="card shadow mt-5 mb-4" id="card_response">
                 <div class="card-header">
                     <div class="row">
                         <div class="col">

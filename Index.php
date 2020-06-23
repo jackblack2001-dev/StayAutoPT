@@ -8,6 +8,15 @@ include("assets/stand_user.php");
 include("assets/message_user.php");
 include("assets/car_stand.php");
 
+//geoplugin
+require_once("geoplugin.class/geoplugin.class.php");
+/* $geoplugin = new geoPlugin();
+$geoplugin->locate();
+
+echo var_export($geoplugin); */
+
+/* echo var_export(unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$_SERVER['REMOTE_ADDR']))); */
+
 $stands = returnStandsRandom5($con);
 
 $cars = returnMostViewedCar5($con);
@@ -57,7 +66,7 @@ include("layout/menu.php");
                         echo '<div class="' . $ini . '">
                                     <img src="Public/Images/Stand_Banners/' . $id . '/' . $img . '" alt="' . $title . '">
                                     <div class="carousel-caption">
-                                        <h3><a class="a-carousel-stands" href="'.ROOT_PATH.'/User_Stand/Stand_Profile.php?id='.$id.'">' . $title . '</h3>
+                                        <h3><a class="a-carousel-stands" href="' . ROOT_PATH . '/User_Stand/Stand_Profile.php?id=' . $id . '">' . $title . '</h3>
                                     </div>
                                 </div>';
                     }

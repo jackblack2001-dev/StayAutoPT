@@ -33,7 +33,7 @@ $selledcars = returnTotalSellcars($data["Stand_Id"], $con);
 
 $views = returnCarStandViews($data["Stand_Id"], $con);
 
-$subscriptions = returnSubscriptions($data["Stand_Id"],$con);
+$subscriptions = returnSubscriptions($data["Stand_Id"], $con);
 
 $havecar = true;
 if ($car == null) {
@@ -109,7 +109,7 @@ include("../layout/menu.php");
                                             Número Total de Vendas
                                         </div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-                                            <?= $selledcars["TotalPrice"] ?>
+                                            <?= $selledcars["SelledCars"] != 0 ? $selledcars["TotalPrice"] : "0" ?>
                                         </div>
                                     </div>
                                     <div class="col-auto text-gray">
@@ -126,7 +126,7 @@ include("../layout/menu.php");
                                             Número de Subscritores
                                         </div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-                                            <?=$subscriptions?>
+                                            <?= $subscriptions ?>
                                         </div>
                                     </div>
                                     <div class="col-auto text-gray">
@@ -161,7 +161,7 @@ include("../layout/menu.php");
             </div>
         </div>
         <div class="col-md-2 col-sm-1 mt-5">
-            <div class="card shadow mt-4 mb-4">
+            <div class="card shadow mt-4 mb-4" style="margin-left: -40px;">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-10 col-sm-10">
@@ -222,12 +222,13 @@ include("../layout/menu.php");
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col">
-                                            <h6><strong>Carros Favoritados</strong></h6>
+                                            <h6><strong>Favoritos</strong></h6>
                                             <h5 class="mt-n2"><small><?= $avaibalecars["AvailableCars"] ?></small></h5>
                                         </div>
+                                        <span class="border-left"></span>
                                         <div class="col">
                                             <h6><strong>Subscritores</strong></h6>
-                                            <h5 class="mt-n2"><small><?= $selledcars["SelledCars"] ?></small></h5>
+                                            <h5 class="mt-n2"><small><?= $subscriptions ?></small></h5>
                                         </div>
                                     </div>
                                 </div>

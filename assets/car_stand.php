@@ -11,12 +11,14 @@ function DataProcessing($data, $iscard, $con)
     }
 
     //gear Processing
-    if (isset($data["Type_Gear"]) == 1) {
-        $data["Type_Gear"] = "Manual";
-    } else if (isset($data["Type_Gear"]) == 2) {
-        $data["Type_Gear"] = "Automatico";
-    } else {
-        $data["Type_Gear"] = "CVT";
+    if (isset($data["Type_Gear"])) {
+        if ($data["Type_Gear"] == 1) {
+            $data["Type_Gear"] = "Manual";
+        } else if (isset($data["Type_Gear"]) == 2) {
+            $data["Type_Gear"] = "Automatico";
+        } else {
+            $data["Type_Gear"] = "CVT";
+        }
     }
 
     //car name Processing
@@ -61,10 +63,12 @@ function returnPaginationCars($sql_body, $page, $num_rows_on_page, $con)
         $stmt->bind_param('ii', $calc_page, $num_rows_on_page);
         $stmt->execute();
         $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = DataProcessing($row, false, $con);
-        }
-        return $data;
+        if ($result->num_rows >= 1) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = DataProcessing($row, false, $con);
+            }
+            return $data;
+        } else return null;
     }
 }
 
@@ -152,8 +156,7 @@ function returnRandomCar6($con)
 
 function returnCarsSearch($id, $search, $con)
 {
-    $sql = "SELECT * FROM `cars` WHERE `Stand_Id` = $id 
-        AND `Brand` LIKE '%$search%' OR `Model` LIKE '%$search%'";
+    $sql = "SELECT * FROM Cars WHERE Stand_Id = $id AND Model LIKE '%$search%'";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
@@ -233,7 +236,7 @@ function returnTotalSellcars($id, $con)
                 return $row;
             }
         } else {
-            return 0;
+            return null;
         }
     }
 }
@@ -378,9 +381,39 @@ function DeletePhotos($id_photo, $id_car, $con)
 }
 #endregion
 #region Favourits
+function returnAllFavouritCars($id, $con)
+{
+    $sql = "SELECT * FROM Cars C
+            INNER JOIN Cars_Favourits CF
+            ON
+            CF.License_Plate = C.License_Plate
+            WHERE CF.User_Id = $id AND CF.State = 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] =  DataProcessing($row, true, $con);
+            }
+            return $data;
+        } else return null;
+    }
+}
+
+function returnCookieFavouritCars($array, $con)
+{
+    $sql = 'SELECT * FROM Cars WHERE License_Plate IN (' . implode(",", $array) .')';
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] =  DataProcessing($row, true, $con);
+            }
+            return $data;
+        } else return null;
+    }
+}
+
 function returnFavouritCars($cid, $uid, $con)
 {
-    $sql = "SELECT * FROM Car_Favourits WHERE License_Plate = $cid AND User_Id = $uid AND State = 1";
+    $sql = "SELECT * FROM Cars_Favourits WHERE License_Plate = '$cid' AND User_Id = '$uid' AND State = 1";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows == 1) {
             return true;
@@ -388,9 +421,9 @@ function returnFavouritCars($cid, $uid, $con)
     }
 }
 
-function seeifFavouritExistCars($sid, $uid, $con)
+function seeifFavouritExistCars($cid, $uid, $con)
 {
-    $sql = "SELECT * FROM Cars_Favourits WHERE License_Plate = $sid AND User_Id = $uid";
+    $sql = "SELECT * FROM Cars_Favourits WHERE License_Plate = '$cid' AND User_Id = $uid";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows == 1) {
             return true;
@@ -401,19 +434,19 @@ function seeifFavouritExistCars($sid, $uid, $con)
 function manageFavouritsCars($user, $car, $con)
 {
     if (seeifFavouritExistCars($car, $user, $con)) {
-        $sql = "SELECT State FROM Cars_Favourits WHERE License_Plate = $car AND User_Id = $user";
+        $sql = "SELECT State FROM Cars_Favourits WHERE License_Plate = '$car' AND User_Id = $user";
         if ($Result = $con->query($sql)) {
             if ($Result->num_rows == 1) {
                 if ($row = $Result->fetch_array()) {
                     $state = $row["State"];
 
                     if ($state == 0) {
-                        $sql = "UPDATE Cars_Favourits SET State = 1 WHERE License_Plate = $car AND User_Id = $user";
+                        $sql = "UPDATE Cars_Favourits SET State = 1 WHERE License_Plate = '$car' AND User_Id = $user";
                         $con->query($sql);
                     }
 
                     if ($state == 1) {
-                        $sql = "UPDATE Cars_Favourits SET State = 0 WHERE License_Plate = $car AND User_Id = $user";
+                        $sql = "UPDATE Cars_Favourits SET State = 0 WHERE License_Plate = '$car' AND User_Id = $user";
                         $con->query($sql);
                     }
                 }
@@ -422,7 +455,7 @@ function manageFavouritsCars($user, $car, $con)
     } else {
         $sql = "INSERT INTO Cars_Favourits(License_Plate,User_Id,State) VALUES(?,?,1)";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param('ii', $car, $user);
+        $stmt->bind_param('si', $car, $user);
         $stmt->execute();
     }
 }

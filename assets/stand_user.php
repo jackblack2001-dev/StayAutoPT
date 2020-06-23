@@ -25,24 +25,21 @@ function StandProcessing($data)
 #endregion
 
 #region Selects
-function returnPaginationStands($page, $num_rows_on_page, $con)
+function returnPaginationStands($sql_body, $page, $num_rows_on_page, $con)
 {
-    $sql = "SELECT * FROM Stands S
-    INNER JOIN Stands_Banners SB
-    ON SB.Stand_Id = S.Stand_Id
-    INNER JOIN Locations L
-    ON S.Locality = L.local_id
-    WHERE SB.State = 1 LIMIT ?,?";
+    $sql = "$sql_body LIMIT ?,?";
 
     if ($stmt = $con->prepare($sql)) {
         $calc_page = ($page - 1) * $num_rows_on_page;
         $stmt->bind_param('ii', $calc_page, $num_rows_on_page);
         $stmt->execute();
         $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = StandProcessing($row);
-        }
-        return $data;
+        if ($result->num_rows >= 1) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = StandProcessing($row);
+            }
+            return $data;
+        } else return null;
     }
 }
 
@@ -58,16 +55,18 @@ function returnPaginationMessages($id, $page, $num_rows_on_page, $con)
         $stmt->bind_param('ii', $calc_page, $num_rows_on_page);
         $stmt->execute();
         $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+        if ($result->num_rows >= 1) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+            return $data;
         }
-        return $data;
     }
 }
 
 function returnMessage($id, $u_id, $con)
 {
-    $sql = "SELECT U.User_Id, Title, Message, Neg_Price, Name, M.License_Plate, Brand, Model, Price, Year, CreatedMessage FROM Messages M
+    $sql = "SELECT Receiver_Id, U.User_Id, Title, Message, Neg_Price, Name, M.License_Plate, Brand, Model, Price, Year, CreatedMessage FROM Messages M
     INNER JOIN Users U
     ON U.User_Id = M.User_Id
     INNER JOIN Cars C
@@ -321,6 +320,32 @@ function returnlastid($con)
         }
     }
 }
+
+function returnAllSubscriptions($id, $con)
+{
+    $sql = "SELECT S.Stand_Id,Name, Banner_Name, L.name_location FROM Stands S 
+    INNER JOIN Stands_Badges SB
+    ON
+    SB.Stand_Id = S.Stand_Id
+    INNER JOIN Stands_Banners SBN
+    ON
+    SBN.Stand_Id = S.Stand_Id
+    INNER JOIN Locations L
+    ON
+    L.local_id = S.Locality
+    INNER JOIN Stands_Favourits SF
+    ON
+    SF.Stand_Id = S.Stand_Id
+    WHERE SF.User_Id = $id AND SF.State = 1 AND SB.State = 1 AND SBN.State = 1";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] =  StandProcessing($row);
+            }
+            return $data;
+        } else return null;
+    }
+}
 #endregion
 #region Updates
 
@@ -406,6 +431,13 @@ function UpdateNew($id, $title, $text, $con)
         return true;
     }
 }
+
+function UpdateStandViews($id, $con)
+{
+    $sql = "UPDATE Stands SET Views = Views + 1 WHERE Stand_Id = $id";
+    $con->query($sql);
+}
+
 #endregion
 #region Insert
 function InsertStandConfig($id, $con)

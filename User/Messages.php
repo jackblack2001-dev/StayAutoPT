@@ -54,6 +54,14 @@ include("../layout/menu.php");
                     </a>
                 </div>
             <?php endforeach ?>
+        <?php else : ?>
+            <div class="col mb-4" style="border-width:3px;border-style:dashed; color: lightgray">
+                <br>
+                <h3 class="text-center">
+                    Ainda não recebeu nenhuma mensagem
+                </h3>
+                <br>
+            </div>
         <?php endif ?>
     </div>
 

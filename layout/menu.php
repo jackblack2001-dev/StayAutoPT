@@ -64,7 +64,7 @@ if (isset($_SESSION['Id'])) {
                 </li>
             <?php endif ?>
             <li class="nav-item mr-4">
-                <a class="nav-link no-padding" type="button">
+                <a href="<?=ROOT_PATH?>Favourits.php" class="nav-link no-padding" type="button">
                     <i class="fa fa-star-o fa-lg"></i>Favoritos
                 </a>
             </li>
@@ -79,6 +79,7 @@ if (isset($_SESSION['Id'])) {
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="' . ROOT_PATH . 'User/Profile.php">Perfil</a>
+                    <a class="dropdown-item" href="' . ROOT_PATH . 'User/Subscriptions.php">Subscrições</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="' . ROOT_PATH . 'logout.php"><i class="fa fa-sign-out"></i>Logout</a>
                 </div>

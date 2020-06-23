@@ -15,8 +15,17 @@ if (isset($_GET['id'])) {
 
     $stand = returnCarStand($id, $con);
 
-    if (isset($_SESSION['Id']) && $_SESSION['Id'] != $stand["Stand_Id"]) {
+    if (isset($_SESSION['Id'])) {
         $is_favourit = returnFavouritCars($car["License_Plate"], $_SESSION['Id'], $con);
+    } else if (isset($_COOKIE["cars_favourits"])) {
+        $Lp = explode("=",$_COOKIE["cars_favourits"]);
+        foreach ($Lp as $lp) {
+            $clean = base64_decode($lp);
+            if ($clean == $car["License_Plate"]) {
+                $is_favourit = $clean;
+                break;
+            }
+        }
     } else $is_favourit = false;
 
     if ($car != null) {
@@ -237,7 +246,7 @@ include("../layout/menu.php");
         var owner = "<?= $stand["User_Id"] ?>";
         var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : null ?>";
         var isadmin = "<?= isset($_SESSION["Profile"]) && $_SESSION["Profile"] == 0 ? true : false ?>"
-        var favourits = '<a class="float-right" type="button" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : false ?>,<?= $stand["Stand_Id"] ?>)"><i id="icon_fav" class="<?= isset($is_favourit) && $is_favourit ? "fa fa-star" : "fa fa-star-o" ?>" style="font-size:25px;"></i></a>';
+        var favourits = '<a class="float-right" type="button" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : "false" ?>)"><i id="icon_fav" class="<?= isset($is_favourit) && $is_favourit ? "fa fa-star" : "fa fa-star-o" ?>" style="font-size:25px;"></i></a>';
 
         if (visitor != null) {
             if (visitor != owner && !isadmin) {
@@ -316,9 +325,20 @@ include("../layout/menu.php");
         }
     }
 
-    function favorits(user, car) {
+    function favorits(user) {
+        car = "<?= base64_encode($car["License_Plate"]) ?>";
+
         if (user == false) {
-            //coockies UwU
+            $.ajax({
+                type: "POST",
+                url: "../assets/favourits.php",
+                data: {
+                    cookie: car
+                },
+                success: function(response) {
+                    $("#icon_fav").toggleClass('fa-star fa-star-o');
+                }
+            });
         } else {
             $.ajax({
                 type: "POST",

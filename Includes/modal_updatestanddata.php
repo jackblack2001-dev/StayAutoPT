@@ -52,3 +52,21 @@
 
     </div>
 </div>
+
+<div class="modal fade" id="ModalLoginNeeded" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Deve estar Logado para realizar esta ação</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">
+                    <h4><small>Para poder subscrever este stand têm que efetuar o login primeiro</small></h4>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-outline-primary" href="../login.php">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
