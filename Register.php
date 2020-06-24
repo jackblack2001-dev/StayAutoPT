@@ -1,8 +1,8 @@
 <?php
 session_start();
-//TODO: Alterar inserção na db para com Prepare (ver standregister)
 include('Public/config.php');
 include('assets/user_info.php');
+include("PHPMailer/Mail_Shooter.php");
 define("ROOT_PATH", "http://" . $_SERVER["HTTP_HOST"] . "/StayAutoPT/");
 define("INCLUDE_PATH", __DIR__);
 
@@ -58,8 +58,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT Email FROM Users WHERE Email = '$Mail'";
         $Result = $con->query($sql);
         if ($Result->num_rows == 0) {
+
             insertUser($Name, $Mail, $Phone, 1, $hased_password, $con);
-            header("location: Index.php");
+
+            $subject = "Comfirme a sua Conta StayAuto Portugal";
+
+            $message = '<div class="row">
+                            <div class="col">
+                                <h3>Comfirme o seu Email</h3>
+                    
+                                <p>Caro(a) ' . $Name . '</p>
+                    
+                                <p>Muito obrigado por se registar em StayAuto Portugal, para concluir o registo da sua conta tem que ativa-la, para isso clique no botão abaixo</p>
+                                <a href="http://localhost/StayAutoPT/ActivateAcount.php?id=' . base64_encode($Mail) . '" class="btn btn-outline-success">Ativar Conta</a>
+                            </div>
+                        </div>';
+
+            ShootMail($subject, $message, $Mail);
         } else {
             echo "Erro ao criar Conta, tente novamente mais tarde";
         }

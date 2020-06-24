@@ -79,6 +79,10 @@ include("layout/menu.php");
                 <a class="carousel-control-next" href="#CS" data-slide="next">
                     <span class="carousel-control-next-icon"></span>
                 </a>
+
+                <div class="top-left-stand-discover rounded-left rounded-right shadow-lg" id="card_badge">
+                    <span class="font-weight-bold" style="font-size:25px">Stands que Talvez Conheça</span>
+                </div>
             </div>
 
             <div class="card shadow mb-4">
@@ -126,13 +130,13 @@ include("layout/menu.php");
                                     $Name = $string;
                                 }
 
-                                carcards($car["License_Plate"], $imgname, $Name, $car["Views"], $car["Year"], $grid);
+                                carcards($car["License_Plate"], $imgname, $Name, $car["Views"], $car["Year"], $grid, $Aux);
 
                                 $Aux++;
                             }
                         }
 
-                        function carcards($id, $imgname, $name, $viewsnum, $year, $grid)
+                        function carcards($id, $imgname, $name, $viewsnum, $year, $grid, $grid_num)
                         {
                             echo '<div class="card shadow ml-4 mr-4 mb-4" style="width: 340px">
                                 <div class="card-body no-padding">
@@ -151,7 +155,7 @@ include("layout/menu.php");
                                         </div>
                                     </div>
                                 </div>
-                                <div class="top-left-5-most-viewed rounded-left rounded-right shadow-lg" id="card_badge">
+                                <div class="top-left-5-most-viewed-'.$grid_num.' rounded-left rounded-right shadow-lg" id="card_badge">
                                     ' . $grid . '
                                 </div>
                             </div>';

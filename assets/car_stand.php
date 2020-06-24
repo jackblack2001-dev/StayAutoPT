@@ -72,6 +72,15 @@ function returnPaginationCars($sql_body, $page, $num_rows_on_page, $con)
     }
 }
 
+function SeeLicensePlateExists($lp, $con)
+{
+    $sql = "SELECT * FROM Cars WHERE License_Plate = '$lp'";
+    $Result = $con->query($sql);
+    if ($Result->num_rows == 1) {
+        return true;
+    } else return false;
+}
+
 function returnCarsViews($con)
 {
     $sql = "SELECT SUM(Views) AS Views FROM Cars";
@@ -343,6 +352,12 @@ function SellCar($id, $con)
     $sql = "UPDATE Cars SET State = 2 WHERE License_Plate = '$id'";
     $con->query($sql);
 }
+
+function RemoveCar($id, $con)
+{
+    $sql = "UPDATE Cars SET State = 0 WHERE License_Plate = '$id'";
+    $con->query($sql);
+}
 #endregion
 
 #region Car Photos
@@ -399,7 +414,7 @@ function returnAllFavouritCars($id, $con)
             INNER JOIN Cars_Favourits CF
             ON
             CF.License_Plate = C.License_Plate
-            WHERE CF.User_Id = $id AND CF.State = 1";
+            WHERE CF.User_Id = $id AND CF.State = 1 AND C.State = 1";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {

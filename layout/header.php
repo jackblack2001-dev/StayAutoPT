@@ -26,11 +26,41 @@
             margin-left: auto !important;
         }
 
-        .top-left-5-most-viewed {
+        .top-left-5-most-viewed-1 {
             position: absolute;
             bottom: 365px;
             left: -13px;
             background-color: #d39e00;
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .top-left-5-most-viewed-2 {
+            position: absolute;
+            bottom: 365px;
+            left: -13px;
+            background-color: #C0C0C0;
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .top-left-5-most-viewed-3 {
+            position: absolute;
+            bottom: 365px;
+            left: -13px;
+            background-color: #b87333;
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .top-left-stand-discover {
+            position: absolute;
+            bottom: 445px;
+            left: -30px;
+            background-color: #0063ca;
             color: white;
             padding-left: 10px;
             padding-right: 10px;
@@ -105,6 +135,11 @@
 
         .a-normal {
             color: #001fffc2;
+            text-decoration: none !important;
+        }
+
+        .a-bad {
+            color: red;
             text-decoration: none !important;
         }
 

@@ -80,6 +80,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         SellCar($_POST["id_car"], $con);
     }
+
+    if (isset($_POST["id_car"]) && isset($_POST["remove"])) {
+        if ($_POST["remove"] == "true") {
+            RemoveCar($_POST["id_car"], $con);
+        }
+    }
 }
 
 include("../layout/header.php");
@@ -185,7 +191,7 @@ include("../layout/menu.php");
                             <h4><strong><?= $car["Model"] ?></strong></h4>
                         </div>
                         <div class="col">
-                            <h3 class="float-right"><strong><?= $car["Price"]?> <i class="fa fa-euro"></i></strong></h3>
+                            <h3 class="float-right"><strong><?= $car["Price"] ?> <i class="fa fa-euro"></i></strong></h3>
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -249,7 +255,9 @@ include("../layout/menu.php");
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <a href="<?= ROOT_PATH ?>User_Stand/Stand_Profile.php?id=<?= $stand["Stand_Id"] ?>"><h5><strong><?= $stand["Name"] ?></strong></h5></a>
+                            <a href="<?= ROOT_PATH ?>User_Stand/Stand_Profile.php?id=<?= $stand["Stand_Id"] ?>">
+                                <h5><strong><?= $stand["Name"] ?></strong></h5>
+                            </a>
                         </div>
                     </div>
                     <div class="row mt-n2">
@@ -409,6 +417,22 @@ include("../layout/menu.php");
             data: {
                 other,
                 id_car
+            },
+            success: function(response) {
+                window.location.href = "Garage.php";
+            }
+        });
+    }
+
+    function RemoveCar() {
+        var id_car = "<?= $id ?>";
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>",
+            data: {
+                id_car,
+                remove: true
             },
             success: function(response) {
                 window.location.href = "Garage.php";

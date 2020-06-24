@@ -22,6 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $License_Plate_ERROR = "Por favor introduza a matricula";
     } else if (strlen(trim($_POST["TXT_LicensePlate"])) < 4) {
         $License_Plate_ERROR = "Matricula incorreta";
+    } else if (SeeLicensePlateExists($_POST["TXT_LicensePlate"], $con)) {
+        $License_Plate_ERROR = "Esta Matricula Já existe";
     } else
         $License_Plate = strtoupper($_POST["TXT_LicensePlate"]);
 
@@ -149,7 +151,11 @@ include("../layout/menu.php");
                                 <span class="input-group-text">Matricula</span>
                             </div>
                             <input type="text" class="form-control" name="TXT_LicensePlate" id="TXT_LicensePlate" value="<?= $License_Plate ?>">
-                            <small class="form-text text-danger"><?php echo $License_Plate_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $License_Plate_ERROR ?></small>
+                            </div>
                         </div>
 
                         <div class="input-group mb-3">
@@ -157,7 +163,11 @@ include("../layout/menu.php");
                                 <span class="input-group-text">Ano</span>
                             </div>
                             <input type="text" class="form-control" name="TXT_Year" id="intYear" value="<?= $Year ?>">
-                            <small class="form-text text-danger"><?php echo $Year_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $Year_ERROR ?></small>
+                            </div>
                         </div>
 
                         <div class="input-group mb-3">
@@ -165,7 +175,11 @@ include("../layout/menu.php");
                                 <span class="input-group-text">Kilometros</span>
                             </div>
                             <input type="text" class="form-control" name="TXT_Miles" id="intKms" value="<?= $Kms ?>">
-                            <small class="form-text text-danger"><?php echo $Kms_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $Kms_ERROR ?></small>
+                            </div>
                         </div>
 
                         <div class="input-group mb-3">
@@ -174,7 +188,11 @@ include("../layout/menu.php");
                                 <option value="1">Gasolina</option>
                                 <option value="2">Diesel</option>
                             </select>
-                            <small class="form-text text-danger"><?php echo $Type_Fuel_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $Type_Fuel_ERROR ?></small>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
@@ -185,7 +203,11 @@ include("../layout/menu.php");
                                 <option value="2">Automático</option>
                                 <option value="3">CVT</option>
                             </select>
-                            <small class="form-text text-danger"><?php echo $Type_Gear_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $Type_Gear_ERROR ?></small>
+                            </div>
                         </div>
 
                         <div class="input-group mb-3">
@@ -193,7 +215,11 @@ include("../layout/menu.php");
                                 <span class="input-group-text">Marca</span>
                             </div>
                             <input type="text" class="form-control" name="TXT_Brand" value="<?= $Brand ?>">
-                            <small class="form-text text-danger"><?php echo $Brand_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $Brand_ERROR ?></small>
+                            </div>
                         </div>
 
                         <div class="input-group mb-3">
@@ -201,7 +227,11 @@ include("../layout/menu.php");
                                 <span class="input-group-text">Modelo</span>
                             </div>
                             <input type="text" class="form-control" name="TXT_Model" value="<?= $Model ?>">
-                            <small class="form-text text-danger"><?php echo $Model_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $Model_ERROR ?></small>
+                            </div>
                         </div>
 
                         <div class="input-group mb-3">
@@ -209,7 +239,11 @@ include("../layout/menu.php");
                                 <span class="input-group-text">Preço</span>
                             </div>
                             <input type="number" min="1" step="any" class="form-control" name="TXT_Price" value="<?= $Price ?>">
-                            <small class="form-text text-danger"><?php echo $Price_ERROR ?></small>
+                        </div>
+                        <div class="row mt-n3 mb-4">
+                            <div class="col">
+                                <small class="form-text text-danger"><?php echo $Price_ERROR ?></small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -220,7 +254,11 @@ include("../layout/menu.php");
                     <script>
                         CKEDITOR.replace('TXT_Description');
                     </script>
-                    <small class="form-text text-danger"><?php echo $Description_ERROR ?></small>
+                </div>
+                <div class="row mt-n3 mb-4">
+                    <div class="col">
+                        <small class="form-text text-danger"><?php echo $Description_ERROR ?></small>
+                    </div>
                 </div>
 
                 <input type="file" name="carphotos" id="photos" accept="image/*">

@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($Password_ERROR) && empty($Email_ERROR)) {
 
-        $sql = "SELECT User_Id, Email, Profile, Password FROM Users WHERE Email = '$Email'";
+        $sql = "SELECT User_Id, Email, Profile, Password, IsActivated FROM Users WHERE Email = '$Email'";
 
         if ($Result = $con->query($sql)) {
             if ($Result->num_rows == 1) {
@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         session_start();
                         $_SESSION['Id'] = $row['User_Id'];
                         $_SESSION['Profile'] = $row['Profile'];
+                        $_SESSION['IsActivated'] = $row['IsActivated'];
                         header("location: Index.php");
                         exit;
                     } else {

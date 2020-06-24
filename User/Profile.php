@@ -6,6 +6,7 @@ include("../assets/user_info.php");
 include("../Public/Config.php");
 include("../assets/message_user.php");
 include("../assets/role_checker.php");
+include("../PHPMailer/Mail_Shooter.php");
 
 roleUser();
 
@@ -94,6 +95,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         //error
     }
+
+    if (isset($_POST['id_activate']) && isset($_POST['name'])) {
+
+        $subject = "Comfirme a sua Conta StayAuto Portugal";
+
+        $message = '<div class="row">
+                        <div class="col">
+                            <h3>Comfirme o seu Email</h3>
+                
+                            <p>Caro(a) ' . $_POST['name'] . '</p>
+                
+                            <p>Muito obrigado por se registar em StayAuto Portugal, para concluir o registo da sua conta tem que ativa-la, para isso clique no botão abaixo</p>
+                            <a href="http://localhost/StayAutoPT/ActivateAcount.php?id=' . base64_encode($_POST['id_activate']) . '" class="btn btn-outline-success">Ativar Conta</a>
+                        </div>
+                    </div>';
+        ShootMail($subject, $message, $_POST['id_activate']);
+    }
 }
 
 include("../layout/header.php");
@@ -161,7 +179,7 @@ include("../layout/menu.php");
                 </div>
             </div>
 
-            <div class="card shadow mb-4">
+            <div class="card shadow mb-4" id="card_other">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-10 col-sm-10">
@@ -181,6 +199,19 @@ include("../layout/menu.php");
                             </div>
                         </div>
                         <div class="col-md col-sm">
+                            <div class="form-group">
+                                <label for="CA"><strong>Status da Conta</strong></label>
+                                <?php if ($data["IsActivated"] == 1) : ?>
+                                    <p><button class="btn btn-success" disabled>Ativada</button></p>
+                                <?php else : ?>
+                                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                        <input type="hidden" name="id_activate" value="<?= $data["Email"] ?>">
+                                        <input type="hidden" name="name" value="<?= $data["Name"] ?>">
+                                        <p><button class="btn btn-danger">Por Ativar</button></p>
+                                    </form>
+                                <?php endif ?>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,6 +250,7 @@ include("../layout/menu.php");
             $("#overlay").remove();
             $("#overlay-banner").remove();
             $("#overlay-badge").remove();
+            $("#card_other").remove();
         }
     })
 

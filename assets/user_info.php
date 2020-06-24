@@ -17,6 +17,17 @@ function returnUser($id, $con)
     }
 }
 
+function SeeEmailExists($id, $con)
+{
+    $sql = "SELECT Email FROM Users WHERE Email = '$id'";
+    $Result = $con->query($sql);
+    if ($Result->num_rows == 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function returnUsers($con, $id)
 {
     $sql = "SELECT * FROM Users WHERE User_Id != $id";
@@ -125,6 +136,15 @@ function UpdateUserBanner($bannername, $id, $con)
 function UpdateUserBadge($badgename, $id, $con)
 {
     $sql = "UPDATE Users SET Badge = '$badgename' WHERE User_Id = $id";
+    if ($con->query($sql) != true) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function ActivateAcount($id,$con){
+    $sql = "UPDATE Users SET IsActivated = 1 WHERE Email = '$id'";
     if ($con->query($sql) != true) {
         return false;
     } else {
