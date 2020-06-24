@@ -18,7 +18,7 @@ if (isset($_GET['id'])) {
     if (isset($_SESSION['Id'])) {
         $is_favourit = returnFavouritCars($car["License_Plate"], $_SESSION['Id'], $con);
     } else if (isset($_COOKIE["cars_favourits"])) {
-        $Lp = explode("=",$_COOKIE["cars_favourits"]);
+        $Lp = explode("=", $_COOKIE["cars_favourits"]);
         foreach ($Lp as $lp) {
             $clean = base64_decode($lp);
             if ($clean == $car["License_Plate"]) {
@@ -71,6 +71,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         foreach ($_POST["photos"] as $photo) {
             DeletePhotos($photo, $_POST["id_car"], $con);
         }
+    }
+
+    if (isset($_POST["other"]) && isset($_POST["id_car"])) {
+        if ($_POST["other"] != "") {
+            UpdateCarPrice($_POST["id_car"], $_POST["other"], $con);
+        }
+
+        SellCar($_POST["id_car"], $con);
     }
 }
 
@@ -161,15 +169,42 @@ include("../layout/menu.php");
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-10">
-                            <h5>Detalhes</h5>
+                            <h5>Informações do veiculo</h5>
                         </div>
-                        <div class="col-md-2" id="div_btn_edit">
+                        <div class="col-md-1" id="div_btn_sell">
+                            <button class="btn btn-outline-danger float-right mr-3" data-toggle="modal" data-target="#ModalSellCar">Finalizar</button>
+                        </div>
+                        <div class="col-md-1" id="div_btn_edit">
                             <button class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#ModalUpdateCar">Editar</button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <div class="col">
+                            <h4><strong><?= $car["Model"] ?></strong></h4>
+                        </div>
+                        <div class="col">
+                            <h3 class="float-right"><strong><?= $car["Price"]?> <i class="fa fa-euro"></i></strong></h3>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <h6><strong>Ano de</strong></h6>
+                            <div class="mt-n2">
+                                <small><?= $car["Year"] ?></small>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="float-right" style="margin-right: 65px;">
+                                <h6><strong>Kilometros</strong></h6>
+                                <div class="mt-n2">
+                                    <small><?= $car["Kms"] ?></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
                         <div class="col">
                             <h6><strong>Tipo de Combustível</strong></h6>
                             <div class="mt-n2">
@@ -204,7 +239,7 @@ include("../layout/menu.php");
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-10">
-                            <h6>Informações do veiculo</h6>
+                            <h6>Detalhes do Vendedor</h6>
                         </div>
                         <div class="col-md-2" id="info_coner">
 
@@ -214,19 +249,19 @@ include("../layout/menu.php");
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5><strong><?= $car["Model"] ?></strong></h5>
+                            <a href="<?= ROOT_PATH ?>User_Stand/Stand_Profile.php?id=<?= $stand["Stand_Id"] ?>"><h5><strong><?= $stand["Name"] ?></strong></h5></a>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-n2">
                         <div class="col">
-                            <small><?= $car["Year"] . " / " . $car["Kms"] . "Km" ?></small>
+                            <small><?= $stand["Adress"] ?></small>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-4">
                         <div class="col">
                         </div>
                         <div class="col">
-                            <h5 class="float-right"><strong><?= $car["Price"] ?><i class="fa fa-euro"></i></strong></h5>
+                            <h5 class="float-right"><strong><?= $stand["Phone"] ?> <i class="fa fa-phone fa-rotate-90"></i></strong></h5>
                         </div>
                     </div>
                     <hr>
@@ -251,6 +286,7 @@ include("../layout/menu.php");
         if (visitor != null) {
             if (visitor != owner && !isadmin) {
                 $("#div_btn_edit").remove();
+                $("#div_btn_sell").remove();
                 $("#card_photos").remove();
                 $("#info_coner").append(favourits);
             } else {
@@ -259,6 +295,7 @@ include("../layout/menu.php");
         }
 
         $("#price_neg").hide();
+        $("#price_final").hide();
     });
 
     $("#chk_neg").change(function() {
@@ -266,6 +303,14 @@ include("../layout/menu.php");
             $("#price_neg").show();
         } else {
             $("#price_neg").hide();
+        }
+    });
+
+    $("#chk_final").change(function() {
+        if ($(this).prop("checked") == true) {
+            $("#price_final").show();
+        } else {
+            $("#price_final").hide();
         }
     });
 
@@ -352,5 +397,22 @@ include("../layout/menu.php");
                 }
             });
         }
+    }
+
+    function SellCar() {
+        var other = $("#price_final").val();
+        var id_car = "<?= $id ?>";
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>",
+            data: {
+                other,
+                id_car
+            },
+            success: function(response) {
+                window.location.href = "Garage.php";
+            }
+        });
     }
 </script>

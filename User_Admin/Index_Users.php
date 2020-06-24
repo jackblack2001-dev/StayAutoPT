@@ -19,7 +19,7 @@ include("../layout/menu.php");
 
         </div>
         <div class="col-md-10">
-            <div class="card shadow">
+            <div class="card shadow mb-4">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-2 col-sm-4">

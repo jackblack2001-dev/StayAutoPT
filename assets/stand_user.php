@@ -149,6 +149,33 @@ function returnStand($id, $con)
     }
 }
 
+function returnStandGet($id, $con)
+{
+    if (isset($id)) {
+        $sql = "SELECT * FROM Stands S 
+        INNER JOIN Config_Stands C
+        ON
+        C.Stand_Id = S.Stand_Id
+        INNER JOIN Stands_Badges SB
+        ON
+        SB.Stand_Id = S.Stand_Id
+        INNER JOIN Stands_Banners SBN
+        ON
+        SBN.Stand_Id = S.Stand_Id
+        WHERE S.Stand_Id = '$id' AND SB.State = 1 AND SBN.State = 1";
+        $Result = $con->query($sql);
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_assoc()) {
+                return StandProcessing($row);
+            }
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
 function returnLocations($con)
 {
     $sql = "SELECT * FROM Locations";
@@ -263,7 +290,7 @@ function returnNews($id, $con)
     N.Stand_Id = S.Stand_Id
     INNER JOIN Users U ON
     N.User_Id = U.User_Id
-    WHERE N.Stand_Id = $id AND State = 1";
+    WHERE N.Stand_Id = $id AND State = 1 ORDER BY CreatedNews DESC";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
@@ -341,6 +368,51 @@ function returnAllSubscriptions($id, $con)
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
                 $data[] =  StandProcessing($row);
+            }
+            return $data;
+        } else return null;
+    }
+}
+
+function returnTotalStandsMoney($con)
+{
+    $sql = "SELECT SUM(Price) AS TotalMoney FROM Cars WHERE State = 2";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows == 1) {
+            if ($row = $Result->fetch_array()) {
+                return $row["TotalMoney"];
+            }
+        } else return null;
+    }
+}
+
+function return3MorerentableStands($con)
+{
+    $sql = "SELECT S.Stand_Id, Name, SUM(Price) AS TotalStandMoney FROM Stands S
+            INNER JOIN Cars C
+            ON
+            C.Stand_Id = S.Stand_Id
+            WHERE C.State = 2 GROUP BY C.Stand_Id ORDER BY TotalStandMoney DESC LIMIT 3";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] = $row;
+            }
+            return $data;
+        } else return null;
+    }
+}
+
+function return3MoreCrasStands($con)
+{
+    $sql = "SELECT S.Stand_Id, Name, COUNT(License_Plate) AS TotalStandCars FROM Stands S
+            INNER JOIN Cars C
+            ON
+            C.Stand_Id = S.Stand_Id GROUP BY C.Stand_Id ORDER BY TotalStandCars DESC LIMIT 3";
+    if ($Result = $con->query($sql)) {
+        if ($Result->num_rows >= 1) {
+            while ($row = $Result->fetch_array()) {
+                $data[] = $row;
             }
             return $data;
         } else return null;

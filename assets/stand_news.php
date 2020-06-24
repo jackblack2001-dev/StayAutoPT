@@ -10,7 +10,11 @@ if (isset($_GET['id_stand']) && isset($_GET['id_news']) && !isset($_GET['aux']))
         GetNew($_GET['id_news'], $_GET['id_stand'], $con);
     }
 
-    UpdateNewsId($_GET['id_news'], $_GET['id_stand'], $con);
+    if (isset($_GET["update"])) {
+        if ($_GET["update"] != "false") {
+            UpdateNewsId($_GET['id_news'], $_GET['id_stand'], $con);
+        }
+    }
 }
 
 if (isset($_GET['id_stand']) && isset($_GET['id_news']) && isset($_GET['aux'])) {

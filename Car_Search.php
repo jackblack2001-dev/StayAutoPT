@@ -16,6 +16,8 @@ ON S.Stand_Id = C.Stand_Id
 INNER JOIN Locations L
 ON L.local_id = S.Locality WHERE State = 1";
 
+$yf = $yt = $pf = $pt = $kf = $kt = $f = $g = $l = null;
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST["search"]) && $_POST["search"] != "") {
         $search = $_POST["search"];
@@ -66,6 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $l = $_POST["locality"];
         $sql .= " AND L.local_id = '$l'";
     }
+
+    RecordSearch($yf, $yt, $pf, $pt, $kf, $kt, $f, $g, $l, $con);
 }
 
 $total_pages = $con->query($sql)->num_rows;

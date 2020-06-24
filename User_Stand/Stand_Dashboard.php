@@ -214,26 +214,6 @@ include("../layout/menu.php");
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h6><strong>Subscritores: <small style="font-size: medium;"><?= $numcars["NumCars"] ?> <i class="fa fa-star-o"></i></small></strong></h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h6><strong>Favoritos</strong></h6>
-                                            <h5 class="mt-n2"><small><?= $avaibalecars["AvailableCars"] ?></small></h5>
-                                        </div>
-                                        <span class="border-left"></span>
-                                        <div class="col">
-                                            <h6><strong>Subscritores</strong></h6>
-                                            <h5 class="mt-n2"><small><?= $subscriptions ?></small></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -244,6 +224,10 @@ include("../layout/menu.php");
 <?php include("../layout/footer.php"); ?>
 
 <script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
     $("#overlay").click(function() {
         window.location = "<?php echo ROOT_PATH ?>User_Stand/Stand_Profile.php";
     })

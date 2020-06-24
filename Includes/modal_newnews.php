@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <table class="table">
+                <table class="table" id="table_sel_edit_news">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Titulo</th>

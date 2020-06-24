@@ -92,7 +92,11 @@ function ShowCarCars($con)
     include_once('../Public/config.php');
 
     $card = "";
-    $data = returnStand($_SESSION["Id"], $con);
+    if (isset($_GET["id"])) {
+        $data = returnUrlStand($_GET["id"], $con);
+    } else {
+        $data = returnStand($_SESSION["Id"], $con);
+    }
 
     $cars = returnStandCars($data["Stand_Id"], $con);
 
@@ -109,7 +113,11 @@ function ShowCarCars($con)
 function ShowCarCarsSearch($search, $con)
 {
     $card = "";
-    $data = returnStand($_SESSION["Id"], $con);
+    if (isset($_GET["id"])) {
+        $data = returnUrlStand($_GET["id"], $con);
+    } else {
+        $data = returnStand($_SESSION["Id"], $con);
+    }
 
     $cars = returnCarsSearch($data["Stand_Id"], $search, $con);
 

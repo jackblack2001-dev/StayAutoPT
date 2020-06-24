@@ -103,6 +103,11 @@
             text-decoration: none !important;
         }
 
+        .a-normal {
+            color: #001fffc2;
+            text-decoration: none !important;
+        }
+
         .a-carousel-stands {
             color: #ffffff;
             text-decoration: none !important;

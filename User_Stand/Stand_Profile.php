@@ -23,8 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $id = $data["Stand_Id"];
             $news = returnNews($data["Stand_Id"], $con);
             $stand_location = returnStandLocation($data["Locality"], $con);
-            
-            UpdateStandViews($data["Stand_Id"], $con);
         }
     } else {
         $who = "stand";
@@ -38,6 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $locations = returnLocations($con);
             $stand_location = returnStandLocation($data["Locality"], $con);
         }
+    }
+
+    $visitor = isset($_SESSION["Id"]) ? $_SESSION["Id"] : 0;
+    $owner = $data["User_Id"];
+
+    if ($visitor != $owner) {
+        UpdateStandViews($data["Stand_Id"],$con);
     }
 }
 
@@ -152,14 +157,14 @@ include("../layout/menu.php");
 <?php include("../layout/footer.php"); ?>
 
 <script>
+    var owner = "<?= $data["User_Id"] ?>";
+    var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : null ?>";
+    var isadmin = "<?= isset($_SESSION["Profile"]) && $_SESSION["Profile"] == 0 ? true : false ?>";
+
     $(document).ready(function() {
         geocode();
 
-        var owner = "<?= $data["User_Id"] ?>";
-        var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : null ?>";
-        var isadmin = "<?= isset($_SESSION["Profile"]) && $_SESSION["Profile"] == 0 ? true : false ?>";
-
-        var favourits = '<button class="btn <?= $is_favourit == false ? "btn-outline-success" : "btn-success" ?> float-right" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : "false" ?>,<?= $data["Stand_Id"] ?>)" id="btn_subscribe">Subscrever</button>';
+        var favourits = '<button class="btn <?= isset($is_favourit) && $is_favourit == false ? "btn-outline-success" : "btn-success" ?> float-right" onclick="favorits(<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : "false" ?>,<?= $data["Stand_Id"] ?>)" id="btn_subscribe">Subscrever</button>';
 
         if (visitor != null) {
             if (visitor != owner) {
@@ -167,6 +172,10 @@ include("../layout/menu.php");
                 $("#Edit_Exbitions").remove();
                 $("#overlay-banner").remove();
                 $("#overlay-badge").remove();
+
+                $('#table_news .btn-outline-success').each(function(i, obj) {
+                    $(obj).remove();
+                });
 
                 $("#info_coner").append(favourits);
             }
@@ -235,13 +244,21 @@ include("../layout/menu.php");
     }
 
     function GetNews(id_news) {
+
+        var update = true;
+
+        if (visitor != owner) {
+            update = false;
+        }
+
         var id_stand = "<?= $data["Stand_Id"] ?>";
         $.ajax({
             type: "GET",
             url: "../assets/stand_news.php",
             data: {
                 id_stand,
-                id_news
+                id_news,
+                update
             },
             success: function(response) {
                 $("#card_news").html(response);
@@ -278,7 +295,14 @@ include("../layout/menu.php");
             if (visitor != null) {
                 if (visitor != owner) {
                     remove_news = "";
-                    btns_news = "";
+                    btns_news = '<div class="row mb-4" id="Btn_Group_News">' +
+                        '<div class="col-md-6">' +
+                        '<div class="btn-group" role="group">' +
+                        '<button type="button" class="btn btn-outline-secondary" id="BTN_Last" onclick="GetNews(0)">Ultima Notícia</button>' +
+                        '<button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#ModalSelectNews">Selecionar Notícia</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';;
                 }
             }
 
@@ -360,17 +384,17 @@ include("../layout/menu.php");
             if (visitor != null) {
                 if (visitor != owner) {
                     new_car_select = "";
-                    remove_new_car = "";
+                    remove_new_car = '<a href="Garage.php?id=<?= $data["Stand_Id"] ?>" class="btn btn-outline-success float-right waves-effect waves-light">Garagem</a>';
                 }
             }
 
             return '<div class="card shadow mb-4" id="card_nc">' +
                 '<div class="card-header">' +
                 '<div class="row">' +
-                '<div class="col-md-11">' +
+                '<div class="col-md-10">' +
                 '<h5>Novidades</h5>' +
                 '</div>' +
-                '<div class="col-md-1 text-danger">' +
+                '<div class="col-md-2 text-danger">' +
                 remove_new_car +
                 '</div>' +
                 '</div>' +

@@ -236,3 +236,38 @@
 
     </div>
 </div>
+
+<div id="ModalSellCar" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="error_title">Finalizar Carro</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <h5><strong>Após vender o veiculo venha aqui para o finalizar</strong></h5>
+                        <h5 class="mt-n2"><small>Tenha em mente que esta ação e irreversível</small></h5>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="chk_final">
+                                <label class="form-check-label" for="chk_final"><strong>Outro Montante</strong></label>
+                            </div>
+                            <input class="form-control" type="number" placeholder="Montante €" name="price_final" id="price_final">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal" onclick="SellCar()">Finalizar</i></button>
+            </div>
+        </div>
+
+    </div>
+</div>

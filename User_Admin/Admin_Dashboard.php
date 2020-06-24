@@ -8,6 +8,7 @@ include('../assets/stand_user.php');
 include('../assets/user_info.php');
 include("../assets/message_user.php");
 include('../assets/role_checker.php');
+include("../assets/statistics.php");
 
 roleAdmin();
 
@@ -35,6 +36,26 @@ if ($BMR[0] != null) {
 
 $UsersC[] = returnUsersCountType(1, $con);
 $UsersE[] = returnUsersCountType(2, $con);
+
+$total_stands = returnTotalStandsMoney($con);
+
+$threerentstand = return3MorerentableStands($con);
+
+$threecarstand = return3MoreCrasStands($con);
+
+$mostsearchlocality = returnMostSearchLocality($con);
+
+$mostsearchgear = returnMostSearchGear($con);
+
+$mostsearchfuel = returnMostSearchFuel($con);
+
+$mostsearchminyear = returnMostSearchMinYear($con);
+
+$mostsearchmaxyear = returnMostSearchMaxYear($con);
+
+$averageprices = returnAveragePrices($con);
+
+$averagekms = returnAverageKms($con);
 
 include("../layout/header.php");
 include("../layout/menu.php");
@@ -93,28 +114,165 @@ include("../layout/menu.php");
     </div>
     <div class="row">
         <div class="col-lg-8 mb-4">
-            <div class="card shadow mb-4">
+            <div class="card shadow mt-4">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="col-sm-7 col-md-8">
-                            <h6>Pesquisa Global</h6>
+                    <h5>Estatisticas <i class="fa fa-pie-chart" style="margin-bottom: 5px;width: 20px;height: 20px;"></i></h5>
+                </div>
+                <div class="card-body">
+                    <div class="card shadow">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col">
+                                    <h6><strong>Total Ganho por todos os Stands: <?= $total_stands ?> <i class="fa fa-euro"></i></strong></h6>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-5 col-md-4 text-right">
-                            <input placeholder="#Tags, Palavras-chave..." type="text" class="form-control">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6><strong>Os 3 Stands Mais rentaveis</strong></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <?php foreach ($threerentstand as $row) : ?>
+                                                <h5 class="mt-n2"><a class="a-cars" href="../User_Stand/Stand_Profile.php?id=<?= $row["Stand_Id"] ?>"><small><?= $row["Name"] . " - " . $row["TotalStandMoney"] ?> <i class="fa fa-euro"></i></small></a></h5>
+                                            <?php endforeach ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="col">
+                                        <div class="card shadow">
+                                            <div class="card-header">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h6><strong>Os 3 Stands com Mais Carros</strong></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <?php foreach ($threecarstand as $row) : ?>
+                                                    <h5 class="mt-n2"><a class="a-cars" href="../User_Stand/Stand_Profile.php?id=<?= $row["Stand_Id"] ?>"><small><?= $row["Name"] . " - " . $row["TotalStandCars"] ?> <i class="fa fa-car"></i></small></a></h5>
+                                                <?php endforeach ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <h4 class="small"></h4>
-                </div>
-            </div>
 
-            <div class="card shadow">
-                <div class="card-header">
-                    <h6>Estatisticas <i class="fa fa-pie-chart" style="margin-bottom: 5px;width: 20px;height: 20px;"></i></h6>
-                </div>
-                <div class="card-body">
-                    <h4 class="small"></h4>
+                    <div class="card shadow mt-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Estatísticas de Pesquisas <i class="fa fa-search fa-rotate-90"></i></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h6><strong>Localidade mais Procurada</strong></h6>
+                                    <p class="mt-n2"><small><?= $mostsearchlocality != null ? $mostsearchlocality : "Dados Insuficientes" ?></small></p>
+                                </div>
+                                <span style="border-left: 1px solid lightgrey;"></span>
+                                <div class="col">
+                                    <h6><strong>Tipo de Transmisão mais Procurada</strong></h6>
+                                    <?php if ($mostsearchgear != null) : ?>
+                                        <?php if ($mostsearchgear == "1") : ?>
+                                            <p class="mt-n2"><small>Manual</small></p>
+                                        <?php endif ?>
+                                        <?php if ($mostsearchgear == "2") : ?>
+                                            <p class="mt-n2"><small>Automática</small></p>
+                                        <?php endif ?>
+                                        <?php if ($mostsearchgear == "3") : ?>
+                                            <p class="mt-n2"><small>CVT</small></p>
+                                        <?php endif ?>
+                                    <?php endif ?>
+                                </div>
+                                <span style="border-left: 1px solid lightgrey;"></span>
+                                <div class="col">
+                                    <h6><strong>Tipo de Combustivel mais Procurado</strong></h6>
+                                    <?php if ($mostsearchfuel != null) : ?>
+                                        <?php if ($mostsearchfuel == "1") : ?>
+                                            <p class="mt-n2"><small>Gasolina</small></p>
+                                        <?php endif ?>
+                                        <?php if ($mostsearchfuel == "2") : ?>
+                                            <p class="mt-n2"><small>Diesel</small></p>
+                                        <?php endif ?>
+                                    <?php endif ?>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <strong>Anos de Preferência</strong>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6><strong>Ano Minimo</strong></h6>
+                                                    <p class="mt-n2"><small><?= $mostsearchminyear != null ? $mostsearchminyear : "Dados Insuficientes" ?> <i class="fa fa-calendar"></i></small></p>
+                                                </div>
+                                                <span style="border-left: 1px solid lightgrey;"></span>
+                                                <div class="col">
+                                                    <h6><strong>Ano Maximo</strong></h6>
+                                                    <p class="mt-n2"><small><?= $mostsearchmaxyear != null ? $mostsearchmaxyear : "Dados Insuficientes" ?> <i class="fa fa-calendar"></i></small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <strong>Média do Preço</strong>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6><strong>Mais Baixo</strong></h6>
+                                                    <p class="mt-n2"><small><?= $averageprices != null ? $averageprices["AverageMin"] : "Dados Insuficientes" ?> <i class="fa fa-euro"></i></small></p>
+                                                </div>
+                                                <span style="border-left: 1px solid lightgrey;"></span>
+                                                <div class="col">
+                                                    <h6><strong>Mais Alto</strong></h6>
+                                                    <p class="mt-n2"><small><?= $averageprices != null ? $averageprices["AverageMax"] : "Dados Insuficientes" ?> <i class="fa fa-euro"></i></small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <strong>Média de Kilometros</strong>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6><strong>Mais Baixo</strong></h6>
+                                                    <p class="mt-n2"><small><?= $averagekms != null ? $averagekms["AverageMin"] : "Dados Insuficientes" ?> Kms</small></p>
+                                                </div>
+                                                <span style="border-left: 1px solid lightgrey;"></span>
+                                                <div class="col">
+                                                    <h6><strong>Mais Alto</strong></h6>
+                                                    <p class="mt-n2"><small><?= $averagekms != null ? $averagekms["AverageMax"] : "Dados Insuficientes" ?> Kms</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

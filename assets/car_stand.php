@@ -103,7 +103,7 @@ function returnMostViewedCar5($con)
 
 function returnCarsLastX($id, $numrows, $con)
 {
-    $sql = "SELECT * FROM Cars WHERE Stand_Id = $id ORDER BY CreatedCar desc limit $numrows";
+    $sql = "SELECT * FROM Cars WHERE Stand_Id = $id AND State = 1 ORDER BY CreatedCar desc limit $numrows";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
@@ -156,7 +156,7 @@ function returnRandomCar6($con)
 
 function returnCarsSearch($id, $search, $con)
 {
-    $sql = "SELECT * FROM Cars WHERE Stand_Id = $id AND Model LIKE '%$search%'";
+    $sql = "SELECT * FROM Cars WHERE Stand_Id = '$id' AND State = 1 AND Model LIKE '%$search%'";
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
@@ -331,6 +331,18 @@ function UpdateCar($id, $brand, $model, $kms, $year, $type_fuel, $type_gear, $de
         }
     }
 }
+
+function UpdateCarPrice($id, $price, $con)
+{
+    $sql = "UPDATE Cars SET Price = $price WHERE License_Plate = '$id'";
+    $con->query($sql);
+}
+
+function SellCar($id, $con)
+{
+    $sql = "UPDATE Cars SET State = 2 WHERE License_Plate = '$id'";
+    $con->query($sql);
+}
 #endregion
 
 #region Car Photos
@@ -400,7 +412,7 @@ function returnAllFavouritCars($id, $con)
 
 function returnCookieFavouritCars($array, $con)
 {
-    $sql = 'SELECT * FROM Cars WHERE License_Plate IN (' . implode(",", $array) .')';
+    $sql = 'SELECT * FROM Cars WHERE License_Plate IN (' . implode(",", $array) . ')';
     if ($Result = $con->query($sql)) {
         if ($Result->num_rows >= 1) {
             while ($row = $Result->fetch_array()) {
@@ -458,5 +470,14 @@ function manageFavouritsCars($user, $car, $con)
         $stmt->bind_param('si', $car, $user);
         $stmt->execute();
     }
+}
+#endregion
+#region Search Data Cars
+function RecordSearch($Min_Year, $Max_Year, $Min_Price, $Max_Price, $Min_Kms, $Max_Kms, $Type_Fuel, $Type_Gear, $Locality, $con)
+{
+    $sql = "INSERT INTO Search_Data_Car(Min_Year,Max_Year,Min_Price,Max_Price,Min_Kms,Max_Kms,Type_Fuel,Type_Gear,Locality) VALUES(?,?,?,?,?,?,?,?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('iiiiiiiii', $Min_Year, $Max_Year, $Min_Price, $Max_Price, $Min_Kms, $Max_Kms, $Type_Fuel, $Type_Gear, $Locality);
+    $stmt->execute();
 }
 #endregion

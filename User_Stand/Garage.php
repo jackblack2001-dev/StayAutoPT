@@ -8,12 +8,18 @@ include("../assets/stand_user.php");
 include("../assets/message_user.php");
 include("../assets/user_info.php");
 
-roleStand();
+if (isset($_GET["id"])) {
+    $data = returnStandGet($_GET["id"], $con);
 
-$data[] = returnStand($_SESSION['Id'], $con);
+    if ($data === null) {
+        //404
+    }
+} else {
+    $data = returnStand($_SESSION['Id'], $con);
 
-if ($data[0] === null) {
-    header("location: StandRegister.php");
+    if ($data === null) {
+        header("location: StandRegister.php");
+    }
 }
 
 include("../layout/header.php");
@@ -26,7 +32,7 @@ include("../layout/menu.php");
         <div class="col">
             <h4>Ultimos carros adicionados</h4>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2" id="btn_add_car">
             <a href="CarRegister.php" class="btn btn-outline-success float-right">Adicionar Carro</a>
         </div>
     </div>
@@ -41,7 +47,7 @@ include("../layout/menu.php");
             <h4>Todos os carros</h4>
         </div>
         <div class="col-sm-2" style="padding-left: 40px">
-            <input type="text" placeholder="Procurar" class="form-control float-right" onkeyup="CCS(this.value)" id="Search">
+            <input type="text" placeholder="Procurar por Modelo" class="form-control float-right" onkeyup="CCS(this.value)" id="Search">
         </div>
     </div>
     <hr class="mb-4">
@@ -55,17 +61,26 @@ include("../layout/menu.php");
 
 <script>
     $(document).ready(function() {
+        var owner = "<?= $data["User_Id"] ?>";
+        var visitor = "<?= isset($_SESSION["Id"]) ? $_SESSION["Id"] : "0" ?>";
+
+        if (visitor != owner) {
+            $("#btn_add_car").remove();
+        }
+
         CCSL5();
         CCS("");
     })
 
     function CCSL5() {
+        var id = "<?= $data["Stand_Id"] ?>";
         $.ajax({
             type: "GET",
             url: "../assets/carcard.php",
             data: {
                 SCCLX: true,
-                rows: 5
+                rows: 5,
+                id
             },
             success: function(response) {
                 $("#TabLast5").html(response);
@@ -74,12 +89,14 @@ include("../layout/menu.php");
     };
 
     function CCS(str) {
+        var id = "<?= $data["Stand_Id"] ?>";
         $.ajax({
             type: "GET",
             url: "../assets/carcard.php",
             data: {
                 SCCLX: false,
-                search: str
+                search: str,
+                id
             },
             success: function(response) {
                 $("#TabSearch").html(response);

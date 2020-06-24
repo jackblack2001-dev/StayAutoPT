@@ -187,11 +187,6 @@ include("../layout/menu.php");
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card shadow mt-4">
-                <div class="card-body">
-                    depois
-                </div>
-            </div>
         </div>
     </div>
 
