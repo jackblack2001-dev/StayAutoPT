@@ -32,6 +32,13 @@ if (isset($_GET['id'])) {
         $photos = returnAllCarPhotos($id, $con);
     } else {
     }
+
+    $visitor = isset($_SESSION["Id"]) ? $_SESSION["Id"] : 0;
+    $owner = $stand["User_Id"];
+
+    if ($visitor != $owner) {
+        UpdateCarViews($stand["Stand_Id"],$con);
+    }
 } else {
     //redirect to 404 page error
 }

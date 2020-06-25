@@ -358,6 +358,12 @@ function RemoveCar($id, $con)
     $sql = "UPDATE Cars SET State = 0 WHERE License_Plate = '$id'";
     $con->query($sql);
 }
+
+function UpdateCarViews($id, $con)
+{
+    $sql = "UPDATE Cars SET Views = Views + 1 WHERE Stand_Id = $id";
+    $con->query($sql);
+}
 #endregion
 
 #region Car Photos
