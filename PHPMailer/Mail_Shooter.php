@@ -17,7 +17,7 @@ function ShootMail($subject, $message, $Mail)
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'StayAutoPortugal@gmail.com';
-        $mail->Password = 'SRGDT.R1H235Y24.656755.74.567K5686467LI6,5O4_869678._4,678U,Y.L6T45_6J3,6.,H.E,G6_3W46,F4,5,6.34.64';
+        $mail->Password = 'Insert PassWord Here :3';
         $mail->Port = 587;
 
         $mail->setFrom('StayAutoPortugal@gmail.com');
