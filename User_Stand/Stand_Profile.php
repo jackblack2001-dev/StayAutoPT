@@ -187,7 +187,7 @@ include("../layout/menu.php");
         axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
                 params: {
                     address: location,
-                    key: 'AIzaSyABimp-LZ3oqqXlRN3aKPHqyKO_g-cwKMs'
+                    key: 'Google Key API Here :3'
                 }
             })
             .then(function(response) {
